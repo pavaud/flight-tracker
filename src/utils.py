@@ -1,8 +1,10 @@
-from pymongo import MongoClient
-import requests
+# standard
+import os
 import time
 from datetime import datetime, timedelta
-import os
+# third-party
+import requests
+import pandas as pd
 
 # CONSTANTS
 BASE_URL_CFI = "https://api.lufthansa.com/v1/operations/customerflightinformation/"
@@ -204,10 +206,51 @@ def get_arrivals(col,airport):
     arr_found = list(col.find(filter={'Arrival.AirportCode':airport},
                              sort=[('Arrival.Scheduled.Time',1)]))
 
+    print("\n\nArrivals at airport : " + airport)
+    
+    columns = ['Scheduled','Actual','Carrier','Flight','Status','Origin']
+    data=[]
+
     for x in arr_found:
-        arr_scheduled = x['Arrival']['Scheduled']['Time']
-        arr_actual = x['Arrival']['Actual']['Time']
-        carrier = x['OperatingCarrier']['AirlineID']
-        flight = carrier + x['OperatingCarrier']['FlightNumber']
-        status = x['Status']['Description']
-        origin = x['Departure']['AirportCode']
+        cols = []
+        cols.append(x['Arrival']['Scheduled']['Time'])
+        cols.append(x['Arrival']['Actual']['Time'])
+        cols.append(x['OperatingCarrier']['AirlineID'])
+        cols.append(x['OperatingCarrier']['AirlineID'] + x['OperatingCarrier']['FlightNumber'])
+        cols.append(x['Status']['Description'])
+        cols.append(x['Departure']['AirportCode'])
+
+        data.append(cols)
+    
+    df = pd.DataFrame(data, columns=columns)
+    print(df)
+    return df
+
+
+def get_departures(col,airport):
+    """ Get departures at given Airport """
+
+    dep_found = list(col.find(filter={'Departure.AirportCode':airport},
+                             sort=[('Departure.Scheduled.Time',1)]))
+    
+    print("\n\nDepartures at airport : " + airport)
+    
+    columns = ['Scheduled','Actual','Carrier','Flight','Status','Destination']
+    data=[]
+    for x in dep_found:
+        cols = []
+        cols.append(x['Departure']['Scheduled']['Time'])
+        try:
+            cols.append(x['Departure']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
+        cols.append(x['OperatingCarrier']['AirlineID'])
+        cols.append(x['OperatingCarrier']['AirlineID'] + x['OperatingCarrier']['FlightNumber'])
+        cols.append(x['Status']['Description'])
+        cols.append(x['Arrival']['AirportCode'])
+        
+        data.append(cols)
+    
+    df = pd.DataFrame(data, columns=columns)
+    # print(df)
+    return df
