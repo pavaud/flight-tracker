@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 # third-party
 from pymongo import MongoClient
+import pandas as pd
 # project
 from utils import *
 
@@ -14,25 +15,21 @@ def main():
 
     # connecting to db
     db = client.flightTracker
-    db.drop_collection('arrivals')
-    db.drop_collection('departures')
+    #db.drop_collection('flights')
 
     # get api token
     bearer = get_key(API_KEY_FILE,'lufthansa')
     headers = {'Authorization': 'Bearer '+ bearer}
 
+    # flights from CSV to update
+    flights = pd.read_csv('data\\flightnumbers_update.csv')
+    #flights = random.choices(df['flightnumber'],k=50)
 
-    # airports to put in database
-    #airports=['FRA','BER','CDG','LHR','FCO','MAD','DUB','LIS','AMS','LUX','BUD','ATH']
-    #airports with bad requests =['MRS','STO','RIX','HEL']
-    airlines=['LH','OS','LX','EN','WK'] # Lufthansa, Austrian, Swiss, Air Dolomiti and Edelweiss
-    
     # datetime for requests
-    #date_time = datetime.now().strftime("%Y-%m-%dT%H:%M")
-    date = datetime.now().strftime("%Y-%m-%dT08:00")
+    date = datetime.now().strftime("%Y-%m-%d")
 
-    for airline in airlines:    
-        insert_flights(db.flights,airline,date,headers)
+    for flight in flights['flightnumber']:    
+        insert_flights(db.flights,flight,date,headers)
         time.sleep(1)
 
 if __name__ == "__main__":

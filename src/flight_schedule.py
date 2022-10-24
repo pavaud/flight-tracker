@@ -37,7 +37,7 @@ def main():
 
     airlines=['LH','OS','LX','EN','WK'] # Lufthansa, Austrian, Swiss, Air Dolomiti and Edelweiss
     for airline in airlines:    
-        get_schedules(db.schedules,airline, start, end, headers)
+        update_schedules(db.schedules,airline, start, end, headers)
         time.sleep(1)
 
 

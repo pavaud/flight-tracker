@@ -9,7 +9,7 @@ BASE_URL_CFI = "https://api.lufthansa.com/v1/operations/customerflightinformatio
 BASE_URL_SCHEDULES = "https://api.lufthansa.com/v1/flight-schedules/flightschedules/passenger?"
 API_KEY_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'api_keys.txt'))
 
-# FUNCTIONS
+# UPDATE FUNCTIONS
 def get_key(textfile, api):
     """ 
     returns api token for specific API
@@ -37,7 +37,7 @@ def get_key(textfile, api):
     return bearer
 
 
-def insert_arrivals(col, airport, date_time,headers):
+def update_arrivals(col, airport, date_time,headers):
     """ 
     Insert all arrivals from API in the database
     
@@ -73,9 +73,10 @@ def insert_arrivals(col, airport, date_time,headers):
     else:
         # test
         print("ERROR for arrivals at "  + airport + " - request status is : ", response.status_code)
+        print("URL : ",url,'\n\n')
 
 
-def insert_departures(col, airport, date_time, headers):
+def update_departures(col, airport, date_time, headers):
     """ 
     Insert all departures from API in the database
     
@@ -111,6 +112,8 @@ def insert_departures(col, airport, date_time, headers):
             
     else:
         print("ERROR for departures at "  + airport + " - request status is : ", response.status_code)
+        print(response.text)
+        print("URL : ",url,'\n\n')
 
 
 def remove_old_schedules(col,days=1):
@@ -121,7 +124,7 @@ def remove_old_schedules(col,days=1):
     col.delete_many({"insertedDate":{"$lt": date}})
 
 
-def get_schedules(col,airline, start, end, headers):
+def update_schedules(col,airline, start, end, headers):
     """
     Insert all schedules from a given airport in col
     
@@ -140,7 +143,7 @@ def get_schedules(col,airline, start, end, headers):
 
     if response.status_code in [200,206]:
 
-        # insert all in collection arrivals    
+        # insert schedule in col    
         for flight in response.json():
             new_flight = {"schema_version": 1.0,
                         "flightnumber":flight["airline"]+str(flight["flightNumber"]),
@@ -161,40 +164,50 @@ def get_schedules(col,airline, start, end, headers):
         print(response.text)
 
 
-def insert_flights(col,airline,date,headers):
+def insert_flights(col,flightnumber,date,headers):
     """
     Insert all flights from a given airline in col
     
     Parameters:
     -----------
         col         : collection in which we want to insert data
-        airline     : airline for which we want to get schedules
+        flightnumber: airline for which we want to get schedules
         date        : date of flight info required by the API. format : %Y-%m-%d (ex:2022-10-23)
         headers     : header with API token
     """    
 
     # request
-    url = BASE_URL_CFI + airline + "/" + date
+    url = BASE_URL_CFI + flightnumber + "/" + date
     response = requests.request("GET", url, headers=headers)
-    #print("status code :" + str(response.status_code))
 
     # replace or insert all in given collection
     if response.status_code == requests.codes.OK:
 
-        flights = response.json()["FlightInformation"]["Flights"]["Flight"]
-        for flight in flights:
-            try:
-                query = {'$and':[
-                            {'OperatingCarrier.AirlineID': {'$eq':flight['OperatingCarrier']['AirlineID']}},
-                            {'OperatingCarrier.FlightNumber': {'$eq':flight['OperatingCarrier']['FlightNumber']}}
-                        ]}
-                col.replace_one(filter=query, replacement=flight,upsert=True)
-            except IndexError:
-                print(IndexError + "airport : " + airline)
-                continue
-            except TypeError:
-                print(TypeError + "airport : " + airline)
-                continue
+        flight = response.json()["FlightInformation"]["Flights"]["Flight"]
+        try:
+            query = {'$and':[
+                        {'OperatingCarrier.AirlineID': {'$eq':flight['OperatingCarrier']['AirlineID']}},
+                        {'OperatingCarrier.FlightNumber': {'$eq':flight['OperatingCarrier']['FlightNumber']}}
+                    ]}
+            col.replace_one(filter=query, replacement=flight,upsert=True)
+        except IndexError:
+            print(IndexError + "flightnumber : " + flightnumber)
+        except TypeError:
+            print(TypeError + "flightnumber : " + flightnumber)
     else:
-        print("ERROR for departures at "  + airline + " - request status is : ", response.status_code)
+        print("ERROR for flightnumber : "  + flightnumber + " - request status is : ", response.status_code)
 
+# DB REQUESTS
+def get_arrivals(col,airport):
+    """ Get arrivals at given Airport """
+
+    arr_found = list(col.find(filter={'Arrival.AirportCode':airport},
+                             sort=[('Arrival.Scheduled.Time',1)]))
+
+    for x in arr_found:
+        arr_scheduled = x['Arrival']['Scheduled']['Time']
+        arr_actual = x['Arrival']['Actual']['Time']
+        carrier = x['OperatingCarrier']['AirlineID']
+        flight = carrier + x['OperatingCarrier']['FlightNumber']
+        status = x['Status']['Description']
+        origin = x['Departure']['AirportCode']

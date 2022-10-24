@@ -15,7 +15,8 @@ def main():
 
     # connecting to db
     db = client.flightTracker
-    db.drop_collection('flights')
+    #db.drop_collection('arrivals')
+    #db.drop_collection('departures')
 
     # get api token
     bearer = get_key(API_KEY_FILE,'lufthansa')
@@ -29,11 +30,11 @@ def main():
     
     # datetime for requests
     #date_time = datetime.now().strftime("%Y-%m-%dT%H:%M")
-    date_time = datetime.now().strftime("%Y-%m-%d")
+    date_time = datetime.now().strftime("%Y-%m-%dT08:00")
     
     for airport in airports:    
-        insert_departures(db.departures,airport,date_time,headers)
-        insert_arrivals(db.arrivals,airport,date_time,headers)
+        update_departures(db.departures,airport,date_time,headers)
+        update_arrivals(db.arrivals,airport,date_time,headers)
         time.sleep(1)
 
 if __name__ == "__main__":
