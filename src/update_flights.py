@@ -1,5 +1,3 @@
-# third-party
-from pymongo import MongoClient
 # project
 from utils import *
 
