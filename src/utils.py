@@ -284,9 +284,12 @@ def update_flight(flightnumber):
                     ]}
             col.replace_one(filter=query, replacement=flight,upsert=True)
         except IndexError:
-            print(IndexError + "flightnumber : " + flightnumber)
+            print(IndexError)
+            print("flightnumber : " + flightnumber)
         except TypeError:
-            print(TypeError + "flightnumber : " + flightnumber)
+            print(IndexError)
+            print("flightnumber : " + flightnumber)
+
     else:
         print("ERROR for flightnumber : "  + flightnumber + " - request status is : ", response.status_code)
 
@@ -305,20 +308,59 @@ def update_flights():
         update_flight(flight)
         time.sleep(1)
 
-
-def update_routes(departure, arrival, date, headers):
-    """ 
-    Updates all routes from API in the database
+def update_route(dep, arr):
+    """
+    Update route given by dep and arr from the API in DB
     
     Parameters:
     -----------
-        col         : collection in which we want to insert data
-        departure   : departure airport
-        arrival     : arrival airport
-        date        : date required by the API. format : %Y-%m-%d
-        headers     : header with API token
-    """
+        dep : departure iata airport code
+        arr : arrival iata airport code
+    """    
+    # connecting collection
+    client = get_mongo_client()
+    col = client.flightTracker.routes
 
+    # request
+    date = datetime.now().strftime("%Y-%m-%d")
+    url = BASE_URL_CFI+ "route/" + dep + "/" + arr + "/" + date
+    response = requests.request("GET", url, headers=get_headers("lufthansa"))
+
+    # replace or insert all in given collection
+    if response.status_code == requests.codes.OK:
+
+        routes = response.json()["FlightInformation"]["Flights"]["Flight"]
+        for route in routes:
+            try:
+                query = {'$and':[
+                            {'OperatingCarrier.AirlineID': {'$eq':route['OperatingCarrier']['AirlineID']}},
+                            {'OperatingCarrier.FlightNumber': {'$eq':route['OperatingCarrier']['FlightNumber']}},
+                        ]}
+                col.replace_one(filter=query, replacement=route,upsert=True)
+            except IndexError:
+                print(IndexError)
+                print("route : " + dep + "/"+ arr)
+                continue
+            except TypeError:
+                print(IndexError)
+                print("route : " + dep + "/"+ arr)
+                continue
+    else:
+        print("ERROR for route : "  + dep + "/"+ arr + " - request status is : ", response.status_code)
+
+    # close connection
+    client.close()
+
+def update_routes():
+    """ Updates all routes from API in the database """
+    
+    # import routes to update from CSV 
+    # (should be requested SQL DB or Mongo DB directly)
+    routes = pd.read_csv('data\\routes_update.csv')
+
+    for dep, arr in zip(routes['origin'],routes['destination']):    
+        update_route(dep, arr)
+        time.sleep(1)
 
 # DB REQUESTS
 def get_arrivals(col,airport):

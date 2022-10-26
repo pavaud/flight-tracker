@@ -4,3 +4,4 @@ env/
 .pytest_cache
 draft.ipynb
 api_keys.txt
+tmp/
