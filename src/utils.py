@@ -420,4 +420,4 @@ def get_departures(col,airport):
 
 
 def get_routes(col, dep, arr, date):
-    pass
+    """ Get list of routes between given departure and arrival airport """
