@@ -13,7 +13,7 @@ BASE_URL_CFI = "https://api.lufthansa.com/v1/operations/customerflightinformatio
 BASE_URL_SCHEDULES = "https://api.lufthansa.com/v1/flight-schedules/flightschedules/passenger?"
 API_KEY_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'api_keys.txt'))
 
-# UPDATE FUNCTIONS
+
 def get_key(textfile, api):
     """ returns api token for specific API """
 
@@ -53,7 +53,7 @@ def get_mongo_client():
     client = MongoClient(host='127.0.0.1',port=27017)
     return client
 
-
+# UPDATE FUNCTIONS
 def update_arrival(airport, date_time):
     """ 
     Insert all arrivals from API in the database
@@ -308,6 +308,7 @@ def update_flights():
         update_flight(flight)
         time.sleep(1)
 
+
 def update_route(dep, arr):
     """
     Update route given by dep and arr from the API in DB
@@ -351,6 +352,7 @@ def update_route(dep, arr):
     # close connection
     client.close()
 
+
 def update_routes():
     """ Updates all routes from API in the database """
     
@@ -368,8 +370,6 @@ def get_arrivals(col,airport):
 
     arr_found = list(col.find(filter={'Arrival.AirportCode':airport},
                               sort=[('Arrival.Scheduled.Time',1)]))
-
-    print("\n\nArrivals at airport : " + airport)
     
     columns = ['Scheduled','Actual','Carrier','Flight','Status','Origin']
     data=[]
@@ -386,7 +386,7 @@ def get_arrivals(col,airport):
         data.append(cols)
     
     df = pd.DataFrame(data, columns=columns)
-    print(df)
+
     return df
 
 
@@ -395,9 +395,7 @@ def get_departures(col,airport):
 
     dep_found = list(col.find(filter={'Departure.AirportCode':airport},
                               sort=[('Departure.Scheduled.Time',1)]))
-    
-    print("\n\nDepartures at airport : " + airport)
-    
+        
     columns = ['Scheduled','Actual','Carrier','Flight','Status','Destination']
     data=[]
     for x in dep_found:
@@ -415,9 +413,46 @@ def get_departures(col,airport):
         data.append(cols)
     
     df = pd.DataFrame(data, columns=columns)
-    # print(df)
+
     return df
 
 
-def get_routes(col, dep, arr, date):
+def get_routes(dep, arr):
     """ Get list of routes between given departure and arrival airport """
+
+    # connecting collection
+    client = get_mongo_client()
+    col = client.flightTracker.routes
+
+    filter = {"Departure.AirportCode":dep,
+              "Arrival.AirportCode":arr}
+    routes = list(col.find(filter=filter))
+        
+    columns = ['Flight', 'Origin','Scheduled','Actual','Destination','Scheduled','Actual','Status']
+    data=[]
+    for x in routes:
+        cols = []
+        
+        cols.append(x['OperatingCarrier']['AirlineID'] + x['OperatingCarrier']['FlightNumber'])
+        cols.append(x['Departure']['AirportCode'])
+        cols.append(x['Departure']['Scheduled']['Time'])
+        try:
+            cols.append(x['Departure']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
+        cols.append(x['Arrival']['AirportCode'])
+        cols.append(x['Arrival']['Scheduled']['Time'])
+        try:
+            cols.append(x['Arrival']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
+        cols.append(x['Status']['Description'])
+        
+        data.append(cols)
+    
+    df = pd.DataFrame(data, columns=columns)
+
+    # close connection
+    client.close()
+
+    return df
