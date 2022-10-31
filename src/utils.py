@@ -365,8 +365,12 @@ def update_routes():
         time.sleep(1)
 
 # DB REQUESTS
-def get_arrivals(col,airport):
+def get_arrivals(airport):
     """ Get list of arrivals at given Airport """
+
+    # connecting collection
+    client = get_mongo_client()
+    col = client.flightTracker.arrivals
 
     arr_found = list(col.find(filter={'Arrival.AirportCode':airport},
                               sort=[('Arrival.Scheduled.Time',1)]))
@@ -377,7 +381,10 @@ def get_arrivals(col,airport):
     for x in arr_found:
         cols = []
         cols.append(x['Arrival']['Scheduled']['Time'])
-        cols.append(x['Arrival']['Actual']['Time'])
+        try:
+            cols.append(x['Arrival']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
         cols.append(x['OperatingCarrier']['AirlineID'])
         cols.append(x['OperatingCarrier']['AirlineID'] + x['OperatingCarrier']['FlightNumber'])
         cols.append(x['Status']['Description'])
@@ -387,11 +394,18 @@ def get_arrivals(col,airport):
     
     df = pd.DataFrame(data, columns=columns)
 
+    # close connection
+    client.close()
+
     return df
 
 
-def get_departures(col,airport):
+def get_departures(airport):
     """ Get list of departures at given Airport """
+
+    # connecting collection
+    client = get_mongo_client()
+    col = client.flightTracker.departures
 
     dep_found = list(col.find(filter={'Departure.AirportCode':airport},
                               sort=[('Departure.Scheduled.Time',1)]))
@@ -414,6 +428,9 @@ def get_departures(col,airport):
     
     df = pd.DataFrame(data, columns=columns)
 
+    # close connection
+    client.close()
+
     return df
 
 
@@ -427,7 +444,7 @@ def get_routes(dep, arr):
     filter = {"Departure.AirportCode":dep,
               "Arrival.AirportCode":arr}
     routes = list(col.find(filter=filter))
-        
+
     columns = ['Flight', 'Origin','Scheduled','Actual','Destination','Scheduled','Actual','Status']
     data=[]
     for x in routes:
@@ -449,7 +466,6 @@ def get_routes(dep, arr):
         cols.append(x['Status']['Description'])
         
         data.append(cols)
-    
     df = pd.DataFrame(data, columns=columns)
 
     # close connection
