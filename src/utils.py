@@ -8,12 +8,15 @@ import pandas as pd
 from pymongo import MongoClient
 from string import *
 
-import plotly
 import plotly.graph_objs as go 
 import plotly.express as px
-from plotly.offline import iplot, plot
 
-def get_credentials(filepath='../api_keys.txt'):
+# CONSTANTS
+BASE_URL_CFI = "https://api.lufthansa.com/v1/operations/customerflightinformation/"
+BASE_URL_SCHEDULES = "https://api.lufthansa.com/v1/flight-schedules/flightschedules/passenger?"
+API_KEY_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'api_keys.txt'))
+
+def get_credentials(filepath='../api_keys.txt'): #'../api_keys.txt'
     # Get credentials for opensky and token for mapbox
     
     f = open(filepath, 'r')
@@ -24,12 +27,7 @@ def get_credentials(filepath='../api_keys.txt'):
     f.close()
     
     return user_name, password, token
-
-# CONSTANTS
-BASE_URL_CFI = "https://api.lufthansa.com/v1/operations/customerflightinformation/"
-BASE_URL_SCHEDULES = "https://api.lufthansa.com/v1/flight-schedules/flightschedules/passenger?"
-API_KEY_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'api_keys.txt'))
-
+    
 
 def get_key(textfile, api):
     """ returns api token for specific API """
