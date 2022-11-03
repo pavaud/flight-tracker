@@ -7,16 +7,20 @@ import requests
 import pandas as pd
 from pymongo import MongoClient
 from string import *
-
 import plotly.graph_objs as go 
-import plotly.express as px
+
+
+
 
 # CONSTANTS
 BASE_URL_CFI = "https://api.lufthansa.com/v1/operations/customerflightinformation/"
 BASE_URL_SCHEDULES = "https://api.lufthansa.com/v1/flight-schedules/flightschedules/passenger?"
 API_KEY_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'api_keys.txt'))
 
-def get_credentials(filepath='../api_keys.txt'): #'../api_keys.txt'
+
+
+
+def get_credentials(filepath=API_KEY_FILE):
     # Get credentials for opensky and token for mapbox
     
     f = open(filepath, 'r')
@@ -489,7 +493,9 @@ def get_routes(dep, arr):
     return df
     
 
-def flight_tracker(user_name, password, token):
+def flight_tracker():
+
+    user_name, password, token = get_credentials()
 
     #Defining the spatial field
     lon_min, lat_min = -180., -90.
