@@ -3,12 +3,15 @@ import time
 from datetime import datetime
 # third-party
 from pymongo import MongoClient
-# project
-from utils import *
 import dash
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
 #from jupyter_dash import JupyterDash
+
+# project
+from utils import *
+
+user_name, password, token = get_credentials()
 
 app = Dash(__name__)
 
@@ -32,7 +35,7 @@ def last_update(n):
 
 @app.callback(Output('live-graph', 'figure'), [Input('graph-update', 'n_intervals')])
 def flight_tracker_update(n):
-    return flight_tracker()
+    return flight_tracker(user_name, password, token)
 
 
 if __name__ == "__main__":
