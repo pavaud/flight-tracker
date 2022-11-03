@@ -6,6 +6,22 @@ from datetime import datetime, timedelta
 import requests
 import pandas as pd
 from pymongo import MongoClient
+from string import *
+
+import plotly
+import plotly.graph_objs as go 
+import plotly.express as px
+from plotly.offline import iplot, plot
+
+
+# Get credentials for opensky and token for mapbox
+f = open('../api_keys.txt', 'r')
+lines = f.readlines()
+user_name = lines[1].strip()
+password = lines[2].strip()
+token = lines[3].strip()
+f.close()
+
 
 
 # CONSTANTS
@@ -472,3 +488,48 @@ def get_routes(dep, arr):
     client.close()
 
     return df
+    
+
+def flight_tracker(user_name=user_name, password=password, token=token):
+
+    #Defining the spatial field
+    lon_min, lat_min = -180., -90.
+    lon_max, lat_max = 180., 90.
+
+    #send request to get the current airplane data
+    url_data = 'https://'+user_name+':'+password+'@opensky-network.org/api/states/all?'+'lamin='+str(lat_min)+'&lomin='+str(lon_min)+'&lamax='+str(lat_max)+'&lomax='+str(lon_max)
+    response = requests.get(url_data).json()
+
+    #Load the data as a pandas dataframe
+    col_name = ['icao24', 'callsign', 'origin_country', 'time_position', 'last_contact', 'long', 'lat', 
+                'baro_altitude', 'on_ground', 'velocity', 'true_track', 'vertical_rate', 'sensors', 
+                'geo_altitude', 'squawk', 'spi', 'position_source']
+    flight_df = pd.DataFrame(response['states'])
+
+    flight_df = flight_df.loc[:, 0:16]
+    flight_df.columns = col_name
+    #filling missing data
+    flight_df['true_track'] = flight_df['true_track'].fillna(0)
+    flight_df = flight_df.fillna('No Data') 
+
+    #define a list of directictions towards which the plane is heading: North = 0 or 360
+    angles = [flight_df.true_track[i] for i in range(flight_df.true_track.shape[0])]
+
+    df = flight_df.loc[:, ('callsign', 'origin_country', 'time_position', 'long', 'lat', 'baro_altitude', 
+                           'on_ground', 'velocity', 'true_track', 'geo_altitude', 'true_track')] 
+    
+    #Define a column of the informetion to be displayed on mouse hovering 
+    df['text'] = 'Call_ID: ' + df['callsign'].astype(str) + ' Origin_Country: ' + df['origin_country'].astype(str) +\
+                 ' Altitude(m): ' + df['baro_altitude'].astype(str) + ' Speed(m/s): ' + df['velocity'].astype(str)
+
+    #Define figure and its characteristics
+    fig = go.Figure(go.Scattermapbox(
+            lon = df.long, lat = df.lat, text = df.text, mode = 'markers',
+            marker = {'size': 10, 'symbol': 'airport', 'allowoverlap': True, 'angle': angles}
+    ))
+
+    fig.update_layout(height = 900, margin = {"r":0, "t":0, "l":0, "b":0},
+                             mapbox = {'accesstoken': token, 'style': "outdoors", 'zoom': 1.9},
+                             showlegend = False)
+
+    return fig
