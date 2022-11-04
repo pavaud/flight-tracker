@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css?family=Spartan');
+
+* { /* General style */
+    font-family: 'Spartan', cursive;
+    box-sizing: border-box;
+}
+
+.background-map-container{
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0px !important;
+    position: absolute;
+    }
+
+#title_container{
+    background-color: #333333;
+    padding: 5px;
+    color: #FFFFFF;
+    opacity: 1;
+    height: wrap-content;
+    border-radius: 5px;
+    align: left;
+    text-align: left;
+    position: absolute;
+    top:7px;
+    left:10px;
+}
+#title_container:hover{
+    opacity:1;
+}
+#title_container h3{
+    margin: 5px;
+}
+
+#filters_container{
+    background-color: #333333;
+    padding: 15px;
+    color: #FFFFFF;
+    opacity: 0.6;
+    height: wrap-content;
+    border-radius: 5px;
+    align: left;
+    text-align: left;
+    position: absolute;
+    top: 90px;
+    left:10px;
+}
+#filters_container:hover{
+    opacity:1;
+}
+#filters_container h3{
+    margin: 5px;
+}
+
+#filters_drop{
+    border-radius: 5px;
+}
+#select_filters_arrow{
+    position: absolute;
+    top: 15px;
+    padding: inherit;
+    right: 15px;
+}
+
+.dropdownMenu{
+  width: 100%;
+  text-align: left;
+  border-radius: 5px;
+  outline: none; /* Remove outline */
+  opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+  margin: 5px;
+}
+
+.dropdownMenu:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+.dropdownMenu p{
+    font-size: 50% ! important;
+}
+
+#hovered_airplane{
+    background-color: #333333;
+    color: #FFFFFF;
+    opacity: 0.9;
+    border-radius: 5px;
+    height: wrap-content;
+    width: wrap-content;
+    position: absolute;
+    z-index:10;
+}
+
+#hover_title{
+    background-color: '#2562e4';
+    text-align: center;
+    padding: 5px;
+    z-index:11
+}
+#hover_labels{
+    text-align: left;
+    display: inline-block;
+    padding: 5px;
+}
+#hover_values{
+    text-align: right;
+    display: inline-block;
+    padding: 5px;
+}
+
+#clicked_airplane{
+    background-color: #333333;
+    color: #FFFFFF;
+    opacity: 0.9;
+    border-radius: 5px;
+    height: wrap-content;
+    width: wrap-content;
+    position: absolute;
+    z-index:10;
+}
+
+.stack-top{
+    z-index: 9;
+    opacity: 0.9;
+
+}
+
+.col-3 {width: 20%;}
