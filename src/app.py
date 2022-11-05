@@ -87,14 +87,73 @@ hovered_airplane_layout = html.Div([
     style={"display": "none"},
 )
 
+clicked_airplane_layout = html.Div([
+    html.Div([html.H3(id="click_callsign")], id="click_title"),
+    html.Div([
+        html.Div([
+                html.Div(html.Div("Latitude : "),className='click_label'),
+                html.Div(html.Span(id="click_lat"),className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("longitude : ")],className='click_label'),
+            html.Div([html.Span(id="click_lon")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("Origin : ")],className='click_label'),
+            html.Div([html.Span(id="click_origin")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("Altitude (m) : ")],className='click_label'),
+            html.Div([html.Span(id="click_alt")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("Speed (m/s) : ")],className='click_label'),
+            html.Div([html.Span(id="click_speed")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("ICAO 24 : ")],className='click_label'),
+            html.Div([html.Span(id="click_icao")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("Time Position : ")],className='click_label'),
+            html.Div([html.Span(id="click_time")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("Last Contact : ")],className='click_label'),
+            html.Div([html.Span(id="click_last_contact")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("True Track (°): ")],className='click_label'),
+            html.Div([html.Span(id="click_true_track")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("Vertical Rate (m/s) : ")],className='click_label'),
+            html.Div([html.Span(id="click_vertical")],className='click_value'),
+        ],className='click_row_info'),
+        html.Div([
+            html.Div([html.Div("Position Source : ")],className='click_label'),
+            html.Div([html.Span(id="click_pos_source")],className='click_value'),
+        ],className='click_row_info'),
+    ],
+        id="click_values"
+    ),
+    html.Div([
+        dcc.Graph(id="alt-graph")
+    ],
+        id="altitude-graph"
+    ),
+],
+    id="click_airplane",
+    style={"display": "none"},
+)
+
 
 app.layout = html.Div([
     html.Div([
         title_layout,
         html.Div([
             dcc.Graph(id = 'live-graph', 
-                      clear_on_unhover=True, 
-                      animate = True)
+                      clear_on_unhover=True)
         ],
             className='background-map-container'
         ),
@@ -108,6 +167,7 @@ app.layout = html.Div([
     ),
     filters_layout,
     hovered_airplane_layout,
+    clicked_airplane_layout,
 ],
     id='page-content',
     style={'position': 'relative'},
@@ -180,6 +240,58 @@ def update_hovered_airplane(hoverData):
         style = {'display': 'none'}
 
     return style, callsign, lat, lon, origin, alt, speed
+
+
+@app.callback(Output('click_airplane', "style"),
+              Output('click_callsign', 'children'),
+              Output('click_lat', 'children'),
+              Output('click_lon', 'children'),
+              Output('click_origin', 'children'),
+              Output('click_alt', 'children'),
+              Output('click_speed', 'children'),
+              Output('click_icao', 'children'),
+              Output('click_time', 'children'),
+              Output('click_last_contact', 'children'),
+              Output('click_true_track', 'children'),
+              Output('click_vertical', 'children'),
+              Output('click_pos_source', 'children'),
+              [Input('live-graph', 'clickData')])
+def update_clicked_airplane(clickData):
+    print('OK')
+    if clickData is not None:
+        row_nb = clickData['points'][0]['pointIndex']
+        row = df.iloc[row_nb]
+        callsign = row.callsign
+        lat = row.lat
+        lon = row.long
+        origin = row.origin_country
+        alt = row.baro_altitude
+        speed = row.velocity
+        icao = row.icao24
+        time = datetime.utcfromtimestamp(row.time_position)
+        last_contact = datetime.utcfromtimestamp(row.last_contact)
+        true_track = row.true_track
+        vertical = row.vertical_rate
+        pos = row.position_source
+
+        style = {'display': 'block'}
+    else:
+        #infos = ""
+        callsign = ""
+        lat = ""
+        lon = ""
+        origin = ""
+        alt = ""
+        speed = ""
+        icao = ""
+        time = ""
+        last_contact = ""
+        true_track = ""
+        vertical = ""
+        pos = ""
+        style = {'display': 'none'}
+
+    return style, callsign, lat, lon, origin, alt, speed, icao, time, last_contact, true_track, vertical, pos
 
 
 

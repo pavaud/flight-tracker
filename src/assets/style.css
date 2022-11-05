@@ -19,7 +19,6 @@
     opacity: 1;
     height: wrap-content;
     border-radius: 5px;
-    align: left;
     text-align: left;
     position: absolute;
     top:7px;
@@ -39,7 +38,6 @@
     opacity: 0.6;
     height: wrap-content;
     border-radius: 5px;
-    align: left;
     text-align: left;
     position: absolute;
     top: 90px;
@@ -109,16 +107,65 @@
     padding: 5px;
 }
 
-#clicked_airplane{
+#click_airplane{
     background-color: #333333;
     color: #FFFFFF;
     opacity: 0.9;
     border-radius: 5px;
     height: wrap-content;
-    width: wrap-content;
+    width: 30%;
     position: absolute;
     z-index:10;
+    top: 5px;
+    right:5px;
 }
+
+#click_values{
+    width: wrap-content;
+    vertical-align: middle;
+
+    
+}
+#click_title{
+    text-align: center;
+}
+
+.click_label{
+    height: inherit;
+    width: 50%;
+    text-align: left;
+    vertical-align: middle;
+    border:inherit;
+    border-color:red !important;
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.click_value{
+    height: inherit;
+    width: 50%;
+    text-align: right;
+    vertical-align: middle;
+    border:inherit;
+    border-color:blue !important;
+    display: inline-block;
+    padding-right: 10px;
+}
+.click_row_info{
+    height: 30px;
+    width: wrap-content;
+    border:0px solid;
+
+}
+
+#altitude-graph{
+    width: wrap-content;
+}
+
+
+
 
 .stack-top{
     z-index: 9;
