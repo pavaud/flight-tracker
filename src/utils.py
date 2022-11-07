@@ -493,7 +493,7 @@ def get_routes(dep, arr):
     return df
     
 def get_opensky_flights():
-    """ get flyong flights from opensky API """
+    """ get currently flying airplanes from opensky API """
 
     user_name, password = get_credentials()[:2]
 
@@ -509,7 +509,7 @@ def get_opensky_flights():
 
 
 def get_opensky_df(response):
-    """ get dataframe from opensky response """
+    """ creates and returns dataframe from opensky response """
 
     # load the data as a pandas dataframe
     columns = ['icao24', 'callsign', 'origin_country', 'time_position', 'last_contact', 'long', 'lat', 
@@ -521,16 +521,11 @@ def get_opensky_df(response):
     df.true_track = df.true_track.fillna(0)
     df = df.fillna('NaN')
 
-    #Define a column of the informetion to be displayed on mouse hovering 
-    df['text'] = 'Callsign: ' + df['callsign'].astype(str) + \
-                 '<br>Origin: ' + df['origin_country'].astype(str) + \
-                 '<br>Altitude (m): ' + df['baro_altitude'].astype(str) + \
-                 '<br>Speed (m/s): ' + df['velocity'].astype(str)
-
     return df
 
 
 def flight_tracker():
+    """ returns a map with all airplanes from opensky """
 
     token = get_credentials()[2]
     response = get_opensky_flights()
@@ -540,10 +535,10 @@ def flight_tracker():
     fig = go.Figure(go.Scattermapbox(
             lon = df.long, 
             lat = df.lat, 
-            text = df.text, 
+            #text = df.text, 
             mode = 'markers',
             hoverinfo='none',
-            marker = {'size': 10, 
+            marker = {'size': 14,
                       'symbol': 'airport', 
                       'allowoverlap': True, 
                       'angle': df.true_track}
@@ -554,7 +549,6 @@ def flight_tracker():
                       mapbox = {'accesstoken': token, 
                                 'style': "outdoors", 
                                 'zoom': 1.9},
-                      autosize = True,
                       showlegend = False)
 
     return df, fig

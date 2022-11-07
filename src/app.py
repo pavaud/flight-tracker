@@ -14,6 +14,7 @@ app = Dash(__name__)
 
 # LAYOUT
 
+# filters 
 filters_layout = html.Section([
     html.Div([
         html.H3('Search', style={'display': 'inline'}),
@@ -45,7 +46,7 @@ filters_layout = html.Section([
     className="stack-top col-3"
 )
 
-
+# title
 title_layout = html.Div([
     html.Div([
         html.H1("FLIGHT TRACKER", 
@@ -59,7 +60,7 @@ title_layout = html.Div([
     className="stack-top col-3"
 )
 
-
+# hovered airplane
 hovered_airplane_layout = html.Div([
     html.Div([html.H3(id="hover_callsign")], id="hover_title"),
     html.Div([
@@ -87,8 +88,11 @@ hovered_airplane_layout = html.Div([
     style={"display": "none"},
 )
 
+# clicked airplane
 clicked_airplane_layout = html.Div([
-    html.Div([html.H3(id="click_callsign")], id="click_title"),
+    html.Div([
+        html.H3(id="click_callsign"),
+        html.Span('X', id="x_close_selection")]),
     html.Div([
         html.Div([
                 html.Div(html.Div("Latitude : "),className='click_label'),
@@ -147,7 +151,7 @@ clicked_airplane_layout = html.Div([
     style={"display": "none"},
 )
 
-
+# dashboard
 app.layout = html.Div([
     html.Div([
         title_layout,
@@ -175,15 +179,21 @@ app.layout = html.Div([
 
 
 
-# CALLBACKS
+# GLOBAL VARIABLES
 
 # global dataframe of flying airplane
-# can be accessed by multiple callbacks
 df = []
+# close button of the airplane selection panel
+x_close_selection_clicks = 0
+
+
+# CALLBACKS
 
 @app.callback(Output('live-update-text', 'children'), 
              [Input('graph-update', 'n_intervals')])
 def last_update(n):
+    """ displays the last update time on the titel layout """
+
     return html.H2('Last Update: ' + str(datetime.now().strftime('%d-%m-%Y %H:%M:%S')),
                     className="header-title", 
                     style = {'textAlign': 'center',
@@ -193,10 +203,11 @@ def last_update(n):
 @app.callback(Output('live-graph', 'figure'), 
              [Input('graph-update', 'n_intervals')])
 def flight_tracker_update(n):
-    
-    global df 
-    #print(df)
+    """ displays the map on the background layout"""
+
+    global df
     df , fig = flight_tracker()
+
     return fig
 
 
@@ -207,9 +218,12 @@ def flight_tracker_update(n):
               Output('hover_origin', 'children'),
               Output('hover_alt', 'children'),
               Output('hover_speed', 'children'),
-              #Output('hover_infos', 'children'),
               [Input('live-graph', 'hoverData')])
 def update_hovered_airplane(hoverData):
+    """
+    Display moving panel with few position info 
+    next to mouse pointer when hovering airplane 
+    """
 
     if hoverData is not None:
         top = hoverData['points'][0]['bbox']['y0']
@@ -224,13 +238,10 @@ def update_hovered_airplane(hoverData):
         alt = row.baro_altitude
         speed = row.velocity
 
-        #infos = hoverData['points'][0]['text']
-
         style = {'display': 'block',
-                'top':str(top)+'px',
-                'left':str(left)+'px'}
+                'top':str(top+10)+'px',
+                'left':str(left+10)+'px'}
     else:
-        #infos = ""
         callsign = ""
         lat = ""
         lon = ""
@@ -255,12 +266,21 @@ def update_hovered_airplane(hoverData):
               Output('click_true_track', 'children'),
               Output('click_vertical', 'children'),
               Output('click_pos_source', 'children'),
-              [Input('live-graph', 'clickData')])
-def update_clicked_airplane(clickData):
-    print('OK')
-    if clickData is not None:
+              [Input('live-graph', 'clickData')],
+              Input('x_close_selection', 'n_clicks'),
+              )
+def update_clicked_airplane(clickData, n_clicks):
+    """
+    Display panel to the right side 
+    of the screen with full airplane info and 
+    close with the top-right X
+    """
+    global x_close_selection_clicks
+
+    if clickData is not None :
         row_nb = clickData['points'][0]['pointIndex']
         row = df.iloc[row_nb]
+
         callsign = row.callsign
         lat = row.lat
         lon = row.long
@@ -276,7 +296,6 @@ def update_clicked_airplane(clickData):
 
         style = {'display': 'block'}
     else:
-        #infos = ""
         callsign = ""
         lat = ""
         lon = ""
@@ -291,8 +310,22 @@ def update_clicked_airplane(clickData):
         pos = ""
         style = {'display': 'none'}
 
+    if n_clicks != x_close_selection_clicks:
+        style = {'display': 'none'}
+        x_close_selection_clicks = n_clicks
+
     return style, callsign, lat, lon, origin, alt, speed, icao, time, last_contact, true_track, vertical, pos
 
+
+@app.callback(Output('live-graph', 'clickData'),
+             [Input('map_container', 'n_clicks')])
+def reset_clickData(n_clicks):
+    """ 
+    workaround to clear the clickData field and 
+    remove right panel when clicking anywhere on the map except
+    airplane
+    """
+    return None
 
 
 @app.callback(Output('dropdown_menu_applied_filters', 'style'),
@@ -300,6 +333,8 @@ def update_clicked_airplane(clickData):
               Input('select_filters_arrow', 'n_clicks'),
               State('select_filters_arrow', 'title'))
 def toggle_applied_filters(n_clicks, state):
+    """ toggle filter box """
+
     style = {'display': 'none'}
     if n_clicks is not None:
         if state == 'is_open':
@@ -311,5 +346,6 @@ def toggle_applied_filters(n_clicks, state):
 
     return style, state
 
+# main
 if __name__ == "__main__":
     app.run_server(debug = True)
