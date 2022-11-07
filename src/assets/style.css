@@ -126,7 +126,7 @@
 
     
 }
-#click_title{
+#click_callsign{
     text-align: center;
 }
 
@@ -164,7 +164,17 @@
     width: wrap-content;
 }
 
-
+#x_close_selection{
+    position: absolute;
+    background: inherit;
+    color: inherit;
+    height: 20px;
+    width: 20px;
+    top: 15px;
+    padding: inherit;
+    right: 15px;
+    cursor: pointer;
+}
 
 
 .stack-top{
