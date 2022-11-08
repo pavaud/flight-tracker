@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 # third-party
 from pymongo import MongoClient
-from dash import Dash, dcc, html
+from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
 # project
 from utils import *
@@ -151,6 +151,38 @@ clicked_airplane_layout = html.Div([
     style={"display": "none"},
 )
 
+# Filter airport 
+filter_airport_layout = html.Div([
+    html.Div([
+        html.Div([
+            html.Div("Departures at aiport : ", style={'textAlign': 'left'}),
+            html.Span(id="dep_airport_name"),
+            html.Span(id="dep_airport_code")
+        ], id="departures_title",style={"display": "inline-block"}
+        ),
+        html.Div([
+            dash_table.DataTable(id='departures_table')], style={"display": "block"}
+        )
+    ], id="departures_panel",style={"display": "inline-block"}
+    ),
+    html.Div([
+        html.Div([
+            html.Div("Arrivals at aiport : ", style={'textAlign': 'left'}),
+            html.Span(id="arr_airport_name"),
+            html.Span(id="arr_airport_code"),
+        ], id="arrivals_title", style={"display": "inline-block"}
+        ),
+        html.Div([
+            dash_table.DataTable(id='arrivals_table')]
+        )
+    ], id="arrivals_panel",style={"display": "inline-block"}
+    ),
+    html.Span('X', id="x_close_airport"),
+],
+    id="airport_panel",
+    style={"display": "block"},
+)
+
 # dashboard
 app.layout = html.Div([
     html.Div([
@@ -162,7 +194,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 60*1000,
+                    interval = 10*1000,
                     n_intervals = 0
                     ),
     ],
@@ -172,6 +204,7 @@ app.layout = html.Div([
     filters_layout,
     hovered_airplane_layout,
     clicked_airplane_layout,
+    filter_airport_layout,
 ],
     id='page-content',
     style={'position': 'relative'},
@@ -271,12 +304,12 @@ def update_hovered_airplane(hoverData):
               )
 def update_clicked_airplane(clickData, n_clicks):
     """
-    Display panel to the right side 
-    of the screen with full airplane info and 
-    close with the top-right X
+    Open right side panel with full airplane info 
+    when airplane is clicked and close with the top-right X
     """
     global x_close_selection_clicks
 
+    # value to display when clicked
     if clickData is not None :
         row_nb = clickData['points'][0]['pointIndex']
         row = df.iloc[row_nb]
@@ -310,6 +343,7 @@ def update_clicked_airplane(clickData, n_clicks):
         pos = ""
         style = {'display': 'none'}
 
+    # close panel
     if n_clicks != x_close_selection_clicks:
         style = {'display': 'none'}
         x_close_selection_clicks = n_clicks

@@ -21,7 +21,7 @@
     border-radius: 5px;
     text-align: left;
     position: absolute;
-    top:7px;
+    top:10px;
     left:10px;
 }
 #title_container:hover{
@@ -116,8 +116,8 @@
     width: 30%;
     position: absolute;
     z-index:10;
-    top: 5px;
-    right:5px;
+    top: 10px;
+    right:10px;
 }
 
 #click_values{
@@ -176,7 +176,51 @@
     cursor: pointer;
 }
 
+#airport_panel{
+    background-color: #333333;
+    color: #FFFFFF;
+    opacity: 0.9;
+    border-radius: 5px;
+    height: wrap-content;
+    position: absolute;
+    z-index:10;
+    top: 200px;
+    left:10px;
+    right:10px;
+    padding: 10px;
+}
 
+#departures_panel{
+    background-color: inherit;
+    color: inherit;
+    opacity: 0.9;
+    border-radius: 5px;
+    height: wrap-content;
+    width: 48%;
+    padding: 10px;
+}
+
+#arrivals_panel{
+    background-color: inherit;
+    color: inherit;
+    opacity: 0.9;
+    border-radius: 5px;
+    height: wrap-content;
+    width: 48%;
+    padding: 10px;
+}
+
+#x_close_airport{
+    position: relative;
+    background: inherit;
+    color: inherit;
+    height: 10px;
+    width: 10px;
+    top: 0px;
+    padding: inherit;
+    right: 1px;
+    cursor: pointer;
+}
 .stack-top{
     z-index: 9;
     opacity: 0.9;
