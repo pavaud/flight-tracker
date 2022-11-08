@@ -7,7 +7,9 @@ import requests
 import pandas as pd
 from pymongo import MongoClient
 from string import *
-import plotly.graph_objs as go 
+import plotly.graph_objs as go
+# project
+from sqldb_requests import *
 
 
 
@@ -71,6 +73,7 @@ def get_mongo_client():
     
     client = MongoClient(host='127.0.0.1',port=27017)
     return client
+
 
 # UPDATE FUNCTIONS
 def update_arrival(airport, date_time):
@@ -491,7 +494,73 @@ def get_routes(dep, arr):
     client.close()
 
     return df
+
+
+def get_all_flights():
+    """ get all flights in flights collection """
+    client = get_mongo_client()
+    col = client.flightTracker.flights
+
+    flights = list(col.find({}))
     
+    columns = ['departure','dep_iata','dep_scheduled','dep_actual','terminal_gate',
+                'arrival','arr_iata','arr_scheduled','dep_actual','terminal_gate',
+                'carrier_code','carrier','flight','status']
+    data=[]
+
+    for x in flights:
+        cols = []
+        
+        # departure
+        try:
+            cols.append(get_airport_infos(x['Departure']['AirportCode'])[0])
+        except IndexError:
+            cols.append('')
+        cols.append(x['Departure']['AirportCode'])
+        cols.append(x['Departure']['Scheduled']['Time'])
+        try:
+            cols.append(x['Departure']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
+        try:
+            cols.append(x['Departure']['Terminal']['Name']+"/"+x['Departure']['Terminal']['Gate'])
+        except KeyError:
+            cols.append('')
+
+        # arrival
+        try:
+            cols.append(get_airport_infos(x['Arrival']['AirportCode'])[0])
+        except IndexError:
+            cols.append('')
+        cols.append(x['Arrival']['AirportCode'])
+        cols.append(x['Arrival']['Scheduled']['Time'])
+        try:
+            cols.append(x['Arrival']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
+        try:    
+            cols.append(x['Arrival']['Terminal']['Name']+"/"+x['Arrival']['Terminal']['Gate'])
+        except KeyError:
+            cols.append('')
+
+        # general
+        cols.append(x['OperatingCarrier']['AirlineID'])
+        cols.append(get_airline_from_iata(x['OperatingCarrier']['AirlineID']))
+        cols.append(x['OperatingCarrier']['AirlineID'] + x['OperatingCarrier']['FlightNumber'])
+        cols.append(x['Status']['Description'])
+
+        data.append(cols)
+    
+    df = pd.DataFrame(data, columns=columns)
+    df.to_csv('data\\flights_in_collection.csv')
+
+    # close connection
+    client.close()
+
+    return df
+
+
+
 def get_opensky_flights():
     """ get currently flying airplanes from opensky API """
 

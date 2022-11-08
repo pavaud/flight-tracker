@@ -1,21 +1,24 @@
 # third-party
-from sqlalchemy import text
+from sqlalchemy import create_engine, text
 from sqlalchemy.exc import MultipleResultsFound, NoResultFound
 
 
-def get_airport_infos(engine, airport_iata):
+SQL_ALCHEMY_ENGINE = 'sqlite:///codes.sqlite'
+
+def get_airport_infos(airport_iata):
     """ 
     Get the name, city and country for given airport IATA code 
 
     Parameters:
     -----------
-    engine      : engine connection with the database
     airport_iata: airport IATA code (3-letters)
 
     Returns :
     ---------
     result      : tuple with airport_name, city_name, country_name
     """
+    
+    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=True)
 
     with engine.connect() as conn:
         query = text("SELECT airport_name,city_name, country_name "
@@ -34,19 +37,20 @@ def get_airport_infos(engine, airport_iata):
         return result
 
 
-def get_airline_from_iata(engine, airline_iata):
+def get_airline_from_iata(airline_iata):
     """ 
     Get the name for given airline IATA code 
 
     Parameters:
     -----------
-    engine      : engine connection with the database
     airline_iata: airline IATA code (2-letters)
 
     Returns :
     ---------
     result      : tuple with airline_name
     """
+
+    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=True)
 
     with engine.connect() as conn:
         query = text("SELECT airline_name "
@@ -55,7 +59,7 @@ def get_airline_from_iata(engine, airline_iata):
         results = conn.execute(query)
 
         try:
-            result = results.one()
+            result = results.one()[0]
         except MultipleResultsFound:
             print('Many results returned. Should be only one')
         except NoResultFound:
@@ -65,19 +69,20 @@ def get_airline_from_iata(engine, airline_iata):
         return result
 
 
-def get_airline_from_icao(engine, airline_icao):
+def get_airline_from_icao(airline_icao):
     """ 
     Get the name for given airline ICAO code 
 
     Parameters:
     -----------
-    engine      : engine connection with the database
     airline_icao: airline ICAO code (-letters)
 
     Returns :
     ---------
     result      : tuple with airline_name
     """
+    
+    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=True)
 
     with engine.connect() as conn:
         query = text("SELECT airline_name "
@@ -86,7 +91,7 @@ def get_airline_from_icao(engine, airline_icao):
         results = conn.execute(query)
 
         try:
-            result = results.one()
+            result = results.one()[0]
         except MultipleResultsFound:
             print('Many results returned. Should be only one')
         except NoResultFound:
