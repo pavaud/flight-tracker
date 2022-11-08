@@ -1,6 +1,7 @@
 env/
 .vscode/
 *__pycache__/
-.pytest_cache
+.pytest_cache/
 draft.ipynb
 tmp/
+*pytest_report.html

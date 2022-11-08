@@ -7,7 +7,9 @@ import requests
 import pandas as pd
 from pymongo import MongoClient
 from string import *
-import plotly.graph_objs as go 
+import plotly.graph_objs as go
+# project
+from sqldb_requests import *
 
 
 
@@ -16,6 +18,9 @@ import plotly.graph_objs as go
 BASE_URL_CFI = "https://api.lufthansa.com/v1/operations/customerflightinformation/"
 BASE_URL_SCHEDULES = "https://api.lufthansa.com/v1/flight-schedules/flightschedules/passenger?"
 API_KEY_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'api_keys.txt'))
+AIRPORTS_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'data','airports_valid_for_update.csv'))
+FLIGHTS_IN_DB_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'data','flights_in_collection.csv'))
+AIRPORTS_IN_DB_FILE = os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'data','airports_in_collection.csv'))
 
 
 
@@ -72,6 +77,7 @@ def get_mongo_client():
     client = MongoClient(host='127.0.0.1',port=27017)
     return client
 
+
 # UPDATE FUNCTIONS
 def update_arrival(airport, date_time):
     """ 
@@ -94,22 +100,40 @@ def update_arrival(airport, date_time):
     if response.status_code == requests.codes.OK:
 
         flights = response.json()["FlightInformation"]["Flights"]["Flight"]
-        for flight in flights:
+
+        if isinstance(flights, (list)):
+            for flight in flights:
+                try:
+                    query = {'$and':[
+                                {'OperatingCarrier.AirlineID': {'$eq':flight['OperatingCarrier']['AirlineID']}},
+                                {'OperatingCarrier.FlightNumber': {'$eq':flight['OperatingCarrier']['FlightNumber']}}
+                            ]}
+                    col.replace_one(query,flight,upsert=True)
+                except IndexError:
+                    print(IndexError)
+                    print("URL : ",url,'\n\n')
+                    continue
+                except TypeError:
+                    print(TypeError)
+                    print("URL : ",url,'\n\n')
+                    continue
+        else:
             try:
                 query = {'$and':[
-                            {'OperatingCarrier.AirlineID': {'$eq':flight['OperatingCarrier']['AirlineID']}},
-                            {'OperatingCarrier.FlightNumber': {'$eq':flight['OperatingCarrier']['FlightNumber']}}
+                            {'OperatingCarrier.AirlineID': {'$eq':flights['OperatingCarrier']['AirlineID']}},
+                            {'OperatingCarrier.FlightNumber': {'$eq':flights['OperatingCarrier']['FlightNumber']}}
                         ]}
-                col.replace_one(query,flight,upsert=True)
+                col.replace_one(filter=query, replacement=flights,upsert=True)
             except IndexError:
-                print(IndexError + "airport : " + airport)
-                continue
+                print(IndexError)
+                print("URL : ",url,'\n\n')                
             except TypeError:
-                print(TypeError + "airport : " + airport)
-                continue
+                print(TypeError)
+                print("URL : ",url,'\n\n')
+
     else:
-        # test
         print("ERROR for arrivals at "  + airport + " - request status is : ", response.status_code)
+        print(response.text)
         print("URL : ",url,'\n\n')
     
     # close connection
@@ -153,19 +177,36 @@ def update_departure(airport, date_time):
     if response.status_code == requests.codes.OK:
 
         flights = response.json()["FlightInformation"]["Flights"]["Flight"]
-        for flight in flights:
+
+        if isinstance(flights, (list)):
+            for flight in flights:
+                try:
+                    query = {'$and':[
+                                {'OperatingCarrier.AirlineID': {'$eq':flight['OperatingCarrier']['AirlineID']}},
+                                {'OperatingCarrier.FlightNumber': {'$eq':flight['OperatingCarrier']['FlightNumber']}}
+                            ]}
+                    col.replace_one(filter=query, replacement=flight,upsert=True)
+                except IndexError:
+                    print(IndexError)
+                    print("URL : ",url,'\n\n')                
+                    continue
+                except TypeError:
+                    print(TypeError)
+                    print("URL : ",url,'\n\n')                
+                    continue
+        else:
             try:
                 query = {'$and':[
-                            {'OperatingCarrier.AirlineID': {'$eq':flight['OperatingCarrier']['AirlineID']}},
-                            {'OperatingCarrier.FlightNumber': {'$eq':flight['OperatingCarrier']['FlightNumber']}}
+                            {'OperatingCarrier.AirlineID': {'$eq':flights['OperatingCarrier']['AirlineID']}},
+                            {'OperatingCarrier.FlightNumber': {'$eq':flights['OperatingCarrier']['FlightNumber']}}
                         ]}
-                col.replace_one(filter=query, replacement=flight,upsert=True)
+                col.replace_one(filter=query, replacement=flights,upsert=True)
             except IndexError:
-                print(IndexError + "airport : " + airport)
-                continue
+                print(IndexError)
+                print("URL : ",url,'\n\n')                
             except TypeError:
-                print(TypeError + "airport : " + airport)
-                continue
+                print(TypeError)
+                print("URL : ",url,'\n\n')                
             
     else:
         print("ERROR for departures at "  + airport + " - request status is : ", response.status_code)
@@ -304,10 +345,10 @@ def update_flight(flightnumber):
             col.replace_one(filter=query, replacement=flight,upsert=True)
         except IndexError:
             print(IndexError)
-            print("flightnumber : " + flightnumber)
+            print("URL : ",url,'\n\n')                
         except TypeError:
             print(IndexError)
-            print("flightnumber : " + flightnumber)
+            print("URL : ",url,'\n\n')                
 
     else:
         print("ERROR for flightnumber : "  + flightnumber + " - request status is : ", response.status_code)
@@ -383,13 +424,36 @@ def update_routes():
         update_route(dep, arr)
         time.sleep(1)
 
+
+def update_flight_status():
+    """ Update flight status on all airports"""
+
+    airports = pd.read_csv(AIRPORTS_FILE)
+    #airports with bad requests =['STO','RIX','HEL']
+    airport_shortlist = airports['airport'][-1:]
+    #airport_shortlist = ['STO','RIX','HEL']
+
+    # datetime for requests
+    #date_time = datetime.now().strftime("%Y-%m-%dT%H:%M")
+    date_time = datetime.now().strftime("%Y-%m-%dT08:00")
+
+
+    for airport in airport_shortlist:
+        print(airport)
+        update_departure(airport, date_time)
+        update_arrival(airport,date_time)
+        time.sleep(1)
+
+
+
+
 # DB REQUESTS
 def get_arrivals(airport):
     """ Get list of arrivals at given Airport """
 
     # connecting collection
     client = get_mongo_client()
-    col = client.flightTracker.arrivals
+    col = client.flightTracker.flights
 
     arr_found = list(col.find(filter={'Arrival.AirportCode':airport},
                               sort=[('Arrival.Scheduled.Time',1)]))
@@ -424,7 +488,7 @@ def get_departures(airport):
 
     # connecting collection
     client = get_mongo_client()
-    col = client.flightTracker.departures
+    col = client.flightTracker.flights
 
     dep_found = list(col.find(filter={'Departure.AirportCode':airport},
                               sort=[('Departure.Scheduled.Time',1)]))
@@ -458,7 +522,7 @@ def get_routes(dep, arr):
 
     # connecting collection
     client = get_mongo_client()
-    col = client.flightTracker.routes
+    col = client.flightTracker.flights
 
     filter = {"Departure.AirportCode":dep,
               "Arrival.AirportCode":arr}
@@ -491,7 +555,90 @@ def get_routes(dep, arr):
     client.close()
 
     return df
+
+
+def get_all_flights():
+    """ get all flights in flights collection """
+
+    client = get_mongo_client()
+    col = client.flightTracker.flights
+
+    flights = list(col.find({}))
     
+    columns = ['departure','dep_iata','dep_scheduled','dep_actual','terminal_gate',
+                'arrival','arr_iata','arr_scheduled','dep_actual','terminal_gate',
+                'carrier_code','carrier','flight','status']
+    data=[]
+
+    for x in flights:
+        cols = []
+        
+        # departure
+        try:
+            cols.append(get_airport_infos(x['Departure']['AirportCode'])[0])
+        except IndexError:
+            cols.append('')
+        cols.append(x['Departure']['AirportCode'])
+        cols.append(x['Departure']['Scheduled']['Time'])
+        try:
+            cols.append(x['Departure']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
+        try:
+            cols.append(x['Departure']['Terminal']['Name']+"/"+x['Departure']['Terminal']['Gate'])
+        except KeyError:
+            cols.append('')
+
+        # arrival
+        try:
+            cols.append(get_airport_infos(x['Arrival']['AirportCode'])[0])
+        except IndexError:
+            cols.append('')
+        cols.append(x['Arrival']['AirportCode'])
+        cols.append(x['Arrival']['Scheduled']['Time'])
+        try:
+            cols.append(x['Arrival']['Actual']['Time'])
+        except KeyError:
+            cols.append('')
+        try:    
+            cols.append(x['Arrival']['Terminal']['Name']+"/"+x['Arrival']['Terminal']['Gate'])
+        except KeyError:
+            cols.append('')
+
+        # general
+        cols.append(x['OperatingCarrier']['AirlineID'])
+        cols.append(get_airline_from_iata(x['OperatingCarrier']['AirlineID']))
+        cols.append(x['OperatingCarrier']['AirlineID'] + x['OperatingCarrier']['FlightNumber'])
+        cols.append(x['Status']['Description'])
+
+        data.append(cols)
+    
+    df = pd.DataFrame(data, columns=columns)
+    df.to_csv(FLIGHTS_IN_DB_FILE, index=False)
+
+    # close connection
+    client.close()
+
+    return df
+
+
+def list_available_airports():
+    """ get all airports available in the flights collection """
+
+    df = pd.read_csv(FLIGHTS_IN_DB_FILE)
+    df1 = df[['dep_iata', 'departure']]
+    df1.columns = ['iata','airport']
+    df2 = df[['arr_iata', 'arrival']]
+    df2.columns = ['iata','airport']
+    df3 = pd.concat([df1,df2])
+
+    airports = df3.drop_duplicates()
+    airports.to_csv(AIRPORTS_IN_DB_FILE, index=False)
+
+    return airports
+
+
+
 def get_opensky_flights():
     """ get currently flying airplanes from opensky API """
 
