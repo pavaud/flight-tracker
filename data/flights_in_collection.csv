@@ -1,191 +1,299 @@
-,departure,dep_iata,dep_scheduled,dep_actual,terminal_gate,arrival,arr_iata,arr_scheduled,dep_actual,terminal_gate,carrier_code,carrier,flight,status
-0,Zurich,ZRH,12:35,12:49,,,PRG,13:55,14:08,,2L,Helvetic Airways,2L1486,Flight Landed
-1,Calgary,YYC,12:25,12:23,,Montreal/Dorval,YUL,18:16,18:02,,AC,Air Canada,AC322,Flight On Time
-2,Stuttgart Rail Station,ZWS,17:23,,,Frankfurt,FRA,18:35,,,2A,Deutsche Bahn AG,2A3423,Flight Cancelled
-3,Zurich,ZRH,09:35,09:38,,Frankfurt,FRA,10:35,10:31,1/Area A,CL,Lufthansa Cityline,CL1185,Flight Landed
-4,Frankfurt,FRA,21:50,,1/A34,Helsinki,HEL,01:15,01:22,,LH,Lufthansa,LH854,Flight Delayed
-5,Vancouver,YVR,11:50,11:50,,Toronto/Pearson,YYZ,19:13,19:13,,AC,Air Canada,AC114,Flight On Time
-6,Barcelona (ES),BCN,13:55,14:31,1/B36,Frankfurt,FRA,16:05,16:32,1/A14,LH,Lufthansa,LH1131,Flight Landed
-7,Munich,MUC,22:00,21:59,2/H18,Birmingham,BHX,22:55,22:56,,CL,Lufthansa Cityline,CL2512,Flight On Time
-8,Frankfurt,FRA,08:50,08:53,1/A15,Vienna,VIE,10:10,10:14,,LH,Lufthansa,LH1234,Flight Landed
-9,Munich,MUC,08:25,08:36,2/G31,Venice,VCE,09:25,09:30,,EN,Air Dolomiti,EN8200,Flight Landed
-10,Vienna,VIE,06:30,06:38,3/G04,Bucharest,OTP,09:05,08:59,,OS,Austrian,OS781,Flight Landed
-11,Zurich,ZRH,12:10,12:24,,Palma De Mallorca,PMI,14:10,14:21,,2L,Helvetic Airways,2L2156,Flight Landed
-12,Stockholm,ARN,06:00,05:55,5/9,Munich,MUC,08:10,08:02,2/G48,LH,Lufthansa,LH2421,Flight Landed
-13,New York Newark,EWR,21:50,21:50,,Zurich,ZRH,11:35,11:35,,LX,SWISS,LX019,Flight On Time
-14,Washington Dulles,IAD,17:35,17:35,,Brussels,BRU,07:15,07:15,,UA,United Airlines,UA950,Flight On Time
-15,Frankfurt,FRA,21:20,22:08,1/B24,Dublin,DUB,22:20,23:00,,LH,Lufthansa,LH982,Flight Delayed
-16,Vienna,VIE,12:55,13:03,3/G31,London Heathrow,LHR,14:20,14:33,,OS,Austrian,OS461,Flight Landed
-17,Vienna,VIE,18:25,18:25,,Basel,BSL,19:45,19:45,,OS,Austrian,OS473,Flight On Time
-18,Vienna,VIE,13:00,13:09,3/F37,Warsaw,WAW,14:15,14:15,,OS,Austrian,OS623,Flight Landed
-19,Milan Malpensa,MXP,14:55,14:58,1/A02,Zurich,ZRH,15:55,15:56,,2L,Helvetic Airways,2L1629,Flight Landed
-20,Zurich,ZRH,07:20,07:26,,Berlin/Brandenburg,BER,08:45,08:43,1/B02,LX,SWISS,LX974,Flight Landed
-21,Zurich,ZRH,14:45,14:58,,Rhodes,RHO,18:45,18:43,,WK,Edelweiss Air,WK346,Flight Landed
-22,Milan Linate,LIN,12:50,13:55,,Frankfurt,FRA,14:05,14:55,1/B19A,LH,Lufthansa,LH273,Flight Landed
-23,Frankfurt,FRA,07:15,07:22,1/A21,Munich,MUC,08:10,08:20,2/G24,LH,Lufthansa,LH094,Flight Landed
-24,Cork,ORK,17:40,17:27,,Frankfurt,FRA,20:45,20:19,1/Area A,CL,Lufthansa Cityline,CL985,Flight Landed
-25,Hurghada,HRG,12:00,12:00,,Zurich,ZRH,16:50,16:41,,WK,Edelweiss Air,WK131,Flight Landed
-26,Frankfurt,FRA,07:05,07:07,1/A52,Stuttgart,STR,07:45,07:43,,LH,Lufthansa,LH126,Flight Landed
-27,Helsinki,HEL,06:25,06:45,,Frankfurt,FRA,08:05,08:18,1/A11,LH,Lufthansa,LH855,Flight Landed
-28,Podgorica,TGD,07:00,06:59,,Vienna,VIE,08:25,08:12,,OS,Austrian,OS730,Flight Landed
-29,Detroit,DTW,14:03,14:03,,Chicago,ORD,14:40,14:15,,OO,Skywest Airlines,OO4758,Flight Early
-30,Bucharest,OTP,16:10,16:30,,Zurich,ZRH,17:35,18:11,,LX,SWISS,LX1885,Flight Landed
-31,San Francisco,SFO,21:10,21:10,I/G13,Munich,MUC,17:20,17:20,2/H08,LH,Lufthansa,LH459,Flight On Time
-32,Vienna,VIE,09:35,09:27,3/F20,Innsbruck,INN,10:30,10:24,,OS,Austrian,OS903,Flight Landed
-33,Tunis,TUN,12:00,12:33,M/050,Frankfurt,FRA,15:30,15:43,1/B25A,LH,Lufthansa,LH1323,Flight Landed
-34,Munich,MUC,11:20,11:24,2/K12,Krakow,KRK,12:40,12:35,,LH,Lufthansa,LH1622,Flight Landed
-35,Zurich,ZRH,09:35,09:47,,Frankfurt,FRA,10:35,10:48,1/Area A,LH,Lufthansa,LH1185,Flight Landed
-36,Zurich,ZRH,12:10,12:20,,Palma De Mallorca,PMI,14:05,14:08,,LX,SWISS,LX2156,Flight Landed
-37,Frankfurt,FRA,07:45,08:16,1/A38,Zurich,ZRH,08:40,09:06,,LH,Lufthansa,LH1184,Flight Landed
-38,Frankfurt,FRA,07:52,08:01,Station/T05,Mannheim Central Station,MHJ,08:23,08:35,,2A,Deutsche Bahn AG,2A3430,Flight Landed
-39,Frankfurt,FRA,08:00,07:59,1/A21,Hamburg,HAM,09:05,09:06,,LH,Lufthansa,LH006,Flight Landed
-40,Frankfurt,FRA,08:00,08:29,1/B26,London Heathrow,LHR,08:40,09:18,,LH,Lufthansa,LH900,Flight Landed
-41,Frankfurt,FRA,08:00,08:03,1/B27,Sofia,SOF,11:10,11:05,,LH,Lufthansa,LH1456,Flight Landed
-42,Frankfurt,FRA,08:05,08:05,1/A16,Gothenburg,GOT,09:40,09:40,,LH,Lufthansa,LH812,Flight Landed
-43,Frankfurt,FRA,08:05,08:08,1/A26,Amsterdam,AMS,09:20,09:21,,LH,Lufthansa,LH986,Flight Landed
-44,Frankfurt,FRA,08:05,08:07,1/A34,Nice,NCE,09:35,09:36,,LH,Lufthansa,LH1058,Flight Landed
-45,Frankfurt,FRA,08:09,08:09,Station/T05,Stuttgart Rail Station,ZWS,09:24,09:28,,2A,Deutsche Bahn AG,2A3402,Flight Landed
-46,Frankfurt,FRA,08:09,08:16,Station/T06,Cologne central station,QKL,09:04,09:11,,2A,Deutsche Bahn AG,2A3602,Flight Landed
-47,Frankfurt,FRA,08:10,08:08,1/B04,Pisa,PSA,09:40,09:37,,EN,Air Dolomiti,EN8870,Flight Landed
-48,Frankfurt,FRA,08:15,08:21,1/A13,Munich,MUC,09:10,09:18,2/G34,LH,Lufthansa,LH096,Flight Landed
-49,Frankfurt,FRA,08:15,08:16,1/B30,London City,LCY,08:40,08:38,,CL,Lufthansa Cityline,CL928,Flight Landed
-50,Frankfurt,FRA,08:24,08:34,Station/T07,Dusseldorf Main Rail Station,QDU,09:36,09:45,,2A,Deutsche Bahn AG,2A3500,Flight Landed
-51,Frankfurt,FRA,08:25,08:28,1/B06,Florence,FLR,09:55,10:00,,EN,Air Dolomiti,EN8852,Flight Landed
-52,Frankfurt,FRA,08:25,08:27,1/A32,Lyon,LYS,09:40,09:31,,LH,Lufthansa,LH1074,Flight Landed
-53,Frankfurt,FRA,08:30,08:34,1/B01,Graz,GRZ,09:45,09:44,,EN,Air Dolomiti,EN8060,Flight Landed
-54,Frankfurt,FRA,08:30,08:57,1/A28,Paris/ Ch.de Gaulle,CDG,09:45,10:07,2B/D56,LH,Lufthansa,LH1028,Flight Landed
-55,Frankfurt,FRA,08:30,08:39,Station/T06,Cologne central station,QKL,09:33,09:38,,2A,Deutsche Bahn AG,2A3532,Flight Landed
-56,Frankfurt,FRA,08:30,,1/SQAIR,Strasbourg Bus Station,XER,11:00,,,YY,,YY3754,No Status
-57,Frankfurt,FRA,08:35,08:33,1/B08,Linz,LNZ,09:40,09:35,,EN,Air Dolomiti,EN8040,Flight Landed
-58,Frankfurt,FRA,08:36,08:48,Station/T04,Wuerzburg Rail Station,QWU,10:01,10:15,,2A,Deutsche Bahn AG,2A3460,Flight Landed
-59,Frankfurt,FRA,08:40,08:53,1/B12,Milan Linate,LIN,09:50,09:52,,LH,Lufthansa,LH270,Flight Landed
-60,Frankfurt,FRA,08:40,08:49,1/A56,Venice,VCE,10:00,09:57,,LH,Lufthansa,LH324,Flight Landed
-61,Frankfurt,FRA,08:40,09:05,1/A25,Budapest,BUD,10:15,10:38,,LH,Lufthansa,LH1336,Flight Landed
-62,Frankfurt,FRA,08:40,09:15,1/A24,Krakow,KRK,10:10,10:39,,LH,Lufthansa,LH1364,Flight Landed
-63,Frankfurt,FRA,08:41,08:46,Station/T06,Kassel Wilhelmshoehe Railway Station,KWQ,10:19,10:36,,2A,Deutsche Bahn AG,2A3710,Flight Landed
-64,Frankfurt,FRA,08:42,08:46,Station/T07,Dusseldorf Main Rail Station,QDU,10:06,10:08,,2A,Deutsche Bahn AG,2A3502,Flight Landed
-65,Frankfurt,FRA,08:45,08:48,1/A04,Muenster-Osnabrueck,FMO,09:35,09:34,,CL,Lufthansa Cityline,CL062,Flight Landed
-66,Frankfurt,FRA,08:45,09:11,1/A22,Berlin/Brandenburg,BER,09:55,10:14,1/S01,LH,Lufthansa,LH176,Flight Landed
-67,Frankfurt,FRA,08:45,08:44,1/A19,Bologna,BLQ,10:05,10:06,,LH,Lufthansa,LH282,Flight Landed
-68,Frankfurt,FRA,08:45,08:46,1/A50,Rennes St Jacques,RNS,10:20,10:10,,CL,Lufthansa Cityline,CL1066,Flight Landed
-69,Frankfurt,FRA,08:52,09:05,Station/T05,Stuttgart Rail Station,ZWS,10:08,10:17,,2A,Deutsche Bahn AG,2A3404,Flight Landed
-70,Frankfurt,FRA,08:55,08:56,1/B02,Innsbruck,INN,10:05,09:56,,EN,Air Dolomiti,EN8050,Flight Landed
-71,Frankfurt,FRA,08:55,08:55,1/B05,Dusseldorf,DUS,09:45,09:42,,LH,Lufthansa,LH076,Flight Landed
-72,Frankfurt,FRA,08:55,08:53,1/A68,Leipzig/ Halle,LEJ,09:50,09:47,,CL,Lufthansa Cityline,CL156,Flight Landed
-73,Frankfurt,FRA,09:00,09:13,1/A11,Hamburg,HAM,10:05,10:18,,LH,Lufthansa,LH008,Flight Landed
-74,Frankfurt,FRA,09:00,09:11,1/B41,London Heathrow,LHR,09:40,09:55,,LH,Lufthansa,LH902,Flight Landed
-75,Frankfurt,FRA,09:00,09:05,1/B07,Marseille,MRS,10:35,10:50,,LH,Lufthansa,LH922,Flight Landed
-76,Frankfurt,FRA,09:00,09:20,1/B31,Timisoara,TSR,11:45,12:02,,CL,Lufthansa Cityline,CL1470,Flight Landed
-77,Frankfurt,FRA,09:00,08:59,1/A02,Geneva,GVA,10:05,10:09,,LX,SWISS,LX1081,Flight Landed
-78,Frankfurt,FRA,09:00,09:10,1/B11,Brussels,BRU,10:10,10:10,,SN,Brussels Airlines,SN2608,Flight Landed
-79,Frankfurt,FRA,09:02,09:05,Station/T04,Erfurt Rail Station,XIU,11:38,11:38,,2A,Deutsche Bahn AG,2A3730,Flight Landed
-80,Frankfurt,FRA,09:05,09:05,1/A23,Wroclaw,WRO,10:15,10:18,,CL,Lufthansa Cityline,CL1358,Flight Landed
-81,Frankfurt,FRA,09:09,09:17,Station/T06,Cologne central station,QKL,10:04,10:10,,2A,Deutsche Bahn AG,2A3606,Flight Landed
-82,Frankfurt,FRA,09:09,09:17,Station/T06,Muenster/Osnabrueck Muenster Hbf,MKF,11:54,12:12,,2A,Deutsche Bahn AG,2A3644,Flight Landed
-83,Frankfurt,FRA,09:10,09:27,1/B10,Hannover,HAJ,10:00,10:14,,LH,Lufthansa,LH048,Flight Landed
-84,Frankfurt,FRA,09:10,09:13,1/A69,Dresden,DRS,10:05,10:00,,CL,Lufthansa Cityline,CL210,Flight Landed
-85,Frankfurt,FRA,09:15,09:30,1/A18,Munich,MUC,10:10,10:20,2/G34,LH,Lufthansa,LH098,Flight Landed
-86,Berlin/Brandenburg,BER,06:55,09:00,1/B14,Brussels,BRU,08:15,10:30,,SN,Brussels Airlines,SN2592,Flight Landed
-87,Berlin/Brandenburg,BER,07:35,08:02,1/A07,Fuerteventura,FUE,11:45,12:22,,EW,Eurowings,EW8180,Flight Landed
-88,Berlin/Brandenburg,BER,08:10,08:13,1/B01,Cologne/Bonn,CGN,09:20,09:20,1/B81,X3,Tuifly,X3013,Flight Landed
-89,Berlin/Brandenburg,BER,08:10,08:10,1/A03,Dusseldorf,DUS,09:25,09:12,,EW,Eurowings,EW9049,Flight Landed
-90,Berlin/Brandenburg,BER,08:15,08:19,1/A20,Salzburg,SZG,09:25,09:23,,E2,Eurowings Europe,E24343,Flight Landed
-91,Berlin/Brandenburg,BER,08:20,08:19,1/A06,Stuttgart,STR,09:35,09:26,,X8,Airmax Cargo S.A,X82003,Flight Landed
-92,Berlin/Brandenburg,BER,08:20,08:34,1/B03,Munich,MUC,09:30,09:39,2/G40,LH,Lufthansa,LH1927,Flight Landed
-93,Berlin/Brandenburg,BER,08:45,08:48,1/B07,Frankfurt,FRA,09:55,09:49,1/A16,LH,Lufthansa,LH177,Flight Landed
-94,Berlin/Brandenburg,BER,09:00,09:11,1/B06,Vienna,VIE,10:15,10:14,,OS,Austrian,OS224,Flight Landed
-95,Berlin/Brandenburg,BER,09:25,09:42,1/A35,Stockholm,ARN,11:05,11:19,,E2,Eurowings Europe,E24601,Flight Landed
-96,Berlin/Brandenburg,BER,09:30,09:46,1/B01,Zurich,ZRH,11:00,11:13,,LX,SWISS,LX975,Flight Landed
-97,Berlin/Brandenburg,BER,09:45,10:20,1/B21,Frankfurt,FRA,10:55,11:26,1/A11,LH,Lufthansa,LH181,Flight Landed
-98,Berlin/Brandenburg,BER,09:50,10:17,1/A06,Munich,MUC,11:00,11:11,2/G16,LH,Lufthansa,LH1939,Flight Landed
-99,Berlin/Brandenburg,BER,10:10,10:35,1/A34,Dusseldorf,DUS,11:25,11:38,,BT,Airbaltic,BT9053,Flight Landed
-100,Berlin/Brandenburg,BER,10:25,14:18,1/A34,Lanzarote,ACE,14:25,18:08,,EW,Eurowings,EW8370,Flight Landed
-101,Berlin/Brandenburg,BER,10:45,11:16,1/A31,Palma De Mallorca,PMI,13:30,13:45,,E2,Eurowings Europe,E26893,Flight Landed
-102,Berlin/Brandenburg,BER,10:45,11:41,1/B24,Frankfurt,FRA,11:55,12:43,1/A14,LH,Lufthansa,LH183,Flight Landed
-103,Berlin/Brandenburg,BER,10:50,11:36,1/A17,Munich,MUC,12:00,12:43,2/G40,LH,Lufthansa,LH1935,Flight Landed
-104,Berlin/Brandenburg,BER,10:50,11:27,1/B21,Zurich,ZRH,12:20,12:46,,LX,SWISS,LX977,Flight Landed
-105,Berlin/Brandenburg,BER,11:15,12:00,1/A06,Vienna,VIE,12:30,12:58,,OS,Austrian,OS226,Flight Landed
-106,Berlin/Brandenburg,BER,11:30,12:21,1/A36,Cologne/Bonn,CGN,12:40,13:25,1/B30,EW,Eurowings,EW015,Flight Landed
-107,Berlin/Brandenburg,BER,11:35,13:23,1/A35,Palma De Mallorca,PMI,14:15,15:58,,EW,Eurowings,EW8590,Flight Landed
-108,Berlin/Brandenburg,BER,11:45,12:44,1/B10,Frankfurt,FRA,12:55,13:53,1/A26,LH,Lufthansa,LH185,Flight Landed
-109,Berlin/Brandenburg,BER,11:45,12:18,1/B17,Brussels,BRU,13:10,13:36,,SN,Brussels Airlines,SN2582,Flight Landed
-110,Paris/ Ch.de Gaulle,CDG,08:30,08:52,2B/D69,Brussels,BRU,09:30,09:48,,SN,Brussels Airlines,SN3632,Flight Landed
-111,Paris/ Ch.de Gaulle,CDG,08:45,08:47,,Hamburg,HAM,10:20,10:20,,EW,Eurowings,EW7403,Flight Landed
-112,Paris/ Ch.de Gaulle,CDG,09:00,09:16,2B/D54,Munich,MUC,10:30,10:44,2/G04,LH,Lufthansa,LH2227,Flight Landed
-113,Paris/ Ch.de Gaulle,CDG,09:25,09:26,2B/D56,Frankfurt,FRA,10:40,10:41,1/A18,LH,Lufthansa,LH1027,Flight Landed
-114,Paris/ Ch.de Gaulle,CDG,09:50,09:51,2B/D67,Zurich,ZRH,11:10,11:03,,LX,SWISS,LX633,Flight Landed
-115,Paris/ Ch.de Gaulle,CDG,09:55,10:00,2B/D69,Brussels,BRU,11:00,10:53,,SN,Brussels Airlines,SN3634,Flight Landed
-116,Paris/ Ch.de Gaulle,CDG,10:00,09:57,2B/D51,Vienna,VIE,11:55,11:44,,OS,Austrian,OS412,Flight Landed
-117,Paris/ Ch.de Gaulle,CDG,10:30,10:58,2B/D56,Frankfurt,FRA,11:45,12:22,1/A28,LH,Lufthansa,LH1029,Flight Landed
-118,Johannesburg,JNB,19:00,23:16,A/016,Frankfurt,FRA,05:35,09:53,1/B23A,LH,Lufthansa,LH573,Flight Landed
-119,Philadelphia,PHL,17:45,18:43,A/A17,Frankfurt,FRA,07:30,08:30,1/Area A,LH,Lufthansa,LH427,Flight Landed
-120,Hong Kong,HKG,23:25,00:27,1/025,Frankfurt,FRA,07:30,08:57,1/C13A,LH,Lufthansa,LH797,Flight Landed
-121,Sofia,SOF,06:10,06:38,2/B06,Frankfurt,FRA,07:35,08:05,1/Z24,LH,Lufthansa,LH1429,Flight Landed
-122,Delhi,DEL,02:50,02:52,3/015,Frankfurt,FRA,07:40,08:38,1/Z54A,LH,Lufthansa,LH761,Flight Landed
-123,Berlin/Brandenburg,BER,06:45,07:12,1/B17,Frankfurt,FRA,07:55,08:18,1/A22,LH,Lufthansa,LH045,Flight Landed
-124,Miami,MIA,16:45,17:56,,Frankfurt,FRA,07:55,08:47,1/Z58,LH,Lufthansa,LH463,Flight Landed
-125,Toronto/Pearson,YYZ,18:20,19:33,1/E79,Frankfurt,FRA,07:55,09:07,1/Z25,LH,Lufthansa,LH471,Flight Landed
-126,Bucharest,OTP,06:25,06:26,,Frankfurt,FRA,07:55,08:02,1/Area A,LH,Lufthansa,LH1423,Flight Landed
-127,Munich,MUC,07:00,06:58,2/G28,Frankfurt,FRA,08:00,07:59,1/A30,LH,Lufthansa,LH093,Flight Landed
-128,Zurich,ZRH,07:00,07:02,,Frankfurt,FRA,08:00,08:01,1/A40,LH,Lufthansa,LH1193,Flight Landed
-129,Belgrade,BEG,06:05,06:07,2/C10,Frankfurt,FRA,08:05,08:16,1/Area A,LH,Lufthansa,LH1411,Flight Landed
-130,Mannheim Central Station,MHJ,07:36,07:42,,Frankfurt,FRA,08:06,08:14,TN/T04,2A,Deutsche Bahn AG,2A3433,Flight Landed
-131,Hamburg,HAM,07:00,07:00,2/A17,Frankfurt,FRA,08:10,08:13,1/A01,LH,Lufthansa,LH005,Flight Landed
-132,Washington Dulles,IAD,18:10,18:19,,Frankfurt,FRA,08:10,07:53,1/Z69,LH,Lufthansa,LH419,Flight Landed
-133,Mumbai,BOM,02:50,02:49,2/076,Frankfurt,FRA,08:10,08:20,1/B20A,LH,Lufthansa,LH757,Flight Landed
-134,Geneva,GVA,06:55,06:58,,Frankfurt,FRA,08:10,08:08,1/Area A,LX,SWISS,LX1080,Flight Landed
-135,Brussels,BRU,06:55,07:02,,Frankfurt,FRA,08:10,08:04,1/BSO,SN,Brussels Airlines,SN2607,Flight Landed
-136,Florence,FLR,06:40,06:47,,Frankfurt,FRA,08:15,08:13,1/Area A,EN,Air Dolomiti,EN8861,Flight Landed
-137,Trieste,TRS,06:50,07:00,,Frankfurt,FRA,08:15,08:18,1/Area A,CL,Lufthansa Cityline,CL293,Flight Landed
-138,Stockholm,ARN,06:00,05:58,,Frankfurt,FRA,08:15,08:11,1/B10,LH,Lufthansa,LH809,Flight Landed
-139,Istanbul,IST,06:00,06:05,,Frankfurt,FRA,08:15,08:20,1/B27A,LH,Lufthansa,LH1305,Flight Landed
-140,Budapest,BUD,06:30,06:37,2A/A04,Frankfurt,FRA,08:15,08:29,1/A21,LH,Lufthansa,LH1343,Flight Landed
-141,Houston,IAH,15:45,16:19,D/D09,Frankfurt,FRA,08:20,08:35,1/Area A,LH,Lufthansa,LH441,Flight Landed
-142,Tel Aviv,TLV,04:50,05:17,3/B03,Frankfurt,FRA,08:20,08:55,1/B28A,LH,Lufthansa,LH691,Flight Landed
-143,Salzburg,SZG,07:10,07:05,,Frankfurt,FRA,08:20,08:05,1/A18,LH,Lufthansa,LH1109,Flight Landed
-144,Wuerzburg Rail Station,QWU,06:55,06:59,,Frankfurt,FRA,08:21,08:32,TN/T04,2A,Deutsche Bahn AG,2A3463,Flight Landed
-145,Milan Linate,LIN,07:10,07:13,,Frankfurt,FRA,08:25,08:22,1/A16,LH,Lufthansa,LH279,Flight Landed
-146,Almaty,ALA,04:00,04:18,,Frankfurt,FRA,08:30,08:39,1/Area A,LH,Lufthansa,LH647,Flight Landed
-147,Birmingham,BHX,06:00,06:16,,Frankfurt,FRA,08:30,08:53,1/Z13,LH,Lufthansa,LH959,Flight Landed
-148,Nice,NCE,06:55,06:56,1/A35,Frankfurt,FRA,08:30,08:26,1/Area A,LH,Lufthansa,LH1069,Flight Landed
-149,Gdansk,GDN,06:45,06:43,,Frankfurt,FRA,08:30,08:18,1/BSO,CL,Lufthansa Cityline,CL1379,Flight Landed
-150,Ljubljana,LJU,07:05,07:02,,Frankfurt,FRA,08:30,08:24,1/Area A,LH,Lufthansa,LH1461,Flight Landed
-151,Dusseldorf Main Rail Station,QDU,07:18,07:21,,Frankfurt,FRA,08:33,08:45,TN/T04,2A,Deutsche Bahn AG,2A3503,Flight Landed
-152,Marseille,MRS,06:50,06:52,1A/024,Frankfurt,FRA,08:35,08:24,1/A34,LH,Lufthansa,LH1091,Flight Landed
-153,Stuttgart Rail Station,ZWS,07:25,07:25,,Frankfurt,FRA,08:35,08:41,TN/T04,2A,Deutsche Bahn AG,2A3403,Flight Landed
-154,Nuremberg Rail Station,ZAQ,06:39,06:40,,Frankfurt,FRA,08:39,08:44,,2A,Deutsche Bahn AG,2A3465,Flight Landed
-155,Hamburg,HAM,07:30,08:28,2/C16,Frankfurt,FRA,08:40,09:46,1/B09,LH,Lufthansa,LH007,Flight Landed
-156,Madrid,MAD,06:10,06:12,2/E68,Frankfurt,FRA,08:40,08:29,1/A38,LH,Lufthansa,LH1121,Flight Landed
-157,Vienna,VIE,07:10,07:13,3/F26,Frankfurt,FRA,08:40,08:51,1/A26,OS,Austrian,OS121,Flight Landed
-158,Naples,NAP,06:40,06:38,,Frankfurt,FRA,08:45,08:49,1/Area A,LH,Lufthansa,LH337,Flight Landed
-159,Cairo,CAI,04:20,04:20,3/F03,Frankfurt,FRA,08:45,08:42,1/B24A,LH,Lufthansa,LH585,Flight Landed
-160,Oslo,OSL,06:35,06:35,,Frankfurt,FRA,08:45,08:42,1/A17,LH,Lufthansa,LH865,Flight Landed
-161,Dallas/Fort Worth,DFW,16:00,16:39,D/D15,Frankfurt,FRA,08:50,09:16,1/Area A,LH,Lufthansa,LH439,Flight Landed
-162,Dublin,DUB,05:55,06:10,1/305,Frankfurt,FRA,08:50,08:58,1/Area A,LH,Lufthansa,LH983,Flight Landed
-163,Cologne central station,QKL,07:55,08:07,,Frankfurt,FRA,08:50,09:03,TN/T04,2A,Deutsche Bahn AG,2A3605,Flight Landed
-164,Muenster/Osnabrueck Muenster Hbf,MKF,06:03,06:03,,Frankfurt,FRA,08:50,09:03,,2A,Deutsche Bahn AG,2A3641,Flight Landed
-165,Berlin/Brandenburg,BER,07:45,07:44,1/B21,Frankfurt,FRA,08:55,08:54,1/Area A,LH,Lufthansa,LH175,Flight Landed
-166,Rome,FCO,06:55,06:57,1/A72,Frankfurt,FRA,08:55,08:46,1/Area A,LH,Lufthansa,LH243,Flight Landed
-167,Vienna,VIE,07:00,07:13,3/F06,Berlin/Brandenburg,BER,08:15,08:24,1/B06,OS,Austrian,OS223,Flight Landed
-168,Stockholm,ARN,06:45,06:48,,Berlin/Brandenburg,BER,08:35,08:22,1/A35,E2,Eurowings Europe,E24600,Flight Landed
-169,Frankfurt,FRA,07:45,07:48,1/A18,Berlin/Brandenburg,BER,08:55,08:58,1/B20,LH,Lufthansa,LH174,Flight Landed
-170,Munich,MUC,08:00,08:02,2/G30,Berlin/Brandenburg,BER,09:05,09:07,1/A06,LH,Lufthansa,LH1938,Flight Landed
-171,Stuttgart,STR,08:20,08:15,1/316,Berlin/Brandenburg,BER,09:35,09:48,1/A35,EW,Eurowings,EW8001,Flight Landed
-172,Cologne/Bonn,CGN,08:30,08:51,1/B80,Berlin/Brandenburg,BER,09:35,09:55,1/S01,EW,Eurowings,EW8059,Flight Landed
-173,Dusseldorf,DUS,08:20,08:22,,Berlin/Brandenburg,BER,09:35,09:29,1/A34,BT,Airbaltic,BT9052,Flight Landed
-174,Palma De Mallorca,PMI,07:15,07:20,,Berlin/Brandenburg,BER,10:00,09:58,1/A31,E2,Eurowings Europe,E26892,Flight Landed
-175,Munich,MUC,09:00,09:02,2/G16,Berlin/Brandenburg,BER,10:05,10:15,1/A17,LH,Lufthansa,LH1934,Flight Landed
-176,Zurich,ZRH,08:45,09:03,,Berlin/Brandenburg,BER,10:05,10:22,1/B20,LX,SWISS,LX976,Flight Landed
-177,Vienna,VIE,09:15,09:31,3/F31,Berlin/Brandenburg,BER,10:30,10:45,1/A06,OS,Austrian,OS225,Flight Landed
-178,Brussels,BRU,09:25,09:38,,Berlin/Brandenburg,BER,10:50,10:52,1/B17,SN,Brussels Airlines,SN2581,Flight Landed
-179,Cologne/Bonn,CGN,09:45,10:19,1/B20,Berlin/Brandenburg,BER,10:55,11:27,1/A36,EW,Eurowings,EW014,Flight Landed
-180,Palma De Mallorca,PMI,08:15,08:57,,Berlin/Brandenburg,BER,10:55,11:32,1/A34,EW,Eurowings,EW8591,Flight Landed
-181,Frankfurt,FRA,09:45,10:28,1/A17,Berlin/Brandenburg,BER,10:55,11:37,1/B10,LH,Lufthansa,LH178,Flight Landed
-182,Stuttgart,STR,10:20,10:40,1/140,Berlin/Brandenburg,BER,11:35,11:50,1/A32,EW,Eurowings,EW2010,Flight Landed
-183,Hamburg,HAM,06:30,06:24,1/A18,Paris/ Ch.de Gaulle,CDG,08:05,08:01,,EW,Eurowings,EW7402,Flight Landed
-184,Munich,MUC,06:45,06:51,2/K05,Paris/ Ch.de Gaulle,CDG,08:20,08:33,2B/D54,LH,Lufthansa,LH2226,Flight Landed
-185,Frankfurt,FRA,07:15,07:31,1/A28,Paris/ Ch.de Gaulle,CDG,08:30,08:45,2B/D56,LH,Lufthansa,LH1026,Flight Landed
-186,Zurich,ZRH,07:30,07:35,,Paris/ Ch.de Gaulle,CDG,09:00,08:55,2B/D67,LX,SWISS,LX632,Flight Landed
-187,Brussels,BRU,08:05,08:25,,Paris/ Ch.de Gaulle,CDG,09:00,09:24,2B/D69,SN,Brussels Airlines,SN3633,Flight Landed
-188,Vienna,VIE,07:05,07:05,3/F03,Paris/ Ch.de Gaulle,CDG,09:10,09:08,,OS,Austrian,OS411,Flight Landed
-189,Munich,MUC,09:50,09:48,2/K01,Paris/ Ch.de Gaulle,CDG,11:25,11:23,2B/D67,LH,Lufthansa,LH2228,Flight Landed
+departure,dep_iata,dep_scheduled,dep_actual,terminal_gate,arrival,arr_iata,arr_scheduled,dep_actual,terminal_gate,carrier_code,carrier,flight,status
+Frankfurt,FRA,07:52,08:04,Station/T05,Mannheim Central Station,MHJ,08:23,08:42,,2A,Deutsche Bahn AG,2A3430,Flight Landed
+Frankfurt,FRA,07:55,08:05,1/B03,Pisa,PSA,09:20,09:34,,EN,Air Dolomiti,EN8870,Flight Landed
+Frankfurt,FRA,08:00,08:07,1/A19,Hamburg,HAM,09:05,09:07,,LH,Lufthansa,LH006,Flight Landed
+Frankfurt,FRA,08:00,08:09,1/B27,London Heathrow,LHR,08:45,08:46,,LH,Lufthansa,LH900,Flight Landed
+Frankfurt,FRA,08:09,08:22,Station/T06,Cologne central station,QKL,09:04,09:21,,2A,Deutsche Bahn AG,2A3602,Flight Landed
+Frankfurt,FRA,08:10,08:15,1/A36,Bologna,BLQ,09:30,09:31,,LH,Lufthansa,LH282,Flight Landed
+Frankfurt,FRA,08:10,08:06,1/A30,Copenhagen,CPH,09:35,09:28,,EW,Eurowings,EW824,Flight Landed
+Frankfurt,FRA,08:10,08:39,1/A40,Marseille,MRS,09:40,10:08,,EW,Eurowings,EW1086,Flight Landed
+Frankfurt,FRA,08:15,08:11,1/B04,Florence,FLR,09:40,09:42,,EN,Air Dolomiti,EN8852,Flight Landed
+Frankfurt,FRA,08:15,08:13,1/A50,Munich,MUC,09:10,08:54,2/G82,CL,Lufthansa Cityline,CL096,Flight Landed
+Frankfurt,FRA,08:15,08:20,1/A16,Krakow,KRK,09:45,09:53,,EW,Eurowings,EW1364,Flight Landed
+Frankfurt,FRA,08:24,08:35,Station/T07,Dusseldorf Main Rail Station,QDU,09:36,10:18,,2A,Deutsche Bahn AG,2A3500,Flight Landed
+Frankfurt,FRA,08:25,08:32,1/A18,Paris/ Ch.de Gaulle,CDG,09:40,09:39,2B/D50,LH,Lufthansa,LH1028,Flight Landed
+Frankfurt,FRA,08:25,08:30,1/A34,Nice,NCE,09:55,09:59,,EW,Eurowings,EW1058,Flight Landed
+Frankfurt,FRA,08:30,08:37,Station/T06,Cologne central station,QKL,09:33,09:41,,2A,Deutsche Bahn AG,2A3532,Flight Landed
+Frankfurt,FRA,08:30,,1/SQAIR,Strasbourg Bus Station,XER,11:00,,,YY,,YY3754,No Status
+Frankfurt,FRA,08:36,08:53,Station/T04,Wuerzburg Rail Station,QWU,10:01,10:20,,2A,Deutsche Bahn AG,2A3460,Flight Landed
+Frankfurt,FRA,08:40,08:41,1/B02,Graz,GRZ,09:55,09:56,,EN,Air Dolomiti,EN8060,Flight Landed
+Frankfurt,FRA,08:41,08:49,Station/T06,Kassel Wilhelmshoehe Railway Station,KWQ,10:19,10:29,,2A,Deutsche Bahn AG,2A3710,Flight Landed
+Frankfurt,FRA,08:42,08:48,Station/T07,Dusseldorf Main Rail Station,QDU,10:06,10:22,,2A,Deutsche Bahn AG,2A3502,Flight Landed
+Frankfurt,FRA,08:45,08:58,1/B08,Milan Linate,LIN,09:55,10:05,,EN,Air Dolomiti,EN8800,Flight Landed
+Frankfurt,FRA,08:45,09:19,1/A15,Berlin/Brandenburg,BER,09:55,10:18,1/B06,LH,Lufthansa,LH176,Flight Landed
+Frankfurt,FRA,08:45,08:52,1/B19,Amsterdam,AMS,10:00,10:30,,OS,Austrian,OS988,Flight Landed
+Frankfurt,FRA,08:45,08:53,1/A24,Zurich,ZRH,09:40,09:48,,LX,SWISS,LX1069,Flight Landed
+Frankfurt,FRA,08:50,08:53,1/B06,Innsbruck,INN,10:00,09:59,,EN,Air Dolomiti,EN8050,Flight Landed
+Frankfurt,FRA,08:50,08:51,1/A38,Lyon,LYS,10:05,10:03,,EW,Eurowings,EW1074,Flight Landed
+Frankfurt,FRA,08:50,08:52,1/A56,Salzburg,SZG,09:50,09:40,,LH,Lufthansa,LH1102,Flight Landed
+Frankfurt,FRA,08:50,09:04,1/A17,Palma De Mallorca,PMI,10:50,11:06,,LH,Lufthansa,LH1154,Flight Landed
+Frankfurt,FRA,08:50,09:00,1/A26,Vienna,VIE,10:10,10:15,,OS,Austrian,OS1234,Flight Landed
+Frankfurt,FRA,08:50,08:59,1/B10,Brussels,BRU,09:55,09:59,,SN,Brussels Airlines,SN2608,Flight Landed
+Frankfurt,FRA,08:52,09:16,Station/T05,Stuttgart Rail Station,ZWS,10:26,10:40,,2A,Deutsche Bahn AG,2A3404,Flight Landed
+Frankfurt,FRA,08:55,08:55,1/B13,Billund,BLL,10:15,10:06,,CL,Lufthansa Cityline,CL836,Flight Landed
+Frankfurt,FRA,09:00,09:24,1/A19,Hamburg,HAM,10:05,10:26,,LH,Lufthansa,LH008,Flight Landed
+Frankfurt,FRA,09:00,09:10,1/A04,Hannover,HAJ,09:50,09:55,,CL,Lufthansa Cityline,CL048,Flight Landed
+Frankfurt,FRA,09:00,09:14,1/B01,Leipzig/ Halle,LEJ,10:00,10:01,,LH,Lufthansa,LH156,Flight Landed
+Frankfurt,FRA,09:00,09:25,1/B11,Milan Malpensa,MXP,10:10,10:29,,LH,Lufthansa,LH246,Flight Landed
+Frankfurt,FRA,09:00,09:29,1/B25,London Heathrow,LHR,09:45,10:17,,LH,Lufthansa,LH902,Flight Landed
+Frankfurt,FRA,09:00,09:07,1/A14,Ljubljana,LJU,10:10,10:10,,CL,Lufthansa Cityline,CL1458,Flight Landed
+Frankfurt,FRA,09:02,09:07,Station/T04,Erfurt Rail Station,XIU,11:38,11:39,,2A,Deutsche Bahn AG,2A3730,Flight Landed
+Frankfurt,FRA,09:05,09:14,1/B31,London City,LCY,09:30,09:35,,CL,Lufthansa Cityline,CL928,Flight Landed
+Frankfurt,FRA,09:05,09:20,1/A02,Geneva,GVA,10:10,10:25,,LX,SWISS,LX1081,Flight Landed
+Frankfurt,FRA,09:09,09:18,Station/T06,Cologne central station,QKL,10:04,10:14,,2A,Deutsche Bahn AG,2A3606,Flight Landed
+Frankfurt,FRA,09:09,09:18,Station/T06,Muenster/Osnabrueck Muenster Hbf,MKF,11:54,12:06,,2A,Deutsche Bahn AG,2A3644,Flight Landed
+Frankfurt,FRA,09:10,09:16,1/A03,Dresden,DRS,10:10,10:02,,CL,Lufthansa Cityline,CL206,Flight Landed
+Frankfurt,FRA,09:10,09:13,1/A60,Bremen,BRE,10:05,10:07,,LH,Lufthansa,LH352,Flight Landed
+Frankfurt,FRA,09:10,09:13,1/B05,Luxembourg,LUX,09:50,09:52,,CL,Lufthansa Cityline,CL392,Flight Landed
+Frankfurt,FRA,09:10,09:43,1/B12,Basel,BSL,10:00,10:24,,CL,Lufthansa Cityline,CL1202,Flight Landed
+Frankfurt,FRA,09:15,09:15,1/B03,Dusseldorf,DUS,10:05,10:02,,LH,Lufthansa,LH074,Flight Landed
+Frankfurt,FRA,09:15,09:11,1/A11,Munich,MUC,10:10,10:01,2/G30,LH,Lufthansa,LH098,Flight Landed
+Frankfurt,FRA,09:15,09:31,1/A23,Nuremberg,NUE,10:00,10:04,,CL,Lufthansa Cityline,CL142,Flight Landed
+Berlin/Brandenburg,BER,08:05,08:04,1/A33,Cologne/Bonn,CGN,09:15,09:04,1/B30,X3,Tuifly,X3013,Flight Landed
+Berlin/Brandenburg,BER,08:10,08:08,1/A17,Dusseldorf,DUS,09:25,09:12,,EW,Eurowings,EW9049,Flight Landed
+Berlin/Brandenburg,BER,08:30,08:29,1/B01,Stuttgart,STR,09:50,09:38,,EW,Eurowings,EW2003,Flight Landed
+Berlin/Brandenburg,BER,08:45,08:41,1/A02,Frankfurt,FRA,09:55,09:51,1/A16,LH,Lufthansa,LH177,Flight Landed
+Berlin/Brandenburg,BER,09:00,09:04,1/B06,Munich,MUC,10:10,10:10,2/K09,LH,Lufthansa,LH1929,Flight Landed
+Berlin/Brandenburg,BER,09:10,09:10,1/A03,Vienna,VIE,10:25,10:18,,OS,Austrian,OS224,Flight Landed
+Berlin/Brandenburg,BER,09:30,09:46,1/B07,Zurich,ZRH,11:00,11:04,,LX,SWISS,LX975,Flight Landed
+Berlin/Brandenburg,BER,09:45,09:42,1/B21,Frankfurt,FRA,10:55,10:57,1/A15,LH,Lufthansa,LH181,Flight Landed
+Berlin/Brandenburg,BER,10:00,09:58,1/A02,Munich,MUC,11:10,11:01,2/G20,LH,Lufthansa,LH1931,Flight Landed
+Berlin/Brandenburg,BER,10:40,10:45,1/B14,Palma De Mallorca,PMI,13:20,13:23,,EW,Eurowings,EW8590,Flight Landed
+Berlin/Brandenburg,BER,10:45,11:04,1/B06,Frankfurt,FRA,11:55,12:07,1/A38,LH,Lufthansa,LH183,Flight Landed
+Berlin/Brandenburg,BER,10:50,10:55,1/B07,Zurich,ZRH,12:20,12:20,,BT,Airbaltic,BT977,Flight Landed
+Berlin/Brandenburg,BER,11:00,10:51,1/B21,Munich,MUC,12:10,11:59,2/K07,LH,Lufthansa,LH1935,Flight Landed
+Berlin/Brandenburg,BER,11:20,11:17,1/A02,Vienna,VIE,12:35,12:17,,OS,Austrian,OS226,Flight Landed
+Berlin/Brandenburg,BER,11:45,11:51,1/B12,Frankfurt,FRA,12:55,12:53,1/Area A,LH,Lufthansa,LH185,Flight Landed
+Berlin/Brandenburg,BER,11:50,12:07,1/A33,Lanzarote,ACE,15:45,16:09,,EW,Eurowings,EW8370,Flight Delayed
+Berlin/Brandenburg,BER,11:55,11:48,1/A10,Brussels,BRU,13:15,13:07,,SN,Brussels Airlines,SN2582,Flight Landed
+Munich,MUC,07:00,06:56,2/K01,Berlin/Brandenburg,BER,08:10,08:03,1/B06,LH,Lufthansa,LH1928,Flight Landed
+Vienna,VIE,07:10,07:12,3/F27,Berlin/Brandenburg,BER,08:25,08:23,1/A03,OS,Austrian,OS223,Flight Landed
+Zurich,ZRH,07:20,07:33,,Berlin/Brandenburg,BER,08:45,08:58,1/B07,LX,SWISS,LX974,Flight Landed
+Frankfurt,FRA,07:45,07:50,1/A13,Berlin/Brandenburg,BER,08:55,08:52,1/B20,LH,Lufthansa,LH174,Flight Landed
+Munich,MUC,08:00,07:59,2/G20,Berlin/Brandenburg,BER,09:10,09:05,1/A02,LH,Lufthansa,LH1930,Flight Landed
+Cologne/Bonn,CGN,08:10,08:09,1/B30,Berlin/Brandenburg,BER,09:25,09:15,1/A33,EW,Eurowings,EW8059,Flight Landed
+Stuttgart,STR,08:15,08:08,1/114,Berlin/Brandenburg,BER,09:35,09:16,1/S01,EW,Eurowings,EW8001,Flight Landed
+Dusseldorf,DUS,08:20,08:24,,Berlin/Brandenburg,BER,09:35,09:29,1/A38,EW,Eurowings,EW8041,Flight Landed
+Zurich,ZRH,08:40,08:42,,Berlin/Brandenburg,BER,10:05,10:04,1/B07,BT,Airbaltic,BT976,Flight Landed
+Munich,MUC,09:00,08:57,2/G16,Berlin/Brandenburg,BER,10:10,10:00,1/B20,LH,Lufthansa,LH1934,Flight Landed
+Vienna,VIE,09:20,09:25,3/F32,Berlin/Brandenburg,BER,10:35,10:30,1/A02,OS,Austrian,OS225,Flight Landed
+Frankfurt,FRA,09:45,10:04,1/A01,Berlin/Brandenburg,BER,10:55,11:04,1/S01,LH,Lufthansa,LH178,Flight Landed
+Brussels,BRU,09:40,09:47,,Berlin/Brandenburg,BER,11:05,11:08,1/A10,SN,Brussels Airlines,SN2581,Flight Landed
+Stuttgart,STR,10:25,10:44,1/322,Berlin/Brandenburg,BER,11:45,11:44,1/A37,EW,Eurowings,EW2010,Flight Landed
+Frankfurt,FRA,10:45,10:59,1/A11,Berlin/Brandenburg,BER,11:55,12:05,1/B03,LH,Lufthansa,LH180,Flight Landed
+Munich,MUC,10:50,10:48,2/G04,Berlin/Brandenburg,BER,12:00,11:47,1/B20,LH,Lufthansa,LH1936,Flight Landed
+Paris/ Ch.de Gaulle,CDG,08:30,08:32,2B/D54,Frankfurt,FRA,09:45,09:53,1/Area A,LH,Lufthansa,LH1027,Flight Landed
+Paris/ Ch.de Gaulle,CDG,08:40,09:04,2B/D66,Brussels,BRU,09:35,09:52,,SN,Brussels Airlines,SN3632,Flight Landed
+Paris/ Ch.de Gaulle,CDG,08:55,08:51,,Hamburg,HAM,10:35,10:19,,EW,Eurowings,EW7403,Flight Landed
+Paris/ Ch.de Gaulle,CDG,09:10,09:12,2B/D50,Munich,MUC,10:35,10:27,2/K03,LH,Lufthansa,LH2227,Flight Landed
+Paris/ Ch.de Gaulle,CDG,09:50,09:54,2B/D67,Zurich,ZRH,11:15,11:04,,BT,Airbaltic,BT633,Flight Landed
+Paris/ Ch.de Gaulle,CDG,10:05,10:01,2B/D52,Vienna,VIE,12:00,11:43,,OS,Austrian,OS412,Flight Landed
+Paris/ Ch.de Gaulle,CDG,10:15,10:12,2B/D69,Brussels,BRU,11:10,11:05,,SN,Brussels Airlines,SN3634,Flight Landed
+Paris/ Ch.de Gaulle,CDG,10:20,10:24,2B/D50,Frankfurt,FRA,11:35,11:32,1/Area A,LH,Lufthansa,LH1029,Flight Landed
+Paris/ Ch.de Gaulle,CDG,11:15,11:23,2B/D50,Frankfurt,FRA,12:30,12:37,1/A21,LH,Lufthansa,LH1031,Flight Landed
+Paris/ Ch.de Gaulle,CDG,11:20,11:20,2B/D66,Munich,MUC,12:45,12:42,2/G34,LH,Lufthansa,LH2229,Flight Landed
+Hamburg,HAM,06:35,06:32,1/A20,Paris/ Ch.de Gaulle,CDG,08:15,08:07,,EW,Eurowings,EW7402,Flight Landed
+Munich,MUC,06:50,06:51,2/K05,Paris/ Ch.de Gaulle,CDG,08:25,08:39,2B/D50,LH,Lufthansa,LH2226,Flight Landed
+Zurich,ZRH,07:30,07:45,,Paris/ Ch.de Gaulle,CDG,09:00,09:08,2B/D67,BT,Airbaltic,BT632,Flight Landed
+Vienna,VIE,07:05,07:08,3/F02,Paris/ Ch.de Gaulle,CDG,09:15,09:09,,OS,Austrian,OS411,Flight Landed
+Brussels,BRU,08:15,08:27,,Paris/ Ch.de Gaulle,CDG,09:15,09:23,2B/D69,SN,Brussels Airlines,SN3633,Flight Landed
+Frankfurt,FRA,09:15,09:27,1/A32,Paris/ Ch.de Gaulle,CDG,10:30,10:40,2B/D54,LH,Lufthansa,LH1030,Flight Landed
+Munich,MUC,08:55,09:01,2/G48,Paris/ Ch.de Gaulle,CDG,10:30,10:45,2B/D66,LH,Lufthansa,LH2228,Flight Landed
+London Heathrow,LHR,08:05,08:08,,Dusseldorf,DUS,10:30,10:11,,EW,Eurowings,EW9469,Flight Landed
+London Heathrow,LHR,08:30,08:38,2/A17,Frankfurt,FRA,11:05,11:02,1/Area A,LH,Lufthansa,LH925,Flight Landed
+London Heathrow,LHR,08:45,08:54,,Stuttgart,STR,11:25,11:26,,EW,Eurowings,EW2463,Flight Landed
+London Heathrow,LHR,08:45,09:04,2/A19,Munich,MUC,11:35,11:40,2/L06,LH,Lufthansa,LH2471,Flight Landed
+London Heathrow,LHR,08:50,08:48,,Hamburg,HAM,11:30,11:16,,EW,Eurowings,EW7465,Flight Landed
+London Heathrow,LHR,08:50,09:26,2/A24,Zurich,ZRH,11:45,11:59,,LX,SWISS,LX317,Flight Landed
+London Heathrow,LHR,09:00,09:12,2/A16,Geneva,GVA,11:40,11:48,,LX,SWISS,LX353,Flight Landed
+London Heathrow,LHR,09:05,09:25,2/A25,Vienna,VIE,12:20,12:19,,OS,Austrian,OS452,Flight Landed
+London Heathrow,LHR,09:30,09:33,2/A17,Frankfurt,FRA,12:05,12:09,1/Z19,LH,Lufthansa,LH901,Flight Landed
+London Heathrow,LHR,09:45,09:48,,Cologne/Bonn,CGN,12:10,12:15,1/D99,EW,Eurowings,EW461,Flight Landed
+London Heathrow,LHR,10:30,11:17,2/A19,Frankfurt,FRA,13:05,13:39,1/B20,LH,Lufthansa,LH903,Flight Landed
+London Heathrow,LHR,11:05,11:08,,Brussels,BRU,13:10,13:02,,SN,Brussels Airlines,SN2094,Flight Landed
+London Heathrow,LHR,11:10,11:28,2/A26,Munich,MUC,14:00,14:02,2/H24,LH,Lufthansa,LH2473,Flight Landed
+London Heathrow,LHR,11:30,11:32,2/A17,Frankfurt,FRA,14:05,13:51,1/B26,LH,Lufthansa,LH905,Flight Landed
+Stuttgart,STR,07:10,07:11,1/124,London Heathrow,LHR,08:00,07:57,,EW,Eurowings,EW2462,Flight Landed
+Munich,MUC,07:00,07:00,2/H40,London Heathrow,LHR,08:05,08:15,,LH,Lufthansa,LH2470,Flight Landed
+Zurich,ZRH,07:15,07:31,,London Heathrow,LHR,08:05,08:23,,LX,SWISS,LX316,Flight Landed
+Hamburg,HAM,07:20,07:21,1/B47,London Heathrow,LHR,08:10,08:00,,EW,Eurowings,EW7464,Flight Landed
+Geneva,GVA,07:25,07:37,,London Heathrow,LHR,08:15,08:08,,LX,SWISS,LX352,Flight Landed
+Vienna,VIE,06:50,07:01,3/G37,London Heathrow,LHR,08:20,08:30,,OS,Austrian,OS451,Flight Landed
+Cologne/Bonn,CGN,08:25,08:35,1/D82,London Heathrow,LHR,09:05,09:13,,EW,Eurowings,EW460,Flight Landed
+Brussels,BRU,09:40,09:57,,London Heathrow,LHR,10:05,10:19,,SN,Brussels Airlines,SN2093,Flight Landed
+Munich,MUC,09:20,09:26,2/L10,London Heathrow,LHR,10:25,10:39,,LH,Lufthansa,LH2472,Flight Landed
+Frankfurt,FRA,10:00,09:59,1/B27,London Heathrow,LHR,10:45,10:45,,LH,Lufthansa,LH904,Flight Landed
+Zurich,ZRH,10:25,10:34,,London Heathrow,LHR,11:25,11:21,,2L,Helvetic Airways,2L318,Flight Landed
+Dusseldorf,DUS,11:00,11:03,,London Heathrow,LHR,11:35,11:23,,EW,Eurowings,EW9466,Flight Landed
+Rome,FCO,08:25,08:28,1/A69,Munich,MUC,09:55,09:56,2/G48,LH,Lufthansa,LH1873,Flight Landed
+Rome,FCO,09:40,09:51,1/A65,Zurich,ZRH,11:20,11:21,,BT,Airbaltic,BT1727,Flight Landed
+Rome,FCO,10:10,10:21,1/A62,Frankfurt,FRA,12:05,12:18,1/Area A,LH,Lufthansa,LH231,Flight Landed
+Rome,FCO,10:15,10:27,1/A68,Vienna,VIE,11:55,11:56,,OS,Austrian,OS502,Flight Landed
+Rome,FCO,10:20,10:40,,Brussels,BRU,12:35,12:51,,SN,Brussels Airlines,SN3176,Flight Landed
+Rome,FCO,11:00,11:12,1/A67,Munich,MUC,12:30,12:36,2/G44,LH,Lufthansa,LH1865,Flight Landed
+Zurich,ZRH,07:20,07:21,,Rome,FCO,08:50,08:44,,BT,Airbaltic,BT1726,Flight Landed
+Frankfurt,FRA,07:10,07:31,1/A21,Rome,FCO,08:55,09:10,,LH,Lufthansa,LH230,Flight Landed
+Vienna,VIE,07:55,07:58,3/F10,Rome,FCO,09:30,09:28,,OS,Austrian,OS501,Flight Landed
+Brussels,BRU,07:30,07:32,,Rome,FCO,09:30,09:27,,SN,Brussels Airlines,SN3175,Flight Landed
+Munich,MUC,08:40,08:42,2/K12,Rome,FCO,10:10,10:10,,LH,Lufthansa,LH1864,Flight Landed
+Munich,MUC,08:40,08:40,2/K20,Madrid,MAD,11:20,11:22,,LH,Lufthansa,LH1800,Flight Landed
+Brussels,BRU,09:20,09:34,,Madrid,MAD,11:45,11:52,,SN,Brussels Airlines,SN3721,Flight Landed
+Dublin,DUB,08:35,08:37,1/307A,Frankfurt,FRA,11:35,11:34,1/Z21,LH,Lufthansa,LH977,Flight Landed
+Dublin,DUB,10:40,10:35,1/301,Munich,MUC,13:55,13:46,2/H44,LH,Lufthansa,LH2517,Flight Landed
+Dublin,DUB,12:00,12:02,1/301,Frankfurt,FRA,15:00,15:14,1/Z25,4Y,Airbus Transport International,4Y979,Flight Landed
+Munich,MUC,08:25,08:26,2/H40,Dublin,DUB,09:55,09:46,,LH,Lufthansa,LH2516,Flight Landed
+Frankfurt,FRA,09:50,10:05,1/306,Dublin,DUB,10:55,11:14,,4Y,Airbus Transport International,4Y978,Flight Landed
+Frankfurt,FRA,10:35,10:42,1/Z15,Dublin,DUB,11:46,11:57,,4Y,Airbus Transport International,4Y444,Flight Diverted
+Zurich,ZRH,10:30,10:28,,Dublin,DUB,11:50,11:57,,LX,SWISS,LX400,Flight Landed
+Frankfurt,FRA,09:30,09:33,1/A22,Lisbon,LIS,11:35,11:51,,LH,Lufthansa,LH1166,Flight Landed
+Zurich,ZRH,10:15,10:17,,Lisbon,LIS,11:50,12:11,,LX,SWISS,LX2086,Flight Landed
+Amsterdam,AMS,08:35,08:31,,Hamburg,HAM,09:45,09:31,,EW,Eurowings,EW7181,Flight Landed
+Amsterdam,AMS,08:40,08:44,,Frankfurt,FRA,09:45,09:49,1/Area A,LH,Lufthansa,LH987,Flight Landed
+Amsterdam,AMS,08:55,09:39,,Munich,MUC,10:15,10:49,2/G81,CL,Lufthansa Cityline,CL2301,Flight Landed
+Amsterdam,AMS,09:50,10:22,,Zurich,ZRH,11:15,11:44,,LX,SWISS,LX725,Flight Landed
+Amsterdam,AMS,10:00,10:13,,Vienna,VIE,11:50,11:46,,OS,Austrian,OS372,Flight Landed
+Amsterdam,AMS,10:40,11:22,,Frankfurt,FRA,11:45,12:33,1/Area A,OS,Austrian,OS989,Flight Landed
+Amsterdam,AMS,11:00,11:19,,Munich,MUC,12:20,12:35,2/T02S,CL,Lufthansa Cityline,CL2303,Flight Landed
+Frankfurt,FRA,06:45,06:48,1/A30,Amsterdam,AMS,08:00,08:00,,LH,Lufthansa,LH986,Flight Landed
+Munich,MUC,06:40,06:47,2/G82,Amsterdam,AMS,08:15,08:33,,CL,Lufthansa Cityline,CL2300,Flight Landed
+Zurich,ZRH,07:20,07:23,,Amsterdam,AMS,09:00,09:05,,LX,SWISS,LX724,Flight Landed
+Vienna,VIE,07:15,07:23,3/F36,Amsterdam,AMS,09:10,09:15,,OS,Austrian,OS371,Flight Landed
+Munich,MUC,08:45,08:51,2/G15,Amsterdam,AMS,10:20,10:24,,CL,Lufthansa Cityline,CL2302,Flight Landed
+Luxembourg,LUX,08:20,08:19,,Frankfurt,FRA,09:10,09:01,1/Area A,CL,Lufthansa Cityline,CL391,Flight Landed
+Luxembourg,LUX,09:20,09:17,,Munich,MUC,10:25,10:15,2/G82,CL,Lufthansa Cityline,CL2317,Flight Landed
+Luxembourg,LUX,10:25,10:24,,Zurich,ZRH,11:30,11:19,,2L,Helvetic Airways,2L751,Flight Landed
+Luxembourg,LUX,10:40,10:36,,Frankfurt,FRA,11:30,11:19,1/Area A,CL,Lufthansa Cityline,CL393,Flight Landed
+Zurich,ZRH,07:35,07:40,,Luxembourg,LUX,08:35,08:37,,2L,Helvetic Airways,2L750,Flight Landed
+Munich,MUC,07:40,07:35,2/G69,Luxembourg,LUX,08:45,08:40,,CL,Lufthansa Cityline,CL2316,Flight Landed
+Budapest,BUD,08:05,08:09,2A/A03,Munich,MUC,09:20,09:23,2/K01,LH,Lufthansa,LH1675,Flight Landed
+Budapest,BUD,08:35,08:29,,Stuttgart,STR,10:05,10:09,,EW,Eurowings,EW2781,Flight Landed
+Budapest,BUD,09:20,09:11,,Dusseldorf,DUS,11:15,11:03,,EW,Eurowings,EW9785,Flight Landed
+Budapest,BUD,09:40,09:55,2A/A02,Zurich,ZRH,11:20,11:32,,2L,Helvetic Airways,2L2251,Flight Landed
+Budapest,BUD,11:15,11:53,2A/B41,Vienna,VIE,12:05,12:53,,OS,Austrian,OS714,Flight Landed
+Stuttgart,STR,06:30,06:31,1/325,Budapest,BUD,08:00,07:45,,EW,Eurowings,EW2780,Flight Landed
+Dusseldorf,DUS,06:50,06:50,,Budapest,BUD,08:40,08:38,,EW,Eurowings,EW9784,Flight Landed
+Zurich,ZRH,07:15,07:21,,Budapest,BUD,08:50,08:50,,2L,Helvetic Airways,2L2250,Flight Landed
+Vienna,VIE,09:50,10:36,3/F25,Budapest,BUD,10:35,11:16,,OS,Austrian,OS713,Flight Landed
+Frankfurt,FRA,10:25,10:42,1/A05,Budapest,BUD,11:55,12:05,,LH,Lufthansa,LH1336,Flight Landed
+Athens,ATH,09:20,09:27,,Zurich,ZRH,11:10,11:21,,LX,SWISS,LX1843,Flight Landed
+Marseille,MRS,09:05,09:25,1A/023,Munich,MUC,10:40,10:49,2/T02S,EN,Air Dolomiti,EN2261,Flight Landed
+Marseille,MRS,10:25,10:47,1A/035,Frankfurt,FRA,12:05,12:21,1/Area A,EW,Eurowings,EW1087,Flight Landed
+Marseille,MRS,12:05,12:00,,Brussels,BRU,13:50,13:35,,SN,Brussels Airlines,SN3598,Flight Landed
+Munich,MUC,06:50,07:11,2/G46,Marseille,MRS,08:30,08:54,,EN,Air Dolomiti,EN2260,Flight Landed
+Brussels,BRU,09:35,09:35,,Marseille,MRS,11:15,11:07,,SN,Brussels Airlines,SN3597,Flight On Time
+Barcelona (ES),BCN,09:10,09:18,1/B24,Munich,MUC,11:10,11:09,2/K16,LH,Lufthansa,LH1809,Flight Landed
+Barcelona (ES),BCN,09:15,09:11,,Stuttgart,STR,11:25,11:05,,EW,Eurowings,EW2529,Flight Landed
+Barcelona (ES),BCN,09:40,09:58,1/B44,Zurich,ZRH,11:30,11:40,,BT,Airbaltic,BT1953,Flight Landed
+Barcelona (ES),BCN,09:45,09:48,,Dusseldorf,DUS,12:10,11:59,,BT,Airbaltic,BT9441,Flight Landed
+Barcelona (ES),BCN,09:55,10:16,1/B40,Frankfurt,FRA,12:10,12:08,1/B09,LH,Lufthansa,LH1125,Flight Landed
+Barcelona (ES),BCN,10:05,10:16,1/B52,Vienna,VIE,12:20,12:20,,OS,Austrian,OS392,Flight Landed
+Barcelona (ES),BCN,11:50,11:54,1/B40,Munich,MUC,13:50,13:44,2/K14,LH,Lufthansa,LH1811,Flight Landed
+Munich,MUC,06:25,06:20,2/K09,Barcelona (ES),BCN,08:25,08:30,,LH,Lufthansa,LH1808,Flight Landed
+Stuttgart,STR,06:40,06:34,1/314,Barcelona (ES),BCN,08:35,08:25,,EW,Eurowings,EW2528,Flight Landed
+Zurich,ZRH,07:10,07:13,,Barcelona (ES),BCN,08:50,09:06,,BT,Airbaltic,BT1952,Flight Landed
+Dusseldorf,DUS,06:50,06:43,,Barcelona (ES),BCN,09:00,09:06,,BT,Airbaltic,BT9440,Flight Landed
+Frankfurt,FRA,07:10,07:20,1/B10,Barcelona (ES),BCN,09:10,09:15,,LH,Lufthansa,LH1124,Flight Landed
+Vienna,VIE,07:00,07:07,3/F21,Barcelona (ES),BCN,09:20,09:24,,OS,Austrian,OS391,Flight Landed
+Munich,MUC,09:00,09:01,2/G46,Barcelona (ES),BCN,11:00,11:04,,LH,Lufthansa,LH1810,Flight Landed
+Frankfurt,FRA,09:50,10:09,1/A21,Barcelona (ES),BCN,11:50,12:03,,LH,Lufthansa,LH1126,Flight Landed
+Geneva,GVA,08:15,08:15,,Brussels,BRU,09:35,09:24,,SN,Brussels Airlines,SN2712,Flight On Time
+Geneva,GVA,08:50,08:57,,Frankfurt,FRA,10:05,09:59,1/Area A,CL,Lufthansa Cityline,CL1213,Flight Landed
+Geneva,GVA,09:00,08:56,,Dusseldorf,DUS,10:25,10:09,,EW,Eurowings,EW9743,Flight Landed
+Geneva,GVA,09:15,09:16,,Munich,MUC,10:30,10:19,2/T02S,CL,Lufthansa Cityline,CL2383,Flight Landed
+Geneva,GVA,09:35,09:32,,Vienna,VIE,11:10,11:02,,OS,Austrian,OS572,Flight Landed
+Geneva,GVA,10:15,10:17,,Zurich,ZRH,11:10,11:11,,LX,SWISS,LX2807,Flight Landed
+Geneva,GVA,10:50,10:41,,Frankfurt,FRA,12:05,11:52,1/BSO,LX,SWISS,LX1082,Flight Landed
+Geneva,GVA,11:00,11:06,,Athens,ATH,14:40,14:40,,LX,SWISS,LX1822,Flight Landed
+Geneva,GVA,11:00,11:03,,Zurich,ZRH,11:55,11:49,,LX,SWISS,LX2809,Flight Landed
+Geneva,GVA,11:40,11:43,,New York J F Kennedy,JFK,14:40,14:06,,LX,SWISS,LX022,Flight Early
+Frankfurt,FRA,07:05,07:26,1/A52,Geneva,GVA,08:10,08:16,,CL,Lufthansa Cityline,CL1212,Flight Landed
+Dusseldorf,DUS,06:50,06:40,,Geneva,GVA,08:20,07:56,,EW,Eurowings,EW9742,Flight Landed
+Zurich,ZRH,07:30,07:39,,Geneva,GVA,08:25,08:29,,LX,SWISS,LX2802,Flight Landed
+Munich,MUC,07:25,07:34,2/G72,Geneva,GVA,08:35,08:35,,CL,Lufthansa Cityline,CL2382,Flight Landed
+Vienna,VIE,07:15,07:09,3/F06,Geneva,GVA,08:50,08:46,,OS,Austrian,OS571,Flight Landed
+New York J F Kennedy,JFK,19:45,20:00,1/008,Geneva,GVA,09:20,09:21,,LX,SWISS,LX023,Flight Landed
+London Heathrow,LHR,07:00,07:00,2/A19,Geneva,GVA,09:35,09:33,,LX,SWISS,LX359,Flight Landed
+Zurich,ZRH,09:15,09:17,,Geneva,GVA,10:05,09:58,,LX,SWISS,LX2804,Flight Landed
+Brussels,BRU,09:25,09:24,,Geneva,GVA,10:40,10:31,,LX,SWISS,LX791,Flight Landed
+London City,LCY,08:35,08:28,,Geneva,GVA,11:20,10:53,,LX,SWISS,LX443,Flight Landed
+Vienna,VIE,08:03,08:03,,Linz Railway Station,LZS,09:44,09:44,,OS,Austrian,OS3503,Flight On Time
+Vienna,VIE,08:03,08:03,,Salzburg Railway Station,ZSB,10:52,10:52,,OS,Austrian,OS3555,Flight On Time
+Vienna,VIE,08:05,08:03,3/F14,Milan Malpensa,MXP,09:30,09:28,,OS,Austrian,OS511,Flight Landed
+Vienna,VIE,08:15,08:10,3/F05,Warsaw,WAW,09:30,09:16,,OS,Austrian,OS625,Flight Landed
+Vienna,VIE,08:25,08:24,3/F06,Hannover,HAJ,09:55,09:41,,OS,Austrian,OS291,Flight Landed
+Vienna,VIE,08:40,08:43,3/F16,Bologna,BLQ,09:55,09:54,,OS,Austrian,OS547,Flight Landed
+Vienna,VIE,08:45,08:40,3/F12,Zurich,ZRH,10:10,09:58,,OS,Austrian,OS551,Flight Landed
+Vienna,VIE,08:55,09:04,,Stuttgart,STR,10:10,10:03,,EW,Eurowings,EW2759,Flight Landed
+Vienna,VIE,09:00,08:57,,Cologne/Bonn,CGN,10:40,10:20,1/B40,EW,Eurowings,EW757,Flight Landed
+Vienna,VIE,09:03,09:03,,Linz Railway Station,LZS,10:44,10:44,,OS,Austrian,OS3505,Flight On Time
+Vienna,VIE,09:03,09:03,,Salzburg Railway Station,ZSB,11:52,11:52,,OS,Austrian,OS3557,Flight On Time
+Vienna,VIE,09:05,09:14,,Hamburg,HAM,10:45,10:41,,EW,Eurowings,EW7753,Flight Landed
+Vienna,VIE,09:10,09:38,3/F14,Frankfurt,FRA,10:40,10:55,1/A14,LH,Lufthansa,LH1233,Flight Landed
+Vienna,VIE,09:15,09:22,3/F02,Venice,VCE,10:20,10:19,,OS,Austrian,OS521,Flight Landed
+Vienna,VIE,09:15,09:18,3/F22,Brussels,BRU,11:00,11:04,,SN,Brussels Airlines,SN2902,Flight Landed
+Vienna,VIE,09:30,09:30,,Dusseldorf,DUS,11:10,10:53,,EW,Eurowings,EW9755,Flight Landed
+Vienna,VIE,09:30,09:39,3/G36,Sofia,SOF,12:00,12:01,,OS,Austrian,OS795,Flight Landed
+Vienna,VIE,09:30,09:38,3/F08,Athens,ATH,12:40,12:45,,OS,Austrian,OS801,Flight Landed
+Vienna,VIE,09:35,09:54,3/F16,Munich,MUC,10:35,10:45,2/T02S,EN,Air Dolomiti,EN2325,Flight Landed
+Vienna,VIE,09:35,09:43,3/F05,Malaga,AGP,12:55,13:09,,OS,Austrian,OS385,Flight Landed
+Vienna,VIE,09:35,09:34,3/F04,Zurich,ZRH,11:00,10:52,,OS,Austrian,OS555,Flight Landed
+Vienna,VIE,09:40,09:41,3/F24,,PRG,10:30,10:32,,OS,Austrian,OS705,Flight Landed
+Vienna,VIE,09:40,09:36,3/F06,Innsbruck,INN,10:35,10:34,,OS,Austrian,OS903,Flight Landed
+Vienna,VIE,10:00,10:20,3/G26,Bucharest,OTP,12:35,12:47,,OS,Austrian,OS783,Flight Landed
+Vienna,VIE,10:10,10:06,3/F27,Frankfurt,FRA,11:40,11:30,1/A26,OS,Austrian,OS129,Flight Landed
+Vienna,VIE,10:15,10:11,3/F10,Lyon,LYS,12:05,11:52,,OS,Austrian,OS405,Flight Landed
+Vienna,VIE,10:15,10:18,3/G04,Skopje,SKP,11:50,11:45,,OS,Austrian,OS775,Flight Landed
+Vienna,VIE,10:20,10:23,3/D28,Tel Aviv,TLV,14:45,14:36,,OS,Austrian,OS857,Flight Landed
+Vienna,VIE,10:25,10:49,3/D22,New York J F Kennedy,JFK,14:10,13:51,1/008,OS,Austrian,OS087,Flight Early
+Vienna,VIE,10:45,10:42,3/G03,Chicago,ORD,14:05,13:09,5/M24,OS,Austrian,OS065,Flight Early
+Vienna,VIE,11:00,11:07,3/G12,Amman,AMM,16:35,16:32,,OS,Austrian,OS853,Flight Landed
+Vienna,VIE,11:03,11:03,,Linz Railway Station,LZS,12:44,12:44,,OS,Austrian,OS3509,Flight On Time
+Vienna,VIE,11:03,11:03,,Salzburg Railway Station,ZSB,13:52,13:52,,OS,Austrian,OS3547,Flight On Time
+Vienna,VIE,11:10,11:08,3/F08,Frankfurt,FRA,12:40,12:33,1/A11,OS,Austrian,OS1235,Flight Landed
+Vienna,VIE,11:33,11:33,,Graz Rail Station,GGZ,14:33,14:33,,OS,Austrian,OS3589,Flight On Time
+Venice,VCE,06:45,06:59,,Vienna,VIE,07:55,08:04,,OS,Austrian,OS528,Flight Landed
+Stuttgart,STR,06:50,06:48,1/312,Vienna,VIE,08:10,08:00,,EW,Eurowings,EW2758,Flight Landed
+Frankfurt,FRA,06:50,07:00,1/A17,Vienna,VIE,08:10,08:23,,LH,Lufthansa,LH1232,Flight Landed
+New York Newark,EWR,17:55,18:20,B/B63,Vienna,VIE,08:15,07:55,,OS,Austrian,OS090,Flight Landed
+Berlin/Brandenburg,BER,07:00,06:57,1/A03,Vienna,VIE,08:15,08:13,,OS,Austrian,OS240,Flight Landed
+Belgrade,BEG,07:00,07:06,,Vienna,VIE,08:15,08:21,,OS,Austrian,OS740,Flight Landed
+Cologne/Bonn,CGN,06:50,06:43,1/B40,Vienna,VIE,08:20,07:56,,EW,Eurowings,EW756,Flight Landed
+Chicago,ORD,16:20,16:26,5/M39,Vienna,VIE,08:20,07:43,,OS,Austrian,OS066,Flight Landed
+,PRG,07:25,07:26,,Vienna,VIE,08:20,08:14,,OS,Austrian,OS712,Flight Landed
+Hamburg,HAM,06:50,06:42,1/A39,Vienna,VIE,08:25,08:16,,EW,Eurowings,EW7752,Flight Landed
+Krakow,KRK,07:25,07:42,,Vienna,VIE,08:25,08:33,,OS,Austrian,OS600,Flight Landed
+Brussels,BRU,06:45,06:45,,Vienna,VIE,08:25,08:32,,SN,Brussels Airlines,SN2901,Flight Landed
+Linz Railway Station,LZS,06:31,06:31,,Vienna,VIE,08:27,08:27,,OS,Austrian,OS3534,Flight On Time
+Salzburg Railway Station,ZSB,05:12,05:12,,Vienna,VIE,08:27,08:27,,OS,Austrian,OS3542,Flight On Time
+Zurich,ZRH,07:10,07:11,,Vienna,VIE,08:30,08:54,,OS,Austrian,OS568,Flight Landed
+Athens,ATH,07:15,07:14,,Vienna,VIE,08:30,08:39,,OS,Austrian,OS804,Flight Landed
+Milan Malpensa,MXP,07:10,07:20,1/A03,Vienna,VIE,08:35,08:59,,OS,Austrian,OS518,Flight Landed
+Washington Dulles,IAD,18:00,18:10,,Vienna,VIE,08:40,08:20,,OS,Austrian,OS094,Flight Landed
+Montreal/Dorval,YUL,18:35,18:37,,Vienna,VIE,08:45,08:12,,OS,Austrian,OS074,Flight Landed
+Dusseldorf,DUS,07:15,07:14,,Vienna,VIE,08:50,08:50,,EW,Eurowings,EW9754,Flight Landed
+Munich,MUC,07:50,08:00,2/K18,Vienna,VIE,08:50,09:09,,EN,Air Dolomiti,EN2324,Flight Landed
+Stockholm,ARN,06:35,06:28,,Vienna,VIE,08:50,08:41,,OS,Austrian,OS318,Flight Landed
+Copenhagen,CPH,07:10,07:00,2/A15,Vienna,VIE,08:55,08:46,,OS,Austrian,OS308,Flight Landed
+Amsterdam,AMS,07:05,07:10,,Vienna,VIE,08:55,09:03,,OS,Austrian,OS378,Flight Landed
+Linz Railway Station,LZS,07:16,07:16,,Vienna,VIE,08:57,08:57,,OS,Austrian,OS3500,Flight On Time
+Salzburg Railway Station,ZSB,06:02,06:02,,Vienna,VIE,08:57,08:57,,OS,Austrian,OS3556,Flight On Time
+Tel Aviv,TLV,06:15,07:21,3/E02,Vienna,VIE,09:00,10:06,,OS,Austrian,OS860,Flight Landed
+Paris/ Ch.de Gaulle,CDG,07:10,06:59,2B/D54,Vienna,VIE,09:10,08:57,,OS,Austrian,OS420,Flight Landed
+Frankfurt,FRA,07:50,07:48,1/A24,Vienna,VIE,09:15,09:17,,OS,Austrian,OS128,Flight Landed
+London Heathrow,LHR,06:00,05:53,2/B41,Vienna,VIE,09:15,09:08,,OS,Austrian,OS458,Flight Landed
+Zurich,ZRH,08:25,08:25,,Vienna,VIE,09:45,09:34,,OS,Austrian,OS562,Flight Landed
+Munich,MUC,08:50,08:51,2/K01,Vienna,VIE,09:55,09:49,,OS,Austrian,OS112,Flight Landed
+Linz Railway Station,LZS,08:16,08:16,,Vienna,VIE,09:57,09:57,,OS,Austrian,OS3502,Flight On Time
+Salzburg Railway Station,ZSB,07:08,07:08,,Vienna,VIE,09:57,09:57,,OS,Austrian,OS3558,Flight On Time
+Stuttgart,STR,09:00,08:50,2/316,Vienna,VIE,10:15,10:01,,OS,Austrian,OS178,Flight Landed
+Graz Rail Station,GGZ,07:26,07:26,,Vienna,VIE,10:27,10:27,,OS,Austrian,OS3580,Flight On Time
+Linz Railway Station,LZS,09:16,09:16,,Vienna,VIE,10:57,10:57,,OS,Austrian,OS3504,Flight On Time
+Salzburg Railway Station,ZSB,08:08,08:08,,Vienna,VIE,10:57,10:57,,OS,Austrian,OS3546,Flight On Time
+Cologne/Bonn,CGN,09:40,09:43,1/C50,Vienna,VIE,11:10,11:00,,OS,Austrian,OS192,Flight Landed
+Frankfurt,FRA,09:50,09:50,1/A28,Vienna,VIE,11:15,11:03,,OS,Austrian,OS122,Flight Landed
+Hamburg,HAM,09:40,09:33,2/A20,Vienna,VIE,11:15,10:56,,OS,Austrian,OS176,Flight Landed
+Dusseldorf,DUS,09:50,09:48,,Vienna,VIE,11:25,11:16,,OS,Austrian,OS152,Flight Landed
+Warsaw,WAW,10:10,10:03,,Vienna,VIE,11:30,11:18,,OS,Austrian,OS626,Flight Landed
+Copenhagen,CPH,09:50,09:53,,Vienna,VIE,11:35,11:29,,OS,Austrian,OS302,Flight Landed
+Brussels,BRU,09:50,10:06,,Vienna,VIE,11:35,11:35,,OS,Austrian,OS352,Flight Landed
+Milan Malpensa,MXP,10:15,10:15,1/A08,Vienna,VIE,11:45,11:44,,OS,Austrian,OS512,Flight Landed

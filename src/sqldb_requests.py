@@ -2,8 +2,12 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import MultipleResultsFound, NoResultFound
 
+# CONSTANTS
 
 SQL_ALCHEMY_ENGINE = 'sqlite:///codes.sqlite'
+
+
+# FUNCTIONS
 
 def get_airport_infos(airport_iata):
     """ 
@@ -18,7 +22,7 @@ def get_airport_infos(airport_iata):
     result      : tuple with airport_name, city_name, country_name
     """
     
-    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=True)
+    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=False)
 
     with engine.connect() as conn:
         query = text("SELECT airport_name,city_name, country_name "
@@ -47,10 +51,10 @@ def get_airline_from_iata(airline_iata):
 
     Returns :
     ---------
-    result      : tuple with airline_name
+    result      : airline_name
     """
 
-    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=True)
+    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=False)
 
     with engine.connect() as conn:
         query = text("SELECT airline_name "
@@ -79,10 +83,10 @@ def get_airline_from_icao(airline_icao):
 
     Returns :
     ---------
-    result      : tuple with airline_name
+    result      : airline_name
     """
     
-    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=True)
+    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=False)
 
     with engine.connect() as conn:
         query = text("SELECT airline_name "
