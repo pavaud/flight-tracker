@@ -476,8 +476,8 @@ def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
     airport_name = ""
 
     if (map_n_clicks == map_clicks) or map_clicks is None:
-        if (sub_clicks != submit_clicks) :
-
+        if (sub_clicks != submit_clicks) and not (value is None or value == "") :
+            print(value)
             style = {'display': 'block'}
             submit_clicks = sub_clicks
 
@@ -492,8 +492,11 @@ def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
                             df_dep.to_dict('records'),
                             [{"name": i, "id": i} for i in df_dep.columns],
                                 page_size=10)
-            
-            airport_name = value + " ("+ get_airport_infos(value)[0]+ ")"
+            try:
+                airport_name = get_airport_infos(value)[0]
+            except IndexError:
+                airport_name = ""
+            airport_name = value.upper() + " ("+ airport_name + ")"
     else:
         map_n_clicks += 1
 

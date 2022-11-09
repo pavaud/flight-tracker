@@ -455,7 +455,7 @@ def get_arrivals(airport):
     client = get_mongo_client()
     col = client.flightTracker.flights
 
-    arr_found = list(col.find(filter={'Arrival.AirportCode':airport},
+    arr_found = list(col.find(filter={'Arrival.AirportCode':airport.upper()},
                               sort=[('Arrival.Scheduled.Time',1)]))
     
     columns = ['Scheduled','Actual','Carrier','Flight','Status','Origin']
@@ -490,7 +490,7 @@ def get_departures(airport):
     client = get_mongo_client()
     col = client.flightTracker.flights
 
-    dep_found = list(col.find(filter={'Departure.AirportCode':airport},
+    dep_found = list(col.find(filter={'Departure.AirportCode':airport.upper()},
                               sort=[('Departure.Scheduled.Time',1)]))
         
     columns = ['Scheduled','Actual','Carrier','Flight','Status','Destination']
