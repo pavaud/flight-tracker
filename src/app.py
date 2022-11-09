@@ -186,12 +186,12 @@ clicked_airplane_layout = html.Div([
 
 # filter airport 
 filtered_airport_layout = html.Div([
+    html.Div(id="airport_infos", style={'textAlign': 'center'}),
     html.Div([
-        html.Div([
-            html.Div("Departures at aiport : ", style={'textAlign': 'left'}),
-            html.Span(id="dep_airport_code"),
-            html.Span(id="dep_airport_name"),
-        ], id="departures_title",style={"display": "inline-block"}
+        html.H3("Departures",
+                 style={"display": "inline-block",
+                        'textAlign': 'center',
+                        "width":"100%"}
         ),
         html.Div(id='departures_table',
                 className = "airport_table",
@@ -200,11 +200,10 @@ filtered_airport_layout = html.Div([
        style={"display": "inline-block"}
     ),
     html.Div([
-        html.Div([
-            html.Div("Arrivals at aiport : ", style={'textAlign': 'left'}),
-            html.Span(id="arr_airport_code"),
-            html.Span(id="arr_airport_name"),
-        ], id="arrivals_title", style={"display": "inline-block"}
+        html.H3("Arrivals",
+                 style={"display": "inline-block",
+                        'textAlign': 'center',
+                        "width":"100%"}
         ),
         html.Div(id='arrivals_table',
                  className = "airport_table",
@@ -253,10 +252,12 @@ app.layout = html.Div([
 df = []
 # close button of the airplane selection panel
 x_close_selection_clicks = 0
-
 # submit button of the airplane selection panel
 submit_clicks = 0
-
+# clicks on the map
+map_n_clicks = 0 
+# close button of the airport selection panel
+x_close_airport_clicks = 0
 
 # CALLBACKS
 
@@ -453,33 +454,58 @@ def toggle_fields(dd_value):
 @app.callback(Output('airport_panel', 'style'),
               Output('arrivals_table', 'children'),
               Output('departures_table', 'children'),
+              Output('airport_infos', 'children'),
               Input('submit_val','n_clicks'),
+              Input('map_container', 'n_clicks'),
+              Input('x_close_airport', 'n_clicks'),
               State('input_airport', 'value'))
-def display_airport_panel(n_clicks,value):
+def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
     """
     display airport panel based on airport field value
     when submit button is clicked
     """
     global submit_clicks
+    global map_n_clicks
+    global x_close_airport_clicks
 
     style = {'display': 'none'}
     df_arr = ""
     df_dep = ""
     arrivals_tbl = ""
     departures_tbl = ""
-    if n_clicks != submit_clicks:
-        style = {'display': 'block'}
-        submit_clicks = n_clicks
-        df_arr = get_arrivals(value)
-        df_dep = get_departures(value)
-        arrivals_tbl = dash_table.DataTable(
-                        df_arr.to_dict('records'),
-                        [{"name": i, "id": i} for i in df_arr.columns])
-        departures_tbl = dash_table.DataTable(
-                           df_dep.to_dict('records'),
-                           [{"name": i, "id": i} for i in df_dep.columns])
+    airport_name = ""
 
-    return style, arrivals_tbl, departures_tbl
+    if (map_n_clicks == map_clicks) or map_clicks is None:
+        if (sub_clicks != submit_clicks) :
+
+            style = {'display': 'block'}
+            submit_clicks = sub_clicks
+
+            df_arr = get_arrivals(value)
+            df_dep = get_departures(value)
+
+            arrivals_tbl = dash_table.DataTable(
+                            df_arr.to_dict('records'),
+                            [{"name": i, "id": i} for i in df_arr.columns],
+                                page_size=10)
+            departures_tbl = dash_table.DataTable(
+                            df_dep.to_dict('records'),
+                            [{"name": i, "id": i} for i in df_dep.columns],
+                                page_size=10)
+            
+            airport_name = value + " ("+ get_airport_infos(value)[0]+ ")"
+    else:
+        map_n_clicks += 1
+
+    # close panel
+    if close_clicks != x_close_airport_clicks:
+        style = {'display': 'none'}
+        x_close_airport_clicks = close_clicks
+
+    return style, arrivals_tbl, departures_tbl, airport_name
+
+    
+
 
 
 # main

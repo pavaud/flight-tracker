@@ -220,13 +220,20 @@
     color: #FFFFFF;
     opacity: 1;
     border-radius: 5px;
-    height: wrap-content;
+    height:wrap-content;
     position: absolute;
     z-index:10;
     top: 320px;
     left:10px;
     right:10px;
     padding: 10px;
+}
+
+#airport_infos{
+    width:100%;
+    text-align: center;
+    font-size: 20px ! important;
+    font-weight: bold;
 }
 
 #x_close_airport{
@@ -242,22 +249,25 @@
 }
 
 .airport_table{
-    background-color: inherit;
+    background-color: #FFFFFF;
     color: #333333;
-    opacity: 0.9;
+    opacity: 1;
     border-radius: 5px;
-    height: wrap-content;
+    height: 100%;
     padding: 10px;
     text-align: center;
+
 }
 #departures_panel{
     background-color: inherit;
     color: inherit;
     opacity: 0.9;
     border-radius: 5px;
-    height: wrap-content;
+    height: 100%;
     width: 50%;
     padding: 10px;
+    vertical-align: top;
+
 }
 
 #arrivals_panel{
@@ -265,9 +275,10 @@
     color: inherit;
     opacity: 0.9;
     border-radius: 5px;
-    height: wrap-content;
+    height: 100%;
     width: 50%;
     padding: 10px;
+    vertical-align: top;
 }
 
 
