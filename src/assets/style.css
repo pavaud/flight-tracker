@@ -68,7 +68,8 @@
   opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
   transition: opacity .2s;
-  margin: 5px;
+  margin: 5px auto;
+  color:#333333;
 }
 
 .dropdownMenu:hover {
@@ -79,6 +80,44 @@
     font-size: 50% ! important;
 }
 
+
+.input_fields{
+    border-radius: 5px;
+    height: 40px;
+    width: 100%;
+    text-align: left;
+    outline: none; /* Remove outline */
+    opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    margin: 5px auto;
+    color:#333333;
+
+}
+
+.input_fields:hover{
+    opacity: 1;
+}
+
+#submit_val{
+    border-radius: 5px;
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    outline: none; /* Remove outline */
+    opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    margin: 5px auto;
+    background-color: #FFFFFF;
+    color:#000000;
+    font-weight:bold;
+    font-size:medium;
+}
+
+#submit_val:hover{
+    opacity: 1;
+}
 #hovered_airplane{
     background-color: #333333;
     color: #FFFFFF;
@@ -179,25 +218,56 @@
 #airport_panel{
     background-color: #333333;
     color: #FFFFFF;
-    opacity: 0.9;
+    opacity: 1;
     border-radius: 5px;
-    height: wrap-content;
+    height:wrap-content;
     position: absolute;
     z-index:10;
-    top: 200px;
+    top: 320px;
     left:10px;
     right:10px;
     padding: 10px;
 }
 
+#airport_infos{
+    width:100%;
+    text-align: center;
+    font-size: 20px ! important;
+    font-weight: bold;
+}
+
+#x_close_airport{
+    position: absolute;
+    background: inherit;
+    color: inherit;
+    height: 10px;
+    width: 10px;
+    top: 5px;
+    padding: inherit;
+    right: 15px;
+    cursor: pointer;
+}
+
+.airport_table{
+    background-color: #FFFFFF;
+    color: #333333;
+    opacity: 1;
+    border-radius: 5px;
+    height: 100%;
+    padding: 10px;
+    text-align: center;
+
+}
 #departures_panel{
     background-color: inherit;
     color: inherit;
     opacity: 0.9;
     border-radius: 5px;
-    height: wrap-content;
-    width: 48%;
+    height: 100%;
+    width: 50%;
     padding: 10px;
+    vertical-align: top;
+
 }
 
 #arrivals_panel{
@@ -205,22 +275,13 @@
     color: inherit;
     opacity: 0.9;
     border-radius: 5px;
-    height: wrap-content;
-    width: 48%;
+    height: 100%;
+    width: 50%;
     padding: 10px;
+    vertical-align: top;
 }
 
-#x_close_airport{
-    position: relative;
-    background: inherit;
-    color: inherit;
-    height: 10px;
-    width: 10px;
-    top: 0px;
-    padding: inherit;
-    right: 1px;
-    cursor: pointer;
-}
+
 .stack-top{
     z-index: 9;
     opacity: 0.9;

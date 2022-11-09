@@ -15,7 +15,7 @@ app = Dash(__name__)
 # LAYOUT
 
 # filters 
-filters_layout = html.Section([
+filters_layout = html.Div([
     html.Div([
         html.H3('Search', style={'display': 'inline'}),
         html.Span([
@@ -27,19 +27,52 @@ filters_layout = html.Section([
     ]
     ),
     html.Div([
-        html.P('Applied filters:', id='preferencesText'),
+        #html.P('Applied filters:', id='filter_text'),
         dcc.Dropdown(
-            placeholder='Select Filters',
+            placeholder='Select Filter',
             id='filters_drop',
-            options=['oui','non'],
-            clearable=False,
+            options=['By Flight','By Route', 'By Airports'],
+            clearable=True,
             className='dropdownMenu',
             multi=False
-        )
+        ),
+        html.Div([
+            html.Div([
+                dcc.Input(
+                    placeholder="(ex: LH400)",
+                    id="input_flightnumber",
+                    className='input_fields',
+                    style = {'display': 'none'}),
+                dcc.Input(
+                    placeholder="(ex: FRA)",
+                    id="input_departure",
+                    className='input_fields',
+                    style = {'display': 'none'}),
+                dcc.Input(
+                    placeholder="(ex: JFK)",
+                    id="input_arrival",
+                    className='input_fields',
+                    style = {'display': 'none'}),
+                dcc.Input(
+                    placeholder="(ex: FRA)",
+                    id="input_airport",
+                    className='input_fields',
+                    style = {'display': 'none'})    
+            ],  id='input_div'
+            ),
+
+
+            html.Button('SUBMIT', id='submit_val', n_clicks=0),
+        ],
+            id='fields_for_applied_filters',
+            style = {'display': 'none'}
+        ),
+
     ],
-        id='dropdown_menu_applied_filters',
+        id='dropdown_applied_filters',
         style = {'display': 'none'}
     ),
+    
 ],
     id="filters_container",
     style={"display": "block"},
@@ -151,36 +184,37 @@ clicked_airplane_layout = html.Div([
     style={"display": "none"},
 )
 
-# Filter airport 
-filter_airport_layout = html.Div([
+# filter airport 
+filtered_airport_layout = html.Div([
+    html.Div(id="airport_infos", style={'textAlign': 'center'}),
     html.Div([
-        html.Div([
-            html.Div("Departures at aiport : ", style={'textAlign': 'left'}),
-            html.Span(id="dep_airport_name"),
-            html.Span(id="dep_airport_code")
-        ], id="departures_title",style={"display": "inline-block"}
+        html.H3("Departures",
+                 style={"display": "inline-block",
+                        'textAlign': 'center',
+                        "width":"100%"}
         ),
-        html.Div([
-            dash_table.DataTable(id='departures_table')], style={"display": "block"}
-        )
-    ], id="departures_panel",style={"display": "inline-block"}
+        html.Div(id='departures_table',
+                className = "airport_table",
+                style={"display": "block"})
+    ], id="departures_panel",
+       style={"display": "inline-block"}
     ),
     html.Div([
-        html.Div([
-            html.Div("Arrivals at aiport : ", style={'textAlign': 'left'}),
-            html.Span(id="arr_airport_name"),
-            html.Span(id="arr_airport_code"),
-        ], id="arrivals_title", style={"display": "inline-block"}
+        html.H3("Arrivals",
+                 style={"display": "inline-block",
+                        'textAlign': 'center',
+                        "width":"100%"}
         ),
-        html.Div([
-            dash_table.DataTable(id='arrivals_table')]
-        )
-    ], id="arrivals_panel",style={"display": "inline-block"}
+        html.Div(id='arrivals_table',
+                 className = "airport_table",
+                 style={"display": "block"})
+    ], id="arrivals_panel",
+       style={"display": "inline-block"}
     ),
     html.Span('X', id="x_close_airport"),
 ],
     id="airport_panel",
-    style={"display": "block"},
+    style={"display": "none"},
 )
 
 # dashboard
@@ -194,7 +228,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 10*1000,
+                    interval = 60*1000,
                     n_intervals = 0
                     ),
     ],
@@ -204,7 +238,7 @@ app.layout = html.Div([
     filters_layout,
     hovered_airplane_layout,
     clicked_airplane_layout,
-    filter_airport_layout,
+    filtered_airport_layout,
 ],
     id='page-content',
     style={'position': 'relative'},
@@ -218,7 +252,12 @@ app.layout = html.Div([
 df = []
 # close button of the airplane selection panel
 x_close_selection_clicks = 0
-
+# submit button of the airplane selection panel
+submit_clicks = 0
+# clicks on the map
+map_n_clicks = 0 
+# close button of the airport selection panel
+x_close_airport_clicks = 0
 
 # CALLBACKS
 
@@ -362,7 +401,8 @@ def reset_clickData(n_clicks):
     return None
 
 
-@app.callback(Output('dropdown_menu_applied_filters', 'style'),
+
+@app.callback(Output('dropdown_applied_filters', 'style'),
               Output('select_filters_arrow', 'title'),
               Input('select_filters_arrow', 'n_clicks'),
               State('select_filters_arrow', 'title'))
@@ -379,6 +419,94 @@ def toggle_applied_filters(n_clicks, state):
             state = 'is_open'
 
     return style, state
+
+
+@app.callback(Output('fields_for_applied_filters', 'style'),
+              Output('input_flightnumber', 'style'),
+              Output('input_departure', 'style'),
+              Output('input_arrival', 'style'),
+              Output('input_airport', 'style'),
+              Input('filters_drop', 'value'))
+def toggle_fields(dd_value):
+    """ toggle fields depending on filter selected """
+
+    fields_style = {'display': 'none'}
+    input_flightnumber_style = {'display': 'none'}
+    input_departure_style = {'display': 'none'}
+    input_arrival_style = {'display': 'none'}
+    input_airport_style = {'display': 'none'}
+
+    if dd_value is not None:
+        fields_style = {'display': 'block'}
+        if dd_value == 'By Flight':
+            input_flightnumber_style = {'display': 'block'}
+        elif dd_value == 'By Route':
+            input_departure_style = {'display': 'block'}
+            input_arrival_style = {'display': 'block'}
+        elif dd_value == 'By Airports':
+            input_airport_style = {'display': 'block'}
+
+    return fields_style, input_flightnumber_style, \
+            input_departure_style, input_arrival_style, \
+            input_airport_style
+
+
+@app.callback(Output('airport_panel', 'style'),
+              Output('arrivals_table', 'children'),
+              Output('departures_table', 'children'),
+              Output('airport_infos', 'children'),
+              Input('submit_val','n_clicks'),
+              Input('map_container', 'n_clicks'),
+              Input('x_close_airport', 'n_clicks'),
+              State('input_airport', 'value'))
+def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
+    """
+    display airport panel based on airport field value
+    when submit button is clicked
+    """
+    global submit_clicks
+    global map_n_clicks
+    global x_close_airport_clicks
+
+    style = {'display': 'none'}
+    df_arr = ""
+    df_dep = ""
+    arrivals_tbl = ""
+    departures_tbl = ""
+    airport_name = ""
+
+    if (map_n_clicks == map_clicks) or map_clicks is None:
+        if (sub_clicks != submit_clicks) :
+
+            style = {'display': 'block'}
+            submit_clicks = sub_clicks
+
+            df_arr = get_arrivals(value)
+            df_dep = get_departures(value)
+
+            arrivals_tbl = dash_table.DataTable(
+                            df_arr.to_dict('records'),
+                            [{"name": i, "id": i} for i in df_arr.columns],
+                                page_size=10)
+            departures_tbl = dash_table.DataTable(
+                            df_dep.to_dict('records'),
+                            [{"name": i, "id": i} for i in df_dep.columns],
+                                page_size=10)
+            
+            airport_name = value + " ("+ get_airport_infos(value)[0]+ ")"
+    else:
+        map_n_clicks += 1
+
+    # close panel
+    if close_clicks != x_close_airport_clicks:
+        style = {'display': 'none'}
+        x_close_airport_clicks = close_clicks
+
+    return style, arrivals_tbl, departures_tbl, airport_name
+
+    
+
+
 
 # main
 if __name__ == "__main__":
