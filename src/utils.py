@@ -696,6 +696,9 @@ def flight_tracker():
                       mapbox = {'accesstoken': token, 
                                 'style': "outdoors", 
                                 'zoom': 1.9},
-                      showlegend = False)
+                      showlegend = False,
+                      uirevision = True
+    )
 
+   
     return df, fig
