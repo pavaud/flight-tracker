@@ -51,15 +51,15 @@ meta.create_all(engine)
 # LOAD TABLES
 
 # Importer CSV dans la Table Airport
-df = pd.read_csv("data\\load_sqlite\\airports.csv")
+df = pd.read_csv("https://ft-app.s3.eu-west-3.amazonaws.com/airports.csv")
 df.to_sql('Airport', engine, if_exists='append', index=False, dtype={"airport_iata": String(), "airport_name": String(), "city_iata": String(), "utc_offset": String(), "timezone_id": String()})
 
 # Importer CSV dans la Table City
-df = pd.read_csv("data\\load_sqlite\\cities.csv")
+df = pd.read_csv("https://ft-app.s3.eu-west-3.amazonaws.com/cities.csv")
 df.to_sql('City', engine, if_exists='append', index=False, dtype={"city_iata": String(), "city_name": String(), "country_name": String()})
 
 # Importer CSV dans la Table Airline
-df = pd.read_csv("data\\load_sqlite\\airlines.csv")
+df = pd.read_csv("https://ft-app.s3.eu-west-3.amazonaws.com/airlines.csv")
 df.to_sql('Airline', engine, if_exists='append', index=False, dtype={"airline_iata": String(), "airline_icao": String(), "airline_name": String()})
 
 
