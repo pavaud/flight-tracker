@@ -186,7 +186,7 @@ clicked_airplane_layout = html.Div([
 
 # filter airport 
 filtered_airport_layout = html.Div([
-    html.Div(id="airport_infos", style={'textAlign': 'center'}),
+    html.Div(id="airport_infos"),
     html.Div([
         html.H3("Departures",
                  style={"display": "inline-block",
@@ -485,13 +485,49 @@ def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
             df_dep = get_departures(value)
 
             arrivals_tbl = dash_table.DataTable(
-                            df_arr.to_dict('records'),
-                            [{"name": i, "id": i} for i in df_arr.columns],
-                                page_size=10)
+                            data=df_arr.to_dict('records'),
+                            columns=[{"name": i, "id": i} for i in df_arr.columns],
+                            style_as_list_view=True,
+                            style_header={
+                                'backgroundColor': 'cornflowerblue',
+                                'color':'white',
+                                'fontWeight': 'bold'
+                            },
+                            style_cell_conditional=[
+                                {
+                                    'if': {'column_id': c},
+                                    'textAlign': 'center'
+                                } for c in df_arr.columns
+                            ],
+                            style_data_conditional=[
+                                {
+                                    'if': {'row_index': 'odd'},
+                                    'backgroundColor': 'rgb(220, 220, 220)',
+                                }
+                            ],
+                            page_size=10)
             departures_tbl = dash_table.DataTable(
-                            df_dep.to_dict('records'),
-                            [{"name": i, "id": i} for i in df_dep.columns],
-                                page_size=10)
+                            data=df_dep.to_dict('records'),
+                            columns=[{"name": i, "id": i} for i in df_dep.columns],
+                            style_as_list_view=True,
+                            style_header={
+                                'backgroundColor': 'cornflowerblue',
+                                'color':'white',
+                                'fontWeight': 'bold'
+                            },
+                            style_cell_conditional=[
+                                {
+                                    'if': {'column_id': c},
+                                    'textAlign': 'center'
+                                } for c in df_dep.columns
+                            ],
+                            style_data_conditional=[
+                                {
+                                    'if': {'row_index': 'odd'},
+                                    'backgroundColor': 'rgb(220, 220, 220)',
+                                }
+                            ],
+                            page_size=10)
             try:
                 airport_name = get_airport_infos(value)[0]
             except IndexError:
