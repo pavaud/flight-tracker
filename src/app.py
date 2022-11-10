@@ -1,15 +1,16 @@
 # standard
-import time
 from datetime import datetime
 # third-party
-from pymongo import MongoClient
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
 # project
 from utils import *
 
 
+debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
+
 app = Dash(__name__)
+server = app.server
 
 
 # LAYOUT
@@ -549,4 +550,4 @@ def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
 
 # main
 if __name__ == "__main__":
-    app.run_server(debug = True)
+    app.run(port="8050",debug = debug)

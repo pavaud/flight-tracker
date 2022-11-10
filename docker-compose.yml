@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+
+  mongo:
+    image : mongo:6.0.2
+    container_name: mongo
+    volumes:
+    - ./data/mongodb:/data/db
+    ports:
+    - 27017:27017
+    restart: unless-stopped
+    networks:
+      - flight_tracker
+
+  dash:
+    build: .
+    image: dash
+    container_name: dash
+    environment:
+      - DASH_DEBUG_MODE="False"
+    ports:
+      -8050:8050
+    networks:
+      - flight_tracker
+    depends_on:
+      - "mongo"
+
+networks:
+  - flight_tracker
