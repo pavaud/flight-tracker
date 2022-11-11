@@ -430,7 +430,7 @@ def update_flight_status():
 
     airports = pd.read_csv(AIRPORTS_FILE)
     #airports with bad requests =['STO','RIX','HEL']
-    airport_shortlist = airports['airport'][-1:]
+    airport_shortlist = airports['airport']
     #airport_shortlist = ['STO','RIX','HEL']
 
     # datetime for requests
