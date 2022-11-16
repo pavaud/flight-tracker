@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+
+  mongo:
+    image : mongo:6.0.2
+    container_name: mongo
+    volumes:
+    - ./data/mongodb:/data/db
+    ports:
+    - 27017:27017
+    restart: unless-stopped
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.2
+
+  dash:
+    build: .
+    image: dash:1.0.1
+    container_name: dash
+    environment:
+      - DASH_DEBUG_MODE="False"
+      - MONGO_CONNECTION_STR=mongodb://10.5.0.2:27017/
+    ports:
+      - 8050:8050
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.3
+    depends_on:
+      - "mongo"
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1

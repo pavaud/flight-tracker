@@ -1,15 +1,17 @@
 # standard
-import time
 from datetime import datetime
 # third-party
-from pymongo import MongoClient
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
 # project
 from utils import *
 
 
+#DEBUG = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
+DEBUG = True
+
 app = Dash(__name__)
+server = app.server
 
 
 # LAYOUT
@@ -228,7 +230,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 60*1000,
+                    interval = 6*1000,
                     n_intervals = 0
                     ),
     ],
@@ -249,7 +251,8 @@ app.layout = html.Div([
 # GLOBAL VARIABLES
 
 # global dataframe of flying airplane
-df = []
+#df = pd.DataFrame()
+df = flight_tracker()[0]
 # close button of the airplane selection panel
 x_close_selection_clicks = 0
 # submit button of the airplane selection panel
@@ -279,7 +282,7 @@ def flight_tracker_update(n):
 
     global df
     df , fig = flight_tracker()
-
+    print("## SIZE DF : ", len(df))
     return fig
 
 
@@ -302,13 +305,26 @@ def update_hovered_airplane(hoverData):
         left = hoverData['points'][0]['bbox']['x0']
 
         row_nb = hoverData['points'][0]['pointIndex']
-        row = df.iloc[row_nb]
-        callsign = row.callsign
-        lat = row.lat
-        lon = row.long
-        origin = row.origin_country
-        alt = row.baro_altitude
-        speed = row.velocity
+        try:
+            row = df.iloc[row_nb]
+            
+            callsign = row.callsign
+            lat = row.lat
+            lon = row.long
+            origin = row.origin_country
+            alt = row.baro_altitude
+            speed = row.velocity
+
+        except IndexError:
+            print("## ROW NB ## : " , row_nb)
+            print("## DF ## : " , df)
+            callsign = ""
+            lat = ""
+            lon = ""
+            origin = ""
+            alt = ""
+            speed = ""
+
 
         style = {'display': 'block',
                 'top':str(top+10)+'px',
@@ -351,7 +367,11 @@ def update_clicked_airplane(clickData, n_clicks):
     # value to display when clicked
     if clickData is not None :
         row_nb = clickData['points'][0]['pointIndex']
-        row = df.iloc[row_nb]
+        try:
+            row = df.iloc[row_nb]
+        except IndexError:
+            print("## ROW NB ## : " , row_nb)
+            print("## DF ## : " , df)
 
         callsign = row.callsign
         lat = row.lat
@@ -549,4 +569,4 @@ def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
 
 # main
 if __name__ == "__main__":
-    app.run_server(debug = True)
+    app.run(host=os.getenv("HOST", "0.0.0.0"), port="8050",debug = DEBUG)

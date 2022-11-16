@@ -74,7 +74,12 @@ def get_headers(api):
 def get_mongo_client():
     """ returns Mongo client """
     
-    client = MongoClient(host='127.0.0.1',port=27017)
+    #client = MongoClient(host='0.0.0.0',port=27017) #
+    #client = MongoClient(host='mongo_c',port=27017) #
+    #client = MongoClient('mongodb://10.5.0.2:27017/') #1.0.0
+    MONGO_CONNECTION_STR = os.environ['MONGO_CONNECTION_STR']
+    client = MongoClient(MONGO_CONNECTION_STR) #1.0.1
+    
     return client
 
 
@@ -430,7 +435,7 @@ def update_flight_status():
 
     airports = pd.read_csv(AIRPORTS_FILE)
     #airports with bad requests =['STO','RIX','HEL']
-    airport_shortlist = airports['airport'][-1:]
+    airport_shortlist = airports['airport']
     #airport_shortlist = ['STO','RIX','HEL']
 
     # datetime for requests
