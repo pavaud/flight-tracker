@@ -1,10 +1,13 @@
+# standard
+import os
 # third-party
 import pandas as pd
 from sqlalchemy import Table, Column, String, ForeignKey, MetaData, create_engine, text
 
 
-# Creation d une base de donnee
-engine = create_engine('sqlite:///codes.sqlite', echo=True)
+# SQLite database creation
+DB_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), 'codes.sqlite'))
+engine = create_engine('sqlite:///' + DB_PATH, echo=True)
 meta = MetaData()
 
 

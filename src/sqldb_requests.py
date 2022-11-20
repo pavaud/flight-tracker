@@ -1,10 +1,12 @@
+# standard
+import os
 # third-party
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import MultipleResultsFound, NoResultFound
 
 # CONSTANTS
-
-SQL_ALCHEMY_ENGINE = 'sqlite:///codes.sqlite'
+DB_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), 'codes.sqlite'))
+SQL_ALCHEMY_ENGINE = 'sqlite:///' + DB_PATH
 
 
 # FUNCTIONS

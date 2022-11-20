@@ -23,6 +23,8 @@ services:
       - MONGO_CONNECTION_STR=mongodb://10.5.0.2:27017/
     ports:
       - 8050:8050
+    volumes:
+      - ./src:/home/src
     networks:
       vpcbr:
         ipv4_address: 10.5.0.3

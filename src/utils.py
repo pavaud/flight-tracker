@@ -74,10 +74,12 @@ def get_headers(api):
 def get_mongo_client():
     """ returns Mongo client """
     
-    #client = MongoClient(host='0.0.0.0',port=27017) #
-    #client = MongoClient(host='mongo_c',port=27017) #
-    #client = MongoClient('mongodb://10.5.0.2:27017/') #1.0.0
-    MONGO_CONNECTION_STR = os.environ['MONGO_CONNECTION_STR']
+    # choos a connection string depending on manual or docker start up
+    try:
+        MONGO_CONNECTION_STR = os.environ['MONGO_CONNECTION_STR']
+    except:
+        MONGO_CONNECTION_STR = 'mongodb://127.0.0.1:27017/'
+
     client = MongoClient(MONGO_CONNECTION_STR) #1.0.1
     
     return client

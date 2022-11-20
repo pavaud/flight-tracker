@@ -251,7 +251,6 @@ app.layout = html.Div([
 # GLOBAL VARIABLES
 
 # global dataframe of flying airplane
-#df = pd.DataFrame()
 df = flight_tracker()[0]
 # close button of the airplane selection panel
 x_close_selection_clicks = 0
