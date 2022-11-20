@@ -74,10 +74,12 @@ def get_headers(api):
 def get_mongo_client():
     """ returns Mongo client """
     
-    #client = MongoClient(host='0.0.0.0',port=27017) #
-    #client = MongoClient(host='mongo_c',port=27017) #
-    #client = MongoClient('mongodb://10.5.0.2:27017/') #1.0.0
-    MONGO_CONNECTION_STR = os.environ['MONGO_CONNECTION_STR']
+    # choos a connection string depending on manual or docker start up
+    try:
+        MONGO_CONNECTION_STR = os.environ['MONGO_CONNECTION_STR']
+    except:
+        MONGO_CONNECTION_STR = 'mongodb://127.0.0.1:27017/'
+
     client = MongoClient(MONGO_CONNECTION_STR) #1.0.1
     
     return client
@@ -148,12 +150,9 @@ def update_arrival(airport, date_time):
 def update_arrivals():
     """ Update arrivals on all airports"""
 
-    #airports=['FRA','BER','CDG','LHR','FCO','MAD','DUB','LIS','AMS','LUX','BUD','ATH']
-    #airports with bad requests =['MRS','STO','RIX','HEL']
     airports=['FRA','BER','CDG']
     
     # datetime for requests
-    #date_time = datetime.now().strftime("%Y-%m-%dT%H:%M")
     date_time = datetime.now().strftime("%Y-%m-%dT08:00")
     
     for airport in airports:    
@@ -225,12 +224,9 @@ def update_departure(airport, date_time):
 def update_departures():
     """ Update departures on all airports"""
 
-    #airports=['FRA','BER','CDG','LHR','FCO','MAD','DUB','LIS','AMS','LUX','BUD','ATH']
-    #airports with bad requests =['MRS','STO','RIX','HEL']
     airports=['FRA','BER','CDG']
     
     # datetime for requests
-    #date_time = datetime.now().strftime("%Y-%m-%dT%H:%M")
     date_time = datetime.now().strftime("%Y-%m-%dT08:00")
     
     for airport in airports:    
@@ -529,32 +525,64 @@ def get_routes(dep, arr):
     client = get_mongo_client()
     col = client.flightTracker.flights
 
-    filter = {"Departure.AirportCode":dep,
-              "Arrival.AirportCode":arr}
+    # get routes from mongo collection
+    filter = {"Departure.AirportCode":dep.upper(),
+              "Arrival.AirportCode":arr.upper()}
     routes = list(col.find(filter=filter))
 
-    columns = ['Flight', 'Origin','Scheduled','Actual','Destination','Scheduled','Actual','Status']
+    # format df columns
+    columns = ['airline_name','airline_iata','flight', 
+                'dep_iata','dep_airport','dep_city',
+                'dep_scheduled','dep_actual',
+                'arr_iata','arr_airport','arr_city',
+                'arr_scheduled','arr_ctual',
+                'status']
+
+    # create df
     data=[]
     for x in routes:
         cols = []
         
-        cols.append(x['OperatingCarrier']['AirlineID'] + x['OperatingCarrier']['FlightNumber'])
-        cols.append(x['Departure']['AirportCode'])
+        # flight
+        airline_iata = x['OperatingCarrier']['AirlineID']
+        airline_name = get_airline_from_iata(airline_iata)
+        cols.append(airline_name)
+        cols.append(airline_iata)
+        cols.append(airline_iata + x['OperatingCarrier']['FlightNumber'])
+
+        # departure
+        dep_iata = x['Departure']['AirportCode']
+        dep_airport = get_airport_infos(dep_iata)[0]
+        dep_city = get_airport_infos(dep_iata)[1]
+        cols.append(dep_iata)
+        cols.append(dep_airport)
+        cols.append(dep_city)
         cols.append(x['Departure']['Scheduled']['Time'])
         try:
             cols.append(x['Departure']['Actual']['Time'])
         except KeyError:
             cols.append('')
-        cols.append(x['Arrival']['AirportCode'])
+
+        # arrival
+        arr_iata = x['Arrival']['AirportCode']
+        arr_airport = get_airport_infos(arr_iata)[0]
+        arr_city = get_airport_infos(arr_iata)[1]
+        cols.append(arr_iata)
+        cols.append(arr_airport)
+        cols.append(arr_city)
         cols.append(x['Arrival']['Scheduled']['Time'])
         try:
             cols.append(x['Arrival']['Actual']['Time'])
         except KeyError:
             cols.append('')
+        
+        # flight status
         cols.append(x['Status']['Description'])
         
+        # add line in df
         data.append(cols)
-    df = pd.DataFrame(data, columns=columns)
+
+    df = pd.DataFrame(data=data, columns=columns)
 
     # close connection
     client.close()
