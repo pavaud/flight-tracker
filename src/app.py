@@ -543,65 +543,67 @@ def display_airport_panel(i_sub_clicks,
     o_departures_tbl = ""
     o_airport_name = ""
     o_in_airport = ""
+    
+    print(map_n_clicks, " ", i_map_clicks)
+    if ((map_n_clicks == i_map_clicks) or i_map_clicks is None) \
+        and (i_sub_clicks != submit_clicks) \
+        and not (i_value is None or i_value == "") :
+            
+        o_style = {'display': 'block'}
+        submit_clicks = i_sub_clicks
 
-    if ((map_n_clicks == i_map_clicks) or i_map_clicks is None):
-        if (i_sub_clicks != submit_clicks) \
-            and not (i_value is None or i_value == "") :
-                
-            o_style = {'display': 'block'}
-            submit_clicks = i_sub_clicks
+        df_arr = get_arrivals(i_value)
+        df_dep = get_departures(i_value)
 
-            df_arr = get_arrivals(i_value)
-            df_dep = get_departures(i_value)
+        o_arrivals_tbl = dash_table.DataTable(
+                        data=df_arr.to_dict('records'),
+                        columns=[{"name": i, "id": i} for i in df_arr.columns],
+                        style_as_list_view=True,
+                        style_header={
+                            'backgroundColor': 'cornflowerblue',
+                            'color':'white',
+                            'fontWeight': 'bold'
+                        },
+                        style_cell_conditional=[{
+                            'if': {'column_id': c},
+                            'textAlign': 'center'
+                        } for c in df_arr.columns
+                        ],
+                        style_data_conditional=[{
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': 'rgb(220, 220, 220)',
+                        }
+                        ],
+                        page_size=10)
+        o_departures_tbl = dash_table.DataTable(
+                        data=df_dep.to_dict('records'),
+                        columns=[{"name": i, "id": i} for i in df_dep.columns],
+                        style_as_list_view=True,
+                        style_header={
+                            'backgroundColor': 'cornflowerblue',
+                            'color':'white',
+                            'fontWeight': 'bold'
+                        },
+                        style_cell_conditional=[{
+                            'if': {'column_id': c},
+                            'textAlign': 'center'
+                        } for c in df_dep.columns
+                        ],
+                        style_data_conditional=[{
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': 'rgb(220, 220, 220)',
+                        }
+                        ],
+                        page_size=10)
+        try:
+            o_airport_name = get_airport_infos(i_value)[0]
+        except IndexError:
+            o_airport_name = ""
 
-            o_arrivals_tbl = dash_table.DataTable(
-                            data=df_arr.to_dict('records'),
-                            columns=[{"name": i, "id": i} for i in df_arr.columns],
-                            style_as_list_view=True,
-                            style_header={
-                                'backgroundColor': 'cornflowerblue',
-                                'color':'white',
-                                'fontWeight': 'bold'
-                            },
-                            style_cell_conditional=[{
-                                'if': {'column_id': c},
-                                'textAlign': 'center'
-                            } for c in df_arr.columns
-                            ],
-                            style_data_conditional=[{
-                                'if': {'row_index': 'odd'},
-                                'backgroundColor': 'rgb(220, 220, 220)',
-                            }
-                            ],
-                            page_size=10)
-            o_departures_tbl = dash_table.DataTable(
-                            data=df_dep.to_dict('records'),
-                            columns=[{"name": i, "id": i} for i in df_dep.columns],
-                            style_as_list_view=True,
-                            style_header={
-                                'backgroundColor': 'cornflowerblue',
-                                'color':'white',
-                                'fontWeight': 'bold'
-                            },
-                            style_cell_conditional=[{
-                                'if': {'column_id': c},
-                                'textAlign': 'center'
-                            } for c in df_dep.columns
-                            ],
-                            style_data_conditional=[{
-                                'if': {'row_index': 'odd'},
-                                'backgroundColor': 'rgb(220, 220, 220)',
-                            }
-                            ],
-                            page_size=10)
-            try:
-                o_airport_name = get_airport_infos(i_value)[0]
-            except IndexError:
-                o_airport_name = ""
-
-            o_airport_name = i_value.upper() + " ("+ o_airport_name + ")"
+        o_airport_name = i_value.upper() + " ("+ o_airport_name + ")"
+        
     else:
-        map_n_clicks += 1
+        map_n_clicks = i_map_clicks
 
     # close panel
     if i_close_clicks != x_close_airport_clicks:
@@ -689,7 +691,7 @@ def display_route_panel(i_sub_clicks,
             print(e)
             
     else:
-        map_n_clicks += 1
+        map_n_clicks = i_map_clicks
 
     # close panel
     if i_close_clicks != x_close_route_clicks:
