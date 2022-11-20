@@ -166,7 +166,14 @@
     
 }
 #click_callsign{
+    background-color: #FFFFFF;
+    color:  cornflowerblue;
+    font-weight: bolder;
     text-align: center;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 5px;
+
 }
 
 .click_label{
@@ -204,13 +211,11 @@
 }
 
 #x_close_selection{
-    position: absolute;
-    background: inherit;
-    color: inherit;
+    position: relative;
+    background: #FFFFFF;
+    color: #FFFFFF;
     height: 20px;
     width: 20px;
-    top: 15px;
-    padding: inherit;
     right: 15px;
     cursor: pointer;
 }
@@ -286,6 +291,67 @@
     vertical-align: top;
 }
 
+.route{
+    background-color: #333333;
+    color: #FFFFFF;
+    opacity: 1;
+    border-radius: 5px;
+    height:wrap-content;
+    width:wrap-content;
+    position: absolute;
+    z-index:10;
+    top: 340px;
+    left:10px;
+    padding: 10px;
+}
+
+#airline_route{
+    font-weight:bold;
+    font-size:30px;
+    padding-bottom: 10px;
+}
+
+#x_close_route{
+    position: absolute;
+    background: inherit;
+    color: inherit;
+    height: 20px;
+    width: 20px;
+    top: 5px;
+    padding: inherit;
+    right: 15px;
+    cursor: pointer;
+}
+
+.arr_dep_route{
+    color: #333333;
+    background-color: #FFFFFF;
+    opacity: 1;
+    border-radius: 5px;
+    height: 100px;
+    width: 250px;
+    padding: 10px;
+}
+
+#dep_route{
+    margin-right: 5px;
+}
+
+#arr_route{
+    margin-left: 5px;
+    text-align: right;
+}
+
+.iata_route{
+    font-weight:bold;
+    font-size:30px;
+    color: cornflowerblue
+}
+
+.airport_route{
+    font-weight:bold;
+    font-size:20px;
+}
 
 .stack-top{
     z-index: 9;

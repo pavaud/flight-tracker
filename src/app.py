@@ -3,6 +3,7 @@ from datetime import datetime
 # third-party
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
+import dash_bootstrap_components as dbc
 # project
 from utils import *
 
@@ -219,6 +220,45 @@ filtered_airport_layout = html.Div([
     style={"display": "none"},
 )
 
+# filter route html.Div([])
+filtered_route_layout = html.Div([
+    html.Div([
+        html.Div(id="airline_route"),
+        html.Div(id="flightnumber_route"),
+        html.Div(id="arr_dep_city"),
+    ],
+        id="head_route"
+    ),
+    html.Span('X', id="x_close_route"),
+    html.Div([
+        html.Div([
+            html.Div(id="dep_iata_route", className="iata_route"),
+            html.Div(id="dep_airport_route", className="airport_route"),
+            html.Div(id="dep_time_route", className="time_route")
+        ],
+            id="dep_route",
+            className="arr_dep_route",
+            style={'display':'inline-block'}
+        ),
+        html.Div([
+            html.Div(id="arr_iata_route", className="iata_route"),
+            html.Div(id="arr_airport_route", className="airport_route"),
+            html.Div(id="arr_time_route", className="time_route")
+        ],
+            id="arr_route",
+            className="arr_dep_route",
+            style={'display':'inline-block'}
+        )
+    ],
+        id="arr_dep_route"
+    )
+],
+    id="route_panel",
+    className="route",
+    style={"display": "none"},
+)
+
+
 # dashboard
 app.layout = html.Div([
     html.Div([
@@ -230,7 +270,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 6*1000,
+                    interval = 300*1000,
                     n_intervals = 0
                     ),
     ],
@@ -241,6 +281,7 @@ app.layout = html.Div([
     hovered_airplane_layout,
     clicked_airplane_layout,
     filtered_airport_layout,
+    filtered_route_layout,
 ],
     id='page-content',
     style={'position': 'relative'},
@@ -252,14 +293,17 @@ app.layout = html.Div([
 
 # global dataframe of flying airplane
 df = flight_tracker()[0]
-# close button of the airplane selection panel
-x_close_selection_clicks = 0
 # submit button of the airplane selection panel
 submit_clicks = 0
 # clicks on the map
 map_n_clicks = 0 
-# close button of the airport selection panel
+# close button of the airplane selection panel
+x_close_selection_clicks = 0
+# close button of the airport panel
 x_close_airport_clicks = 0
+# close button of the route panel
+x_close_route_clicks = 0
+
 
 # CALLBACKS
 
@@ -474,36 +518,43 @@ def toggle_fields(dd_value):
               Output('arrivals_table', 'children'),
               Output('departures_table', 'children'),
               Output('airport_infos', 'children'),
+              Output('input_airport', 'value'),
               Input('submit_val','n_clicks'),
               Input('map_container', 'n_clicks'),
               Input('x_close_airport', 'n_clicks'),
               State('input_airport', 'value'))
-def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
+def display_airport_panel(i_sub_clicks,
+                          i_map_clicks,
+                          i_close_clicks,
+                          i_value):
     """
     display airport panel based on airport field value
     when submit button is clicked
     """
+
     global submit_clicks
     global map_n_clicks
     global x_close_airport_clicks
 
-    style = {'display': 'none'}
+    o_style = {'display': 'none'}
     df_arr = ""
     df_dep = ""
-    arrivals_tbl = ""
-    departures_tbl = ""
-    airport_name = ""
+    o_arrivals_tbl = ""
+    o_departures_tbl = ""
+    o_airport_name = ""
+    o_in_airport = ""
 
-    if (map_n_clicks == map_clicks) or map_clicks is None:
-        if (sub_clicks != submit_clicks) and not (value is None or value == "") :
-            print(value)
-            style = {'display': 'block'}
-            submit_clicks = sub_clicks
+    if ((map_n_clicks == i_map_clicks) or i_map_clicks is None):
+        if (i_sub_clicks != submit_clicks) \
+            and not (i_value is None or i_value == "") :
+                
+            o_style = {'display': 'block'}
+            submit_clicks = i_sub_clicks
 
-            df_arr = get_arrivals(value)
-            df_dep = get_departures(value)
+            df_arr = get_arrivals(i_value)
+            df_dep = get_departures(i_value)
 
-            arrivals_tbl = dash_table.DataTable(
+            o_arrivals_tbl = dash_table.DataTable(
                             data=df_arr.to_dict('records'),
                             columns=[{"name": i, "id": i} for i in df_arr.columns],
                             style_as_list_view=True,
@@ -512,20 +563,18 @@ def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
                                 'color':'white',
                                 'fontWeight': 'bold'
                             },
-                            style_cell_conditional=[
-                                {
-                                    'if': {'column_id': c},
-                                    'textAlign': 'center'
-                                } for c in df_arr.columns
+                            style_cell_conditional=[{
+                                'if': {'column_id': c},
+                                'textAlign': 'center'
+                            } for c in df_arr.columns
                             ],
-                            style_data_conditional=[
-                                {
-                                    'if': {'row_index': 'odd'},
-                                    'backgroundColor': 'rgb(220, 220, 220)',
-                                }
+                            style_data_conditional=[{
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(220, 220, 220)',
+                            }
                             ],
                             page_size=10)
-            departures_tbl = dash_table.DataTable(
+            o_departures_tbl = dash_table.DataTable(
                             data=df_dep.to_dict('records'),
                             columns=[{"name": i, "id": i} for i in df_dep.columns],
                             style_as_list_view=True,
@@ -534,35 +583,123 @@ def display_airport_panel(sub_clicks,map_clicks,close_clicks,value):
                                 'color':'white',
                                 'fontWeight': 'bold'
                             },
-                            style_cell_conditional=[
-                                {
-                                    'if': {'column_id': c},
-                                    'textAlign': 'center'
-                                } for c in df_dep.columns
+                            style_cell_conditional=[{
+                                'if': {'column_id': c},
+                                'textAlign': 'center'
+                            } for c in df_dep.columns
                             ],
-                            style_data_conditional=[
-                                {
-                                    'if': {'row_index': 'odd'},
-                                    'backgroundColor': 'rgb(220, 220, 220)',
-                                }
+                            style_data_conditional=[{
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(220, 220, 220)',
+                            }
                             ],
                             page_size=10)
             try:
-                airport_name = get_airport_infos(value)[0]
+                o_airport_name = get_airport_infos(i_value)[0]
             except IndexError:
-                airport_name = ""
-            airport_name = value.upper() + " ("+ airport_name + ")"
+                o_airport_name = ""
+
+            o_airport_name = i_value.upper() + " ("+ o_airport_name + ")"
     else:
         map_n_clicks += 1
 
     # close panel
-    if close_clicks != x_close_airport_clicks:
-        style = {'display': 'none'}
-        x_close_airport_clicks = close_clicks
+    if i_close_clicks != x_close_airport_clicks:
+        o_style = {'display': 'none'}
+        x_close_airport_clicks = i_close_clicks
 
-    return style, arrivals_tbl, departures_tbl, airport_name
+    return o_style, o_arrivals_tbl, o_departures_tbl, o_airport_name, o_in_airport
 
     
+@app.callback(Output('route_panel', 'style'),
+              Output('airline_route', 'children'),
+              Output('flightnumber_route', 'children'),
+              Output('arr_dep_city', 'children'),
+              Output('dep_iata_route', 'children'),
+              Output('dep_airport_route', 'children'),
+              Output('dep_time_route', 'children'),
+              Output('arr_iata_route', 'children'),
+              Output('arr_airport_route', 'children'),
+              Output('arr_time_route', 'children'),
+              Output('input_departure', 'value'),
+              Output('input_arrival', 'value'),
+              Input('submit_val','n_clicks'),
+              Input('map_container', 'n_clicks'),
+              Input('x_close_route', 'n_clicks'),
+              State('input_departure', 'value'),
+              State('input_arrival', 'value'))
+def display_route_panel(i_sub_clicks,
+                        i_map_clicks,
+                        i_close_clicks,
+                        s_dep_value,
+                        s_arr_value):
+    """
+    display route panel based on airport fields value
+    when submit button is clicked
+    """
+
+    global submit_clicks
+    global map_n_clicks
+    global x_close_route_clicks
+
+    # default style
+    o_style = {'display': 'none'}
+    o_airline = ""
+    o_flightnumber = ""
+    o_arr_dep_route = ""
+    o_dep_iata = ""
+    o_arr_iata = ""
+    o_dep_airport = ""
+    o_arr_airport = ""
+    o_dep_time = ""
+    o_arr_time = ""
+
+    # remove input fields text from filter
+    in_dep = ""
+    in_arr = ""
+    
+    # get routes infos
+    if ((map_n_clicks == i_map_clicks) or i_map_clicks is None) \
+        and (i_sub_clicks != submit_clicks) \
+        and not ((s_dep_value is None) or (s_dep_value == "") 
+            or (s_arr_value is None) or (s_arr_value == "")) :
+            
+        submit_clicks = i_sub_clicks
+
+        o_style = {'display': 'block'}
+
+        try:
+            df_flight = get_routes(s_dep_value,s_arr_value).iloc[:1,:]
+            print(df_flight)
+
+            if not df_flight.empty:
+                o_airline = df_flight['airline_name']
+                o_flightnumber = df_flight['flight']
+                o_arr_dep_route = df_flight['dep_city'] + " --> " + df_flight['arr_city']
+                o_dep_iata = s_dep_value.upper()
+                o_arr_iata = s_arr_value.upper()
+                o_dep_airport = df_flight['dep_airport']
+                o_arr_airport = df_flight['arr_airport']
+                o_dep_time = df_flight['dep_scheduled']
+                o_arr_time = df_flight['arr_scheduled']
+            else:
+                o_airline = "NOT FOUND"
+        except Exception as e:
+            print("NOTHING FOUND")
+            print(e)
+            
+    else:
+        map_n_clicks += 1
+
+    # close panel
+    if i_close_clicks != x_close_route_clicks:
+        o_style = {'display': 'none'}
+        x_close_route_clicks = i_close_clicks
+
+
+    return o_style, o_airline, o_flightnumber, o_arr_dep_route, o_dep_iata, \
+            o_dep_airport, o_dep_time, o_arr_iata, o_arr_airport, o_arr_time, \
+                in_dep, in_arr
 
 
 
