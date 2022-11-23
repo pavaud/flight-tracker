@@ -3,6 +3,7 @@ from datetime import datetime
 # third-party
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
+import plotly.express as px
 # project
 from utils import *
 
@@ -177,9 +178,9 @@ clicked_airplane_layout = html.Div([
         id="click_values"
     ),
     html.Div([
-        dcc.Graph(id="alt-graph")
+        dcc.Graph(id="alt_graph")
     ],
-        id="altitude-graph"
+        id="altitude_graph"
     ),
 ],
     id="click_airplane",
@@ -269,7 +270,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 300*1000,
+                    interval = 6*1000,
                     n_intervals = 0
                     ),
     ],
@@ -396,6 +397,7 @@ def update_hovered_airplane(hoverData):
               Output('click_true_track', 'children'),
               Output('click_vertical', 'children'),
               Output('click_pos_source', 'children'),
+              Output('alt_graph', 'figure'),
               [Input('live-graph', 'clickData')],
               Input('x_close_selection', 'n_clicks'),
               )
@@ -428,6 +430,10 @@ def update_clicked_airplane(clickData, n_clicks):
         vertical = row.vertical_rate
         pos = row.position_source
 
+        # create altitude graph
+        df_altitude = get_altitudes(callsign)
+
+
         style = {'display': 'block'}
     else:
         callsign = ""
@@ -443,13 +449,22 @@ def update_clicked_airplane(clickData, n_clicks):
         vertical = ""
         pos = ""
         style = {'display': 'none'}
+        df_altitude = pd.DataFrame(columns=["time","altitude"]) 
+
+    fig = px.line(data_frame=df_altitude, 
+                  x="time", 
+                  y="altitude",
+                  hover_name="altitude")
+
 
     # close panel
     if n_clicks != x_close_selection_clicks:
         style = {'display': 'none'}
         x_close_selection_clicks = n_clicks
 
-    return style, callsign, lat, lon, origin, alt, speed, icao, time, last_contact, true_track, vertical, pos
+    return style, callsign, lat, lon, origin, alt, \
+        speed, icao, time, last_contact, true_track, \
+        vertical, pos, fig
 
 
 @app.callback(Output('live-graph', 'clickData'),
