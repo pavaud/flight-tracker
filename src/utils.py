@@ -674,17 +674,21 @@ def list_available_airports():
 def update_position(response):
     """update airplane GPS position and altitude from opensky API"""
 
+    # connecting collection
     client = get_mongo_client()
     col = client.flightTracker.position
 
     # update flight position and altitude or insert if not found
-    for flight in response.json()["states"]:
+    for flight in response["states"]:
 
         filter = {"callsign": flight[1]}
         update = {
             "$push": { 
-                "position":{"lat":flight[6],"lon":flight[5]},
-                "altitude" : flight[13]
+                "position":{
+                    "lat":flight[6],
+                    "lon":flight[5]
+                },
+                "altitude": flight[13]
             }
         }
 
@@ -696,6 +700,9 @@ def update_position(response):
             print(Exception)
             print(flight)
             continue
+    
+    # close connection
+    client.close()
 
 
 def get_opensky_flights():
