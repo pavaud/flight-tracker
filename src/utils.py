@@ -453,19 +453,13 @@ def update_position(response):
     client = get_mongo_client()
     col = client.flightTracker.position
 
-    t1 = time.time()
-    print("### T1 : ",time.ctime(t1))
-
-    # set index 'callsign' on position collection if it doesn't exist
+    # set index on 'callsign' in position collection if it doesn't exist
     indexes = []
     for idx in col.list_indexes():
         indexes.append(idx["name"])
  
     if "callsign_1" not in indexes:
         col.create_index([("callsign", ASCENDING)])
-    t1b = time.time()
-    print("### T1BIS : ",time.ctime(t1b))
-    print("### CHERCHE IDX : ",t1b-t1)
 
     # update flight position and altitude or insert if not found
     for flight in response["states"]:
@@ -490,10 +484,6 @@ def update_position(response):
             print(Exception)
             print(flight)
             continue
-
-    t2 = time.time()
-    print("### T2 : ",time.ctime(t2))
-    print("### EXECUTION : ",t2-t1)
 
     # close connection
     client.close()
@@ -736,7 +726,7 @@ def get_opensky_flights():
     url_data = 'https://'+user_name+':'+password+'@opensky-network.org/api/states/all?'+'lamin='+str(lat_min)+'&lomin='+str(lon_min)+'&lamax='+str(lat_max)+'&lomax='+str(lon_max)
     response = requests.get(url_data).json()
 
-    #update_position(response)
+    update_position(response)
 
     return response
 
@@ -801,7 +791,6 @@ def get_altitudes(callsign):
     projection = {"_id":0, "altitude":1, "date_time":1}
     result = col.find_one(filter=filter,
                           projection=projection)
-
     altitude = result['altitude']
     date_time = result['date_time']
 
