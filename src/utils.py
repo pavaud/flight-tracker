@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 # third-party
 import requests
 import pandas as pd
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING
 from string import *
 import plotly.graph_objs as go
 # project
@@ -453,6 +453,14 @@ def update_position(response):
     client = get_mongo_client()
     col = client.flightTracker.position
 
+    # set index 'callsign' on position collection if it doesn't exist
+    indexes = []
+    for idx in col.list_indexes():
+        indexes.append(idx["name"])
+
+    if "callsign_1" not in indexes:
+        col.create_index(["callsign", ASCENDING])
+    
     # update flight position and altitude or insert if not found
     for flight in response["states"]:
 
@@ -464,7 +472,7 @@ def update_position(response):
                     "lon":flight[5]
                 },
                 "altitude": flight[13],
-                "date_time": datetime.now()
+                "date_time": datetime.now().strftime("%H-%M-%S")
             }
         }
 
