@@ -270,7 +270,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 6*1000,
+                    interval = 10*1000,
                     n_intervals = 0
                     ),
     ],
@@ -399,6 +399,7 @@ def update_hovered_airplane(hoverData):
               Output('click_pos_source', 'children'),
               Output('alt_graph', 'figure'),
               [Input('live-graph', 'clickData')],
+              #Input('graph-update', 'n_intervals'),
               Input('x_close_selection', 'n_clicks'),
               )
 def update_clicked_airplane(clickData, n_clicks):

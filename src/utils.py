@@ -453,14 +453,20 @@ def update_position(response):
     client = get_mongo_client()
     col = client.flightTracker.position
 
+    t1 = time.time()
+    print("### T1 : ",time.ctime(t1))
+
     # set index 'callsign' on position collection if it doesn't exist
     indexes = []
     for idx in col.list_indexes():
         indexes.append(idx["name"])
-
+ 
     if "callsign_1" not in indexes:
-        col.create_index(["callsign", ASCENDING])
-    
+        col.create_index([("callsign", ASCENDING)])
+    t1b = time.time()
+    print("### T1BIS : ",time.ctime(t1b))
+    print("### CHERCHE IDX : ",t1b-t1)
+
     # update flight position and altitude or insert if not found
     for flight in response["states"]:
 
@@ -472,7 +478,7 @@ def update_position(response):
                     "lon":flight[5]
                 },
                 "altitude": flight[13],
-                "date_time": datetime.now().strftime("%H-%M-%S")
+                "date_time": datetime.now().strftime("%H:%M:%S")
             }
         }
 
@@ -484,7 +490,11 @@ def update_position(response):
             print(Exception)
             print(flight)
             continue
-    
+
+    t2 = time.time()
+    print("### T2 : ",time.ctime(t2))
+    print("### EXECUTION : ",t2-t1)
+
     # close connection
     client.close()
 
@@ -791,12 +801,11 @@ def get_altitudes(callsign):
     projection = {"_id":0, "altitude":1, "date_time":1}
     result = col.find_one(filter=filter,
                           projection=projection)
-    print(result)
+
     altitude = result['altitude']
     date_time = result['date_time']
 
     df = pd.DataFrame(data=list(zip(date_time, altitude)),
                       columns=["time","altitude"])
-    print(df)
 
     return df
