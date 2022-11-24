@@ -52,7 +52,7 @@ filters_layout = html.Div([
                     className='input_fields',
                     style = {'display': 'none'}),
                 dcc.Input(
-                    placeholder="(ex: JFK)",
+                    placeholder="(ex: LHR)",
                     id="input_arrival",
                     className='input_fields',
                     style = {'display': 'none'}),
@@ -220,7 +220,7 @@ filtered_airport_layout = html.Div([
     style={"display": "none"},
 )
 
-# filter route html.Div([])
+# filter route
 filtered_route_layout = html.Div([
     html.Div([
         html.Div(id="airline_route"),
@@ -303,6 +303,10 @@ x_close_selection_clicks = 0
 x_close_airport_clicks = 0
 # close button of the route panel
 x_close_route_clicks = 0
+# previous clickData
+clickData_previous = None
+# memorized callsign when click on airplane
+callsign = ""
 
 
 # CALLBACKS
@@ -397,43 +401,53 @@ def update_hovered_airplane(hoverData):
               Output('click_true_track', 'children'),
               Output('click_vertical', 'children'),
               Output('click_pos_source', 'children'),
-              Output('alt_graph', 'figure'),
+              #Output('alt_graph', 'figure'),
               [Input('live-graph', 'clickData')],
-              #Input('graph-update', 'n_intervals'),
+              Input('graph-update', 'n_intervals'),
               Input('x_close_selection', 'n_clicks'),
               )
-def update_clicked_airplane(clickData, n_clicks):
+def update_clicked_airplane(clickData,
+                            n_interval,
+                            n_clicks):
     """
     Open right side panel with full airplane info 
     when airplane is clicked and close with the top-right X
     """
     global x_close_selection_clicks
+    global clickData_previous
+    global callsign
 
-    # value to display when clicked
-    if clickData is not None :
-        row_nb = clickData['points'][0]['pointIndex']
-        try:
-            row = df.iloc[row_nb]
-        except IndexError:
-            print("## ROW NB ## : " , row_nb)
-            print("## DF ## : " , df)
+    # values to display when clicked
+    print("### CLICK : ",clickData)
+    if (clickData is not None):
 
-        callsign = row.callsign
+        if (clickData != clickData_previous):
+            
+            clickData_previous = clickData
+            row_nb = clickData['points'][0]['pointIndex']
+            try:
+                #row = df.iloc[row_nb]
+                callsign = df.iloc[row_nb]['callsign']
+            except IndexError:
+                print("## ROW NB ## : " , row_nb)
+                print("## DF ## : " , df)
+
+        row = df.loc[(df['callsign'] == callsign),:]
         lat = row.lat
         lon = row.long
         origin = row.origin_country
         alt = row.baro_altitude
         speed = row.velocity
         icao = row.icao24
-        time = datetime.utcfromtimestamp(row.time_position)
-        last_contact = datetime.utcfromtimestamp(row.last_contact)
+        #print(row.time_position)
+        time = datetime.utcfromtimestamp(int(row.time_position))
+        last_contact = datetime.utcfromtimestamp(int(row.last_contact))
         true_track = row.true_track
         vertical = row.vertical_rate
         pos = row.position_source
 
         # create altitude graph
-        df_altitude = get_altitudes(callsign)
-
+        #df_altitude = get_altitudes(callsign)
 
         style = {'display': 'block'}
     else:
@@ -450,12 +464,15 @@ def update_clicked_airplane(clickData, n_clicks):
         vertical = ""
         pos = ""
         style = {'display': 'none'}
-        df_altitude = pd.DataFrame(columns=["time","altitude"]) 
+        #df_altitude = pd.DataFrame(columns=["time","altitude"]) 
 
-    fig = px.line(data_frame=df_altitude, 
-                  x="time", 
-                  y="altitude",
-                  hover_name="altitude")
+    #fig = px.line(data_frame=df_altitude, 
+    #              x="time", 
+    #              y="altitude",
+    #              labels={"altitude":"Altitude (m)",
+    #                      "time": "Time"},
+    #              title="Airplane Altitude",
+    #              hover_name="altitude")
 
 
     # close panel
@@ -465,7 +482,7 @@ def update_clicked_airplane(clickData, n_clicks):
 
     return style, callsign, lat, lon, origin, alt, \
         speed, icao, time, last_contact, true_track, \
-        vertical, pos, fig
+        vertical, pos#, fig
 
 
 @app.callback(Output('live-graph', 'clickData'),
