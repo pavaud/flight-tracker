@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 # third-party
 import requests
 import pandas as pd
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING
 from string import *
 import plotly.graph_objs as go
 # project
@@ -446,6 +446,48 @@ def update_flight_status():
         time.sleep(1)
 
 
+def update_position(response):
+    """update airplane GPS position and altitude from opensky API"""
+
+    # connecting collection
+    client = get_mongo_client()
+    col = client.flightTracker.position
+
+    # set index on 'callsign' in position collection if it doesn't exist
+    indexes = []
+    for idx in col.list_indexes():
+        indexes.append(idx["name"])
+ 
+    if "callsign_1" not in indexes:
+        col.create_index([("callsign", ASCENDING)])
+
+    # update flight position and altitude or insert if not found
+    for flight in response["states"]:
+
+        filter = {"callsign": flight[1]}
+        update = {
+            "$push": { 
+                "position":{
+                    "lat":flight[6],
+                    "lon":flight[5]
+                },
+                "altitude": flight[13],
+                "date_time": datetime.now().strftime("%H:%M:%S")
+            }
+        }
+
+        try:                    
+            col.update_one(filter=filter, 
+                           update=update,
+                           upsert=True)
+        except Exception:
+            print(Exception)
+            print(flight)
+            continue
+
+    # close connection
+    client.close()
+
 
 
 # DB REQUESTS
@@ -671,7 +713,6 @@ def list_available_airports():
     return airports
 
 
-
 def get_opensky_flights():
     """ get currently flying airplanes from opensky API """
 
@@ -684,6 +725,8 @@ def get_opensky_flights():
     # send request to get the current airplane data
     url_data = 'https://'+user_name+':'+password+'@opensky-network.org/api/states/all?'+'lamin='+str(lat_min)+'&lomin='+str(lon_min)+'&lamax='+str(lat_max)+'&lomax='+str(lon_max)
     response = requests.get(url_data).json()
+
+    update_position(response)
 
     return response
 
@@ -735,3 +778,23 @@ def flight_tracker():
 
    
     return df, fig
+
+def get_altitudes(callsign):
+    """Get the list of altitudes for given airplane callsign"""
+    
+    # db connection
+    client = get_mongo_client()
+    col = client.flightTracker.position
+
+    # get the right callsign in collection
+    filter = {"callsign":callsign}
+    projection = {"_id":0, "altitude":1, "date_time":1}
+    result = col.find_one(filter=filter,
+                          projection=projection)
+    altitude = result['altitude']
+    date_time = result['date_time']
+
+    df = pd.DataFrame(data=list(zip(date_time, altitude)),
+                      columns=["time","altitude"])
+
+    return df

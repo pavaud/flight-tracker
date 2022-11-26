@@ -3,6 +3,7 @@ from datetime import datetime
 # third-party
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
+import plotly.express as px
 # project
 from utils import *
 
@@ -51,7 +52,7 @@ filters_layout = html.Div([
                     className='input_fields',
                     style = {'display': 'none'}),
                 dcc.Input(
-                    placeholder="(ex: JFK)",
+                    placeholder="(ex: LHR)",
                     id="input_arrival",
                     className='input_fields',
                     style = {'display': 'none'}),
@@ -177,9 +178,9 @@ clicked_airplane_layout = html.Div([
         id="click_values"
     ),
     html.Div([
-        dcc.Graph(id="alt-graph")
+        dcc.Graph(id="alt_graph")
     ],
-        id="altitude-graph"
+        id="altitude_graph"
     ),
 ],
     id="click_airplane",
@@ -219,7 +220,7 @@ filtered_airport_layout = html.Div([
     style={"display": "none"},
 )
 
-# filter route html.Div([])
+# filter route
 filtered_route_layout = html.Div([
     html.Div([
         html.Div(id="airline_route"),
@@ -269,7 +270,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 300*1000,
+                    interval = 10*1000,
                     n_intervals = 0
                     ),
     ],
@@ -302,6 +303,10 @@ x_close_selection_clicks = 0
 x_close_airport_clicks = 0
 # close button of the route panel
 x_close_route_clicks = 0
+# previous clickData
+clickData_previous = None
+# memorized callsign when click on airplane
+callsign = ""
 
 
 # CALLBACKS
@@ -396,37 +401,53 @@ def update_hovered_airplane(hoverData):
               Output('click_true_track', 'children'),
               Output('click_vertical', 'children'),
               Output('click_pos_source', 'children'),
+              Output('alt_graph', 'figure'),
               [Input('live-graph', 'clickData')],
+              Input('graph-update', 'n_intervals'),
               Input('x_close_selection', 'n_clicks'),
               )
-def update_clicked_airplane(clickData, n_clicks):
+def update_clicked_airplane(clickData,
+                            n_interval,
+                            n_clicks):
     """
     Open right side panel with full airplane info 
     when airplane is clicked and close with the top-right X
     """
     global x_close_selection_clicks
+    global clickData_previous
+    global callsign
 
-    # value to display when clicked
-    if clickData is not None :
-        row_nb = clickData['points'][0]['pointIndex']
-        try:
-            row = df.iloc[row_nb]
-        except IndexError:
-            print("## ROW NB ## : " , row_nb)
-            print("## DF ## : " , df)
+    # values to display when clicked
+    if (clickData is not None):
+        if (clickData != clickData_previous):
+            
+            clickData_previous = clickData
 
-        callsign = row.callsign
+            # get airplane callsign to search data by callsign, not by row_nb
+            # if we use row_nb to get data when interval updates the row_nb
+            # is not with the same callsign as before
+            row_nb = clickData['points'][0]['pointIndex']
+            try:
+                callsign = df.iloc[row_nb]['callsign']
+            except IndexError:
+                print("## ROW NB ## : " , row_nb)
+                print("## DF ## : " , df)
+
+        row = df.loc[(df['callsign'] == callsign),:]
         lat = row.lat
         lon = row.long
         origin = row.origin_country
         alt = row.baro_altitude
         speed = row.velocity
         icao = row.icao24
-        time = datetime.utcfromtimestamp(row.time_position)
-        last_contact = datetime.utcfromtimestamp(row.last_contact)
+        time = datetime.utcfromtimestamp(int(row.time_position))
+        last_contact = datetime.utcfromtimestamp(int(row.last_contact))
         true_track = row.true_track
         vertical = row.vertical_rate
         pos = row.position_source
+
+        # get altitude data
+        df_altitude = get_altitudes(callsign)
 
         style = {'display': 'block'}
     else:
@@ -443,13 +464,26 @@ def update_clicked_airplane(clickData, n_clicks):
         vertical = ""
         pos = ""
         style = {'display': 'none'}
+        df_altitude = pd.DataFrame(columns=["time","altitude"]) 
+
+    # create altitude graph
+    fig = px.line(data_frame=df_altitude, 
+                  x="time", 
+                  y="altitude",
+                  labels={"altitude":"Altitude (m)",
+                          "time": "Time"},
+                  title="Airplane Altitude",
+                  hover_name="altitude")
+
 
     # close panel
     if n_clicks != x_close_selection_clicks:
         style = {'display': 'none'}
         x_close_selection_clicks = n_clicks
 
-    return style, callsign, lat, lon, origin, alt, speed, icao, time, last_contact, true_track, vertical, pos
+    return style, callsign, lat, lon, origin, alt, \
+        speed, icao, time, last_contact, true_track, \
+        vertical, pos, fig
 
 
 @app.callback(Output('live-graph', 'clickData'),
@@ -468,19 +502,19 @@ def reset_clickData(n_clicks):
               Output('select_filters_arrow', 'title'),
               Input('select_filters_arrow', 'n_clicks'),
               State('select_filters_arrow', 'title'))
-def toggle_applied_filters(n_clicks, state):
+def toggle_applied_filters(i_arrow_clicks, s_state):
     """ toggle filter box """
 
-    style = {'display': 'none'}
-    if n_clicks is not None:
-        if state == 'is_open':
-            style = {'display': 'none'}
-            state = 'is_closed'
+    o_style = {'display': 'none'}
+    if i_arrow_clicks is not None:
+        if s_state == 'is_open':
+            o_style = {'display': 'none'}
+            s_state = 'is_closed'
         else:
-            style = {'display': 'block'}
-            state = 'is_open'
+            o_style = {'display': 'block'}
+            s_state = 'is_open'
 
-    return style, state
+    return o_style, s_state
 
 
 @app.callback(Output('fields_for_applied_filters', 'style'),
@@ -489,28 +523,28 @@ def toggle_applied_filters(n_clicks, state):
               Output('input_arrival', 'style'),
               Output('input_airport', 'style'),
               Input('filters_drop', 'value'))
-def toggle_fields(dd_value):
+def toggle_fields(i_dd_value):
     """ toggle fields depending on filter selected """
 
-    fields_style = {'display': 'none'}
-    input_flightnumber_style = {'display': 'none'}
-    input_departure_style = {'display': 'none'}
-    input_arrival_style = {'display': 'none'}
-    input_airport_style = {'display': 'none'}
+    o_fields_style = {'display': 'none'}
+    o_input_flightnumber_style = {'display': 'none'}
+    o_input_departure_style = {'display': 'none'}
+    o_input_arrival_style = {'display': 'none'}
+    o_input_airport_style = {'display': 'none'}
 
-    if dd_value is not None:
-        fields_style = {'display': 'block'}
-        if dd_value == 'By Flight':
-            input_flightnumber_style = {'display': 'block'}
-        elif dd_value == 'By Route':
-            input_departure_style = {'display': 'block'}
-            input_arrival_style = {'display': 'block'}
-        elif dd_value == 'By Airports':
-            input_airport_style = {'display': 'block'}
+    if i_dd_value is not None:
+        o_fields_style = {'display': 'block'}
+        if i_dd_value == 'By Flight':
+            o_input_flightnumber_style = {'display': 'block'}
+        elif i_dd_value == 'By Route':
+            o_input_departure_style = {'display': 'block'}
+            o_input_arrival_style = {'display': 'block'}
+        elif i_dd_value == 'By Airports':
+            o_input_airport_style = {'display': 'block'}
 
-    return fields_style, input_flightnumber_style, \
-            input_departure_style, input_arrival_style, \
-            input_airport_style
+    return o_fields_style, o_input_flightnumber_style, \
+            o_input_departure_style, o_input_arrival_style, \
+            o_input_airport_style
 
 
 @app.callback(Output('airport_panel', 'style'),
