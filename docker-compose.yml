@@ -31,6 +31,24 @@ services:
     depends_on:
       - "mongo"
 
+  cron:
+    build:
+      context: .
+      dockerfile: cron.Dockerfile
+    image: cron:1.0.1
+    container_name: cron
+    environment:
+      - MONGO_CONNECTION_STR=mongodb://10.5.0.2:27017/
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.4
+    volumes:
+      - ./src:/home/src
+      - ./log:/home/src/log
+    depends_on:
+      - "mongo"
+         
+
 networks:
   vpcbr:
     driver: bridge

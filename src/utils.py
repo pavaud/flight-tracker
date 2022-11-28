@@ -74,14 +74,14 @@ def get_headers(api):
 def get_mongo_client():
     """ returns Mongo client """
     
-    # choos a connection string depending on manual or docker start up
+    # choose a connection string depending on manual or docker start up
     try:
         MONGO_CONNECTION_STR = os.environ['MONGO_CONNECTION_STR']
     except:
         MONGO_CONNECTION_STR = 'mongodb://127.0.0.1:27017/'
 
-    client = MongoClient(MONGO_CONNECTION_STR) #1.0.1
-    
+    client = MongoClient(MONGO_CONNECTION_STR)
+
     return client
 
 
@@ -172,7 +172,7 @@ def update_departure(airport, date_time):
     # connecting collection
     client = get_mongo_client()
     col = client.flightTracker.flights
-
+        
     # request
     url = BASE_URL_CFI + "departures/"+airport+"/"+date_time+"?offset=0&limit=100"
     response = requests.request("GET", url, headers=get_headers('lufthansa'))
@@ -207,10 +207,10 @@ def update_departure(airport, date_time):
                 col.replace_one(filter=query, replacement=flights,upsert=True)
             except IndexError:
                 print(IndexError)
-                print("URL : ",url,'\n\n')                
+                print("URL : ",url,'\n\n')
             except TypeError:
                 print(TypeError)
-                print("URL : ",url,'\n\n')                
+                print("URL : ",url,'\n\n')                               
             
     else:
         print("ERROR for departures at "  + airport + " - request status is : ", response.status_code)
@@ -430,19 +430,17 @@ def update_flight_status():
     """ Update flight status on all airports"""
 
     airports = pd.read_csv(AIRPORTS_FILE)
-    #airports with bad requests =['STO','RIX','HEL']
     airport_shortlist = airports['airport']
-    #airport_shortlist = ['STO','RIX','HEL']
-
     # datetime for requests
     #date_time = datetime.now().strftime("%Y-%m-%dT%H:%M")
     date_time = datetime.now().strftime("%Y-%m-%dT08:00")
 
-
     for airport in airport_shortlist:
         print(airport)
+
         update_departure(airport, date_time)
         update_arrival(airport,date_time)
+
         time.sleep(1)
 
 

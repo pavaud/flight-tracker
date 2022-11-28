@@ -8,9 +8,13 @@ import plotly.express as px
 from utils import *
 
 
-#DEBUG = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
-DEBUG = True
+# make debug or not depending on docker-compose
+try:
+    DEBUG = os.environ["DASH_DEBUG_MODE"]
+except :
+    DEBUG = True
 
+# create app and server
 app = Dash(__name__)
 server = app.server
 
@@ -30,7 +34,6 @@ filters_layout = html.Div([
     ]
     ),
     html.Div([
-        #html.P('Applied filters:', id='filter_text'),
         dcc.Dropdown(
             placeholder='Select Filter',
             id='filters_drop',
@@ -63,14 +66,11 @@ filters_layout = html.Div([
                     style = {'display': 'none'})    
             ],  id='input_div'
             ),
-
-
             html.Button('SUBMIT', id='submit_val', n_clicks=0),
         ],
             id='fields_for_applied_filters',
             style = {'display': 'none'}
         ),
-
     ],
         id='dropdown_applied_filters',
         style = {'display': 'none'}
@@ -270,7 +270,7 @@ app.layout = html.Div([
             className='background-map-container'
         ),
         dcc.Interval(id = 'graph-update',
-                    interval = 10*1000,
+                    interval = 300*1000,
                     n_intervals = 0
                     ),
     ],
@@ -314,7 +314,7 @@ callsign = ""
 @app.callback(Output('live-update-text', 'children'), 
              [Input('graph-update', 'n_intervals')])
 def last_update(n):
-    """ displays the last update time on the titel layout """
+    """displays the last update time on the titel layout"""
 
     return html.H2('Last Update: ' + str(datetime.now().strftime('%d-%m-%Y %H:%M:%S')),
                     className="header-title", 
@@ -325,11 +325,13 @@ def last_update(n):
 @app.callback(Output('live-graph', 'figure'), 
              [Input('graph-update', 'n_intervals')])
 def flight_tracker_update(n):
-    """ displays the map on the background layout"""
+    """displays the map on the background layout"""
 
     global df
-    df , fig = flight_tracker()
+
+    df, fig = flight_tracker()
     print("## SIZE DF : ", len(df))
+
     return fig
 
 
@@ -350,18 +352,17 @@ def update_hovered_airplane(hoverData):
     if hoverData is not None:
         top = hoverData['points'][0]['bbox']['y0']
         left = hoverData['points'][0]['bbox']['x0']
-
         row_nb = hoverData['points'][0]['pointIndex']
+
         try:
+            # get the row in df of hovered airplane
             row = df.iloc[row_nb]
-            
             callsign = row.callsign
             lat = row.lat
             lon = row.long
             origin = row.origin_country
             alt = row.baro_altitude
             speed = row.velocity
-
         except IndexError:
             print("## ROW NB ## : " , row_nb)
             print("## DF ## : " , df)
@@ -372,7 +373,7 @@ def update_hovered_airplane(hoverData):
             alt = ""
             speed = ""
 
-
+        # display panel shifted from the airplane 
         style = {'display': 'block',
                 'top':str(top+10)+'px',
                 'left':str(left+10)+'px'}
@@ -497,13 +498,12 @@ def reset_clickData(n_clicks):
     return None
 
 
-
 @app.callback(Output('dropdown_applied_filters', 'style'),
               Output('select_filters_arrow', 'title'),
               Input('select_filters_arrow', 'n_clicks'),
               State('select_filters_arrow', 'title'))
 def toggle_applied_filters(i_arrow_clicks, s_state):
-    """ toggle filter box """
+    """toggle filter box"""
 
     o_style = {'display': 'none'}
     if i_arrow_clicks is not None:
@@ -524,7 +524,7 @@ def toggle_applied_filters(i_arrow_clicks, s_state):
               Output('input_airport', 'style'),
               Input('filters_drop', 'value'))
 def toggle_fields(i_dd_value):
-    """ toggle fields depending on filter selected """
+    """toggle fields depending on filter selected"""
 
     o_fields_style = {'display': 'none'}
     o_input_flightnumber_style = {'display': 'none'}
@@ -628,6 +628,7 @@ def display_airport_panel(i_sub_clicks,
                         }
                         ],
                         page_size=10)
+
         try:
             o_airport_name = get_airport_infos(i_value)[0]
         except IndexError:
@@ -643,7 +644,8 @@ def display_airport_panel(i_sub_clicks,
         o_style = {'display': 'none'}
         x_close_airport_clicks = i_close_clicks
 
-    return o_style, o_arrivals_tbl, o_departures_tbl, o_airport_name, o_in_airport
+    return o_style, o_arrivals_tbl, o_departures_tbl, \
+            o_airport_name, o_in_airport
 
     
 @app.callback(Output('route_panel', 'style'),
