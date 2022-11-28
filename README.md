@@ -4,5 +4,9 @@ The Flight Tracker App provides the user a way of following currently flying fli
 
 # Setup
 
+Run the Docker Compose file
+```bash
+docker-compose up
+```
 # Getting Started
 
