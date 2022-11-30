@@ -11,7 +11,7 @@ services:
     - 27017:27017
     restart: unless-stopped
     networks:
-      vpcbr:
+      ftnw:
         ipv4_address: 10.5.0.2
 
   dash:
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./src:/home/src
     networks:
-      vpcbr:
+      ftnw:
         ipv4_address: 10.5.0.3
     depends_on:
       - "mongo"
@@ -40,7 +40,7 @@ services:
     environment:
       - MONGO_CONNECTION_STR=mongodb://10.5.0.2:27017/
     networks:
-      vpcbr:
+      ftnw:
         ipv4_address: 10.5.0.4
     volumes:
       - ./src:/home/src
@@ -50,7 +50,7 @@ services:
          
 
 networks:
-  vpcbr:
+  ftnw:
     driver: bridge
     ipam:
      config:
