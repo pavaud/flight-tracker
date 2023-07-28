@@ -1,19 +1,16 @@
-# standard
-import os
 # third-party
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import MultipleResultsFound, NoResultFound
 
-# CONSTANTS
-DB_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), 'codes.sqlite'))
-SQL_ALCHEMY_ENGINE = 'sqlite:///' + DB_PATH
-
+# project
+import constants as c
 
 # FUNCTIONS
 
+
 def get_airport_infos(airport_iata):
-    """ 
-    Get the name, city and country for given airport IATA code 
+    """
+    Get the name, city and country for given airport IATA code
 
     Parameters:
     -----------
@@ -23,29 +20,32 @@ def get_airport_infos(airport_iata):
     ---------
     result      : tuple with airport_name, city_name, country_name
     """
-    
-    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=False)
+
+    engine = create_engine(c.SQL_ALCHEMY_ENGINE, echo=False)
 
     with engine.connect() as conn:
-        query = text("SELECT airport_name,city_name, country_name "
-                     "FROM Airport JOIN City ON Airport.city_iata=City.city_iata "
-                     "WHERE airport_iata = \"" + airport_iata.upper() + "\";")
-        results = conn.execute(query)
+        query = text(
+            "SELECT airport_name,city_name, country_name "
+            "FROM Airport JOIN City ON Airport.city_iata=City.city_iata "
+            'WHERE airport_iata = "' + airport_iata.upper() + '";'
+        )
 
         try:
-            result = results.one()
+            results = conn.execute(query)
+            result = results.one() if results is not None else ""
         except MultipleResultsFound:
-            print('Many results returned. Should be only one')
-        except NoResultFound:
-            print('No results returned')
+            print("Many results returned. Should be only one")
             result = ""
-            
+        except NoResultFound:
+            print("No results returned")
+            result = ""
+
         return result
 
 
 def get_airline_from_iata(airline_iata):
-    """ 
-    Get the name for given airline IATA code 
+    """
+    Get the name for given airline IATA code
 
     Parameters:
     -----------
@@ -56,28 +56,31 @@ def get_airline_from_iata(airline_iata):
     result      : airline_name
     """
 
-    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=False)
+    engine = create_engine(c.SQL_ALCHEMY_ENGINE, echo=False)
 
     with engine.connect() as conn:
-        query = text("SELECT airline_name "
-                     "FROM Airline "
-                     "WHERE airline_iata = \"" + airline_iata.upper() + "\";")
-        results = conn.execute(query)
+        query = text(
+            "SELECT airline_name "
+            "FROM Airline "
+            'WHERE airline_iata = "' + airline_iata.upper() + '";'
+        )
 
         try:
-            result = results.one()[0]
+            results = conn.execute(query)
+            result = results.one()[0] if results is not None else ""
         except MultipleResultsFound:
-            print('Many results returned. Should be only one')
-        except NoResultFound:
-            print('No results returned')
+            print("Many results returned. Should be only one")
             result = ""
-            
+        except NoResultFound:
+            print("No results returned")
+            result = ""
+
         return result
 
 
 def get_airline_from_icao(airline_icao):
-    """ 
-    Get the name for given airline ICAO code 
+    """
+    Get the name for given airline ICAO code
 
     Parameters:
     -----------
@@ -87,21 +90,24 @@ def get_airline_from_icao(airline_icao):
     ---------
     result      : airline_name
     """
-    
-    engine = create_engine(SQL_ALCHEMY_ENGINE, echo=False)
+
+    engine = create_engine(c.SQL_ALCHEMY_ENGINE, echo=False)
 
     with engine.connect() as conn:
-        query = text("SELECT airline_name "
-                     "FROM Airline "
-                     "WHERE airline_icao = \"" + airline_icao.upper() + "\";")
-        results = conn.execute(query)
+        query = text(
+            "SELECT airline_name "
+            "FROM Airline "
+            'WHERE airline_icao = "' + airline_icao.upper() + '";'
+        )
 
         try:
-            result = results.one()[0]
+            results = conn.execute(query)
+            result = results.one()[0] if results is not None else ""
         except MultipleResultsFound:
-            print('Many results returned. Should be only one')
-        except NoResultFound:
-            print('No results returned')
+            print("Many results returned. Should be only one")
             result = ""
-            
+        except NoResultFound:
+            print("No results returned")
+            result = ""
+
         return result
