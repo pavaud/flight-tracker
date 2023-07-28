@@ -18,12 +18,6 @@ def get_headers(api):
     return {"Authorization": "Bearer " + api_key}
 
 
-def get_mongo_client():
-    """returns Mongo client"""
-    client = MongoClient(c.MONGO_CONNECTION_STR)
-    return client
-
-
 # UPDATE FUNCTIONS
 def update_arrival(airport, date_time):
     """
@@ -36,7 +30,7 @@ def update_arrival(airport, date_time):
     """
 
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.flights
 
     # request
@@ -138,7 +132,7 @@ def update_departure(airport, date_time):
         date_time   : date and time required by the API. format : %Y-%m-%dT%H:%M
     """
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.flights
 
     # request
@@ -234,7 +228,7 @@ def remove_old_schedules(days=1):
     """Remove schedules older than (today - days) days from col"""
 
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.schedules
 
     # d = datetime(2022, 10, 20)
@@ -256,7 +250,7 @@ def update_schedule(airline, start, end):
     """
 
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.schedules
 
     # request
@@ -332,7 +326,7 @@ def update_flight(flightnumber):
         flightnumber: airline for which we want to get schedules
     """
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.flights
 
     # request
@@ -400,7 +394,7 @@ def update_route(dep, arr):
         arr : arrival iata airport code
     """
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.routes
 
     # request
@@ -481,7 +475,7 @@ def update_position(response):
     """update airplane GPS position and altitude from opensky API"""
 
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.position
 
     # set index on 'callsign' in position collection if it doesn't exist
@@ -519,7 +513,7 @@ def get_arrivals(airport):
     """Get list of arrivals at given Airport"""
 
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.flights
 
     arr_found = list(
@@ -558,7 +552,7 @@ def get_departures(airport):
     """Get list of departures at given Airport"""
 
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.flights
 
     dep_found = list(
@@ -603,7 +597,7 @@ def get_routes(dep, arr):
     """Get list of routes between given departure and arrival airport"""
 
     # connecting collection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.flights
 
     # get routes from mongo collection
@@ -686,7 +680,7 @@ def get_routes(dep, arr):
 def get_all_flights():
     """get all flights in flights collection"""
 
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.flights
 
     flights = list(col.find({}))
@@ -881,7 +875,7 @@ def get_altitudes(callsign):
     """Get the list of altitudes for given airplane callsign"""
 
     # db connection
-    client = get_mongo_client()
+    client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.position
 
     # get the right callsign in collection
