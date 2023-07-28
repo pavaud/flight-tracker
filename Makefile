@@ -44,6 +44,14 @@ run:
 # 	mkdir -p logs plugins temp dags tests migrations && chmod -R u=rwx,g=rwx,o=rwx logs plugins temp dags tests migrations
 
 # up: perms docker-spin-up warehouse-migration
+run-mongo:
+	docker run --name mongo -p 27017:27017 -v %cd%\data\mongodb:/data/db mongo:6.0.2
+
+run-cron:
+	docker run -v ./src:/home/src --name cron cron:1.0.1
+
+run-dash:
+	docker run -v ./src:/home/src --name dash dash:1.0.1
 
 up:
 	docker compose up -d
@@ -53,12 +61,13 @@ down:
 
 build:
 	docker image build . -t dash:1.0.1
+	docker image build . -f cron.Dockerfile -t cron:1.0.1
 
 container-run:
 	docker container run -it -d --name dash dash:1.0.1
 
 exec:
-	docker exec -it pipeline bash
+	docker exec -it dash bash
 
 exec-scratch: container-kill prune build container-run
 	docker exec -it dash bash

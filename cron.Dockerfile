@@ -6,13 +6,15 @@ RUN apt-get update && apt-get install -y \
 
 # add source files to working directory
 WORKDIR /home/
+ADD data ${WORKDIR}data/
 RUN mkdir -p ${WORKDIR}src/log
 ADD src/utils.py \
     src/sqldb_requests.py \
     src/update_flight_status.py \
     ${WORKDIR}src/
-ADD .env requirements.txt $WORKDIR
+ADD .env.prod requirements.txt $WORKDIR
 ADD data/airports_valid_for_update.csv ${WORKDIR}data/
+RUN mv .env.prod .env
 
 # install required librairies
 RUN pip3 install -r requirements.txt

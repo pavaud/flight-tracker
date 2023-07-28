@@ -1,6 +1,7 @@
 env/
 .venv/
 .env
+.env.prod
 .mypy*
 .vscode/
 *__pycache__/
