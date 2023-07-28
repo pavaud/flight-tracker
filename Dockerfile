@@ -22,7 +22,5 @@ RUN pip3 install -r requirements.txt --break-system-packages
 EXPOSE 8050
 
 # Load SQL db, flights mongodb collection and start app
-# WORKDIR /home/
 RUN python3 ./src/sqldb_load.py
 CMD python3 ./src/app.py
-# CMD tail -f
