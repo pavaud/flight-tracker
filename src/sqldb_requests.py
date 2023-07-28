@@ -1,11 +1,7 @@
-# third-party
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import MultipleResultsFound, NoResultFound
 
-# project
 import constants as c
-
-# FUNCTIONS
 
 
 def get_airport_infos(airport_iata):
@@ -27,7 +23,7 @@ def get_airport_infos(airport_iata):
         query = text(
             "SELECT airport_name,city_name, country_name "
             "FROM Airport JOIN City ON Airport.city_iata=City.city_iata "
-            'WHERE airport_iata = "' + airport_iata.upper() + '";'
+            f'WHERE airport_iata = "{airport_iata.upper()}";'
         )
 
         try:
@@ -62,7 +58,7 @@ def get_airline_from_iata(airline_iata):
         query = text(
             "SELECT airline_name "
             "FROM Airline "
-            'WHERE airline_iata = "' + airline_iata.upper() + '";'
+            f'WHERE airline_iata = "{airline_iata.upper()}";'
         )
 
         try:
@@ -97,7 +93,7 @@ def get_airline_from_icao(airline_icao):
         query = text(
             "SELECT airline_name "
             "FROM Airline "
-            'WHERE airline_icao = "' + airline_icao.upper() + '";'
+            f'WHERE airline_icao = "{airline_icao.upper()}";'
         )
 
         try:

@@ -1,8 +1,8 @@
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
-RUN apt-get update && \
-    apt-get install python3-pip -y && \
-    apt-get install cron -y
+RUN apt-get update && apt-get install -y \
+    cron \
+    python3-pip
 
 # add source files to working directory
 WORKDIR /home/
@@ -11,7 +11,7 @@ ADD src/utils.py \
     src/sqldb_requests.py \
     src/update_flight_status.py \
     ${WORKDIR}src/
-ADD api_keys.txt requirements.txt $WORKDIR
+ADD .env requirements.txt $WORKDIR
 ADD data/airports_valid_for_update.csv ${WORKDIR}data/
 
 # install required librairies

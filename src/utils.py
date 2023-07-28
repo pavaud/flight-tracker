@@ -63,13 +63,8 @@ def update_arrival(airport, date_time):
                         ]
                     }
                     col.replace_one(query, flight, upsert=True)
-                except IndexError:
-                    print(IndexError)
-                    print("URL : ", url, "\n\n")
-                    continue
-                except TypeError:
-                    print(TypeError)
-                    print("URL : ", url, "\n\n")
+                except (IndexError, TypeError) as e:
+                    print(f"ERROR : {e}\n URL : {url}\n\n")
                     continue
         else:
             try:
@@ -90,20 +85,16 @@ def update_arrival(airport, date_time):
                     ]
                 }
                 col.replace_one(filter=query, replacement=flights, upsert=True)
-            except IndexError:
-                print(IndexError)
-                print("URL : ", url, "\n\n")
-            except TypeError:
-                print(TypeError)
-                print("URL : ", url, "\n\n")
+            except (IndexError, TypeError) as e:
+                print(f"ERROR : {e}\n URL : {url}\n\n")
 
     else:
         print(
-            "ERROR for arrivals at " + airport + " - request status is : ",
-            response.status_code,
+            f"ERROR for arrivals at {airport}"
+            f"request status is : {response.status_code}"
+            f"{response.text}"
+            f"URL : {url}\n\n"
         )
-        print(response.text)
-        print("URL : ", url, "\n\n")
 
     # close connection
     client.close()

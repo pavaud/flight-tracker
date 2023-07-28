@@ -25,7 +25,7 @@ import utils
 # make debug or not depending on docker-compose
 try:
     DEBUG = os.environ["DASH_DEBUG_MODE"]
-except:
+except Exception:
     DEBUG = True
 
 # create app and server

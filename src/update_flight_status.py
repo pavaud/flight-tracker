@@ -1,6 +1,7 @@
-# project
-from utils import update_flight_status
 from datetime import datetime
+
+from utils import update_flight_status
+
 
 def main():
     """
@@ -10,9 +11,9 @@ def main():
 
     update_flight_status()
 
-    with open('/home/src/log/cron.log','a') as f:
-        f.write("Update: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        f.write("\n")
-    
+    with open("/home/src/log/cron.log", "a") as f:
+        f.write(f"Update: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
+
 if __name__ == "__main__":
     main()
