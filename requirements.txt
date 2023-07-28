@@ -1,6 +1,7 @@
 dash
-pymongo
 requests
 pandas
 plotly
+pymongo
+python-dotenv
 sqlalchemy

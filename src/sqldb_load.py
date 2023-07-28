@@ -1,5 +1,3 @@
-import os
-
 import pandas as pd
 from sqlalchemy import (
     Table,
@@ -14,22 +12,16 @@ from sqlalchemy import (
 import constants as c
 
 # SQLite database creation
-DB_PATH = os.path.realpath(
-    os.path.join(os.path.dirname(__file__), "codes.sqlite")
-)
 engine = create_engine(c.SQL_ALCHEMY_ENGINE, echo=True)
 meta = MetaData()
-
 
 # CREATE TABLES
 
 # drop all tables if they already exist
-sql = text("DROP TABLE IF EXISTS City;")
-result = engine.execute(sql)
-sql = text("DROP TABLE IF EXISTS Airport;")
-result = engine.execute(sql)
-sql = text("DROP TABLE IF EXISTS Airline;")
-result = engine.execute(sql)
+with engine.begin() as conn:
+    result = conn.execute(text("DROP TABLE IF EXISTS City;"))
+    result = conn.execute(text("DROP TABLE IF EXISTS Airport;"))
+    result = conn.execute(text("DROP TABLE IF EXISTS Airline;"))
 
 # Table City
 City = Table(
@@ -60,14 +52,14 @@ Airline = Table(
     Column("airline_name", String(40)),
 )
 
-# creation de toutes les tables
+# Create all tables
 meta.create_all(engine)
 
 
 # LOAD TABLES
 
-# Importer CSV dans la Table Airport
-df = pd.read_csv("https://ft-app.s3.eu-west-3.amazonaws.com/airports.csv")
+# Import CSV in Airport table
+df = pd.read_csv(c.AIRPORTS_FILE)
 df.to_sql(
     "Airport",
     engine,
@@ -82,8 +74,8 @@ df.to_sql(
     },
 )
 
-# Importer CSV dans la Table City
-df = pd.read_csv("https://ft-app.s3.eu-west-3.amazonaws.com/cities.csv")
+# Import CSV in City table
+df = pd.read_csv(c.CITIES_FILE)
 df.to_sql(
     "City",
     engine,
@@ -96,8 +88,8 @@ df.to_sql(
     },
 )
 
-# Importer CSV dans la Table Airline
-df = pd.read_csv("https://ft-app.s3.eu-west-3.amazonaws.com/airlines.csv")
+# Import CSV in Airline table
+df = pd.read_csv(c.AIRLINES_FILE)
 df.to_sql(
     "Airline",
     engine,

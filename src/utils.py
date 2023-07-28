@@ -156,13 +156,8 @@ def update_departure(airport, date_time):
                         ]
                     }
                     col.replace_one(filter=query, replacement=flight, upsert=True)  # fmt: skip
-                except IndexError:
-                    print(IndexError)
-                    print("URL : ", url, "\n\n")
-                    continue
-                except TypeError:
-                    print(TypeError)
-                    print("URL : ", url, "\n\n")
+                except (IndexError, TypeError) as e:
+                    print(f"ERROR : {e}\n URL : {url}\n\n")
                     continue
         else:
             try:
@@ -183,20 +178,16 @@ def update_departure(airport, date_time):
                     ]
                 }
                 col.replace_one(filter=query, replacement=flights, upsert=True)
-            except IndexError:
-                print(IndexError)
-                print("URL : ", url, "\n\n")
-            except TypeError:
-                print(TypeError)
-                print("URL : ", url, "\n\n")
+            except (IndexError, TypeError) as e:
+                print(f"ERROR : {e}\n URL : {url}\n\n")
 
     else:
         print(
-            "ERROR for departures at " + airport + " - request status is : ",
-            response.status_code,
+            f"ERROR for departures at {airport}"
+            f"request status is : {response.status_code}"
+            f"{response.text}"
+            f"URL : {url}\n\n"
         )
-        print(response.text)
-        print("URL : ", url, "\n\n")
 
     # close connection
     client.close()
@@ -222,7 +213,6 @@ def remove_old_schedules(days=1):
     client = MongoClient(c.MONGO_CONNECTION_STR)
     col = client.flightTracker.schedules
 
-    # d = datetime(2022, 10, 20)
     date = datetime.now() - timedelta(days)
     col.delete_many({"insertedDate": {"$lt": date}})
 
@@ -344,19 +334,15 @@ def update_flight(flightnumber):
                 ]
             }
             col.replace_one(filter=query, replacement=flight, upsert=True)
-        except IndexError:
-            print(IndexError)
-            print("URL : ", url, "\n\n")
-        except TypeError:
-            print(IndexError)
-            print("URL : ", url, "\n\n")
+        except (IndexError, TypeError) as e:
+            print(f"ERROR : {e}\n URL : {url}\n\n")
 
     else:
         print(
-            "ERROR for flightnumber : "
-            + flightnumber
-            + " - request status is : ",
-            response.status_code,
+            f"ERROR for flightnumber at {flightnumber}"
+            f"request status is : {response.status_code}"
+            f"{response.text}"
+            f"URL : {url}\n\n"
         )
 
     # close connection
@@ -415,18 +401,15 @@ def update_route(dep, arr):
                     ]
                 }
                 col.replace_one(filter=query, replacement=route, upsert=True)
-            except IndexError:
-                print(IndexError)
-                print("route : " + dep + "/" + arr)
-                continue
-            except TypeError:
-                print(IndexError)
-                print("route : " + dep + "/" + arr)
+            except (IndexError, TypeError) as e:
+                print(f"ERROR : {e}\n URL : {url}\n\n")
                 continue
     else:
         print(
-            "ERROR for route : " + dep + "/" + arr + " - request status is : ",
-            response.status_code,
+            f"ERROR for route at {dep}/{arr}"
+            f"request status is : {response.status_code}"
+            f"{response.text}"
+            f"URL : {url}\n\n"
         )
 
     # close connection
@@ -448,7 +431,7 @@ def update_routes():
 def update_flight_status():
     """Update flight status on all airports"""
 
-    airports = pd.read_csv(c.AIRPORTS_FILE)
+    airports = pd.read_csv(c.VALID_AIRPORTS_FILE)
     airport_shortlist = airports["airport"]
 
     date_time = datetime.now().strftime("%Y-%m-%dT08:00")
@@ -490,9 +473,8 @@ def update_position(response):
 
         try:
             col.update_one(filter=filter, update=update, upsert=True)
-        except Exception:
-            print(Exception)
-            print(flight)
+        except Exception as e:
+            print(f"ERROR : {e}\n Flight : {flight}\n\n")
             continue
 
     # close connection
@@ -713,9 +695,7 @@ def get_all_flights():
 
         try:
             cols.append(
-                x["Departure"]["Terminal"]["Name"]
-                + "/"
-                + x["Departure"]["Terminal"]["Gate"]
+                f'{x["Departure"]["Terminal"]["Name"]}/{x["Departure"]["Terminal"]["Gate"]}'
             )
         except KeyError:
             cols.append("")
@@ -744,8 +724,7 @@ def get_all_flights():
         cols.append(x["OperatingCarrier"]["AirlineID"])
         cols.append(get_airline_from_iata(x["OperatingCarrier"]["AirlineID"]))
         cols.append(
-            x["OperatingCarrier"]["AirlineID"]
-            + x["OperatingCarrier"]["FlightNumber"]
+            f'{x["OperatingCarrier"]["AirlineID"]}{x["OperatingCarrier"]["FlightNumber"]}'
         )
         cols.append(x["Status"]["Description"])
 
@@ -779,15 +758,12 @@ def list_available_airports():
 def get_opensky_flights():
     """get currently flying airplanes from opensky API"""
 
-    USER = c.OPENSKY_USER
-    PASSWORD = c.OPENSKY_PASSWORD
-
     # defining the spatial field
     lon_min, lat_min = -180.0, -90.0
     lon_max, lat_max = 180.0, 90.0
 
     # send request to get the current airplane data
-    url_data = f"https://{USER}:{PASSWORD}@opensky-network.org/api/states/all?lamin={lat_min}&lomin={lon_min}&lamax={lat_max}&lomax={lon_max}"
+    url_data = f"{c.OPENSKY_BASE_URL}?lamin={lat_min}&lomin={lon_min}&lamax={lat_max}&lomax={lon_max}"
     response = requests.get(url_data).json()
 
     update_position(response)
