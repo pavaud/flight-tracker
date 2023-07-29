@@ -9,6 +9,7 @@ from typing import Any
 import requests
 import pandas as pd
 from pymongo import MongoClient, ASCENDING
+from pymongo.errors import OperationFailure, ServerSelectionTimeoutError
 import plotly.graph_objs as go
 
 import constants as c
@@ -104,7 +105,7 @@ def update_arrival(airport: str, date_time: str) -> None:
                     }
                     col.replace_one(query, flight, upsert=True)
                 except (IndexError, TypeError) as e:
-                    print(f"ERROR : {e}\n URL : {url}\n\n")
+                    logging.error(f" URL : {url}\n{e}")
                     continue
         else:
             try:
@@ -126,14 +127,14 @@ def update_arrival(airport: str, date_time: str) -> None:
                 }
                 col.replace_one(filter=query, replacement=flights, upsert=True)
             except (IndexError, TypeError) as e:
-                print(f"ERROR : {e}\n URL : {url}\n\n")
+                logging.error(f" URL : {url}\n{e}")
 
     else:
-        print(
-            f"ERROR for arrivals at {airport}"
-            f"request status is : {response.status_code}"
+        logging.error(
+            f"Error for arrivals at {airport}\n"
+            f"request status is : {response.status_code}\n"
+            f"URL : {url}\n"
             f"{response.text}"
-            f"URL : {url}\n\n"
         )
 
     # close connection
@@ -197,7 +198,7 @@ def update_departure(airport: str, date_time: str) -> None:
                     }
                     col.replace_one(filter=query, replacement=flight, upsert=True)  # fmt: skip
                 except (IndexError, TypeError) as e:
-                    print(f"ERROR : {e}\n URL : {url}\n\n")
+                    logging.error(f" URL : {url}\n{e}")
                     continue
         else:
             try:
@@ -219,14 +220,14 @@ def update_departure(airport: str, date_time: str) -> None:
                 }
                 col.replace_one(filter=query, replacement=flights, upsert=True)
             except (IndexError, TypeError) as e:
-                print(f"ERROR : {e}\n URL : {url}\n\n")
+                logging.error(f" URL : {url}\n{e}")
 
     else:
-        print(
-            f"ERROR for departures at {airport}"
-            f"request status is : {response.status_code}"
+        logging.error(
+            f"Error for departures at {airport}\n"
+            f"request status is : {response.status_code}\n"
+            f"URL : {url}\n"
             f"{response.text}"
-            f"URL : {url}\n\n"
         )
 
     # close connection
@@ -293,21 +294,18 @@ def update_schedule(airline: str, start: str, end: str) -> None:
             }
             try:
                 col.insert_one(new_flight)
-            except Exception:
-                print(Exception)
-                print(flight)
+            except OperationFailure as e:
+                logging.error(f"Error during inserting flight {flight}. {e}")
+                continue
+            except ServerSelectionTimeoutError as e:
+                logging.error(f"Cannot connect to server. {e}")
                 continue
     else:
-        # pour test
-        print(
-            "ERROR for ",
-            airline,
-            " - request status is : ",
-            response.status_code,
-            " ",
-            response.reason,
+        logging.error(
+            f"Error for airline {airline}\n"
+            f"Request status : {response.status_code}\n"
+            f"Reason : {response.reason}\n{response.text}"
         )
-        print(response.text)
 
     # close connection
     client.close()
@@ -375,14 +373,14 @@ def update_flight(flightnumber: str) -> None:
             }
             col.replace_one(filter=query, replacement=flight, upsert=True)
         except (IndexError, TypeError) as e:
-            print(f"ERROR : {e}\n URL : {url}\n\n")
+            logging.error(f" URL : {url}\n{e}")
 
     else:
-        print(
-            f"ERROR for flightnumber at {flightnumber}"
-            f"request status is : {response.status_code}"
+        logging.error(
+            f"Error for flightnumber {flightnumber}\n"
+            f"Request status is : {response.status_code}\n"
+            f"URL : {url}\n"
             f"{response.text}"
-            f"URL : {url}\n\n"
         )
 
     # close connection
@@ -442,14 +440,14 @@ def update_route(dep: str, arr: str) -> None:
                 }
                 col.replace_one(filter=query, replacement=route, upsert=True)
             except (IndexError, TypeError) as e:
-                print(f"ERROR : {e}\n URL : {url}\n\n")
+                logging.error(f" URL : {url}\n{e}")
                 continue
     else:
-        print(
-            f"ERROR for route at {dep}/{arr}"
-            f"request status is : {response.status_code}"
+        logging.error(
+            f"Error for route {dep}/{arr}\n"
+            f"request status is : {response.status_code}\n"
+            f"URL : {url}\n"
             f"{response.text}"
-            f"URL : {url}\n\n"
         )
 
     # close connection
@@ -477,7 +475,7 @@ def update_flight_status() -> None:
     date_time = datetime.now().strftime("%Y-%m-%dT08:00")
 
     for airport in airport_shortlist:
-        print(airport)
+        logging.debug(airport)
 
         update_departure(airport, date_time)
         update_arrival(airport, date_time)
@@ -513,8 +511,11 @@ def update_position(response: Any) -> None:
 
         try:
             col.update_one(filter=filter, update=update, upsert=True)
-        except Exception as e:
-            print(f"ERROR : {e}\n Flight : {flight}\n\n")
+        except OperationFailure as e:
+            logging.error(f"Error updating position of Flight : {flight}. {e}")
+            continue
+        except ServerSelectionTimeoutError as e:
+            logging.error(f"Cannot connect to server. {e}")
             continue
 
     # close connection
@@ -870,7 +871,7 @@ def flight_tracker() -> tuple[pd.DataFrame, go.Figure]:
     fig.update_layout(
         height=900,
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
-        mapbox={"accesstoken": TOKEN, "style": "outdoors", "zoom": 1.9},
+        mapbox={"accesstoken": TOKEN, "style": "light", "zoom": 1.9},
         showlegend=False,
         uirevision=True,
     )

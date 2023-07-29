@@ -7,7 +7,7 @@ Filters can be used to search for a specific flight, route or airport.
 Usage: $ python app.py
 """
 
-
+import logging
 import os
 from datetime import datetime
 
@@ -30,6 +30,11 @@ except Exception:
 app = Dash(__name__)
 server = app.server
 
+# Parse commandline arguments
+args = utils.init_args()
+
+# Logging config
+utils.init_log_conf(args.loglevel, c.DASH_LOG_PATH)
 
 # LAYOUT
 
@@ -512,7 +517,7 @@ def flight_tracker_update(n):
     global df
 
     df, fig = utils.flight_tracker()
-    print("## SIZE DF : ", len(df))
+    logging.debug("## SIZE DF : ", len(df))
 
     return fig
 
@@ -547,9 +552,8 @@ def update_hovered_airplane(hoverData):
             origin = row.origin_country
             alt = row.baro_altitude
             speed = row.velocity
-        except IndexError:
-            print("## ROW NB ## : ", row_nb)
-            print("## DF ## : ", df)
+        except IndexError as e:
+            logging.error(f"{e}\n## ROW NB : {row_nb}\n")
             callsign = ""
             lat = ""
             lon = ""
@@ -614,9 +618,8 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
             row_nb = clickData["points"][0]["pointIndex"]
             try:
                 callsign = df.iloc[row_nb]["callsign"]
-            except IndexError:
-                print("## ROW NB ## : ", row_nb)
-                print("## DF ## : ", df)
+            except IndexError as e:
+                logging.error(f"{e}\n## ROW NB : {row_nb}\n## DF :\n{df}")
 
         row = df.loc[(df["callsign"] == callsign), :]
         lat = row.lat
@@ -782,7 +785,6 @@ def display_airport_panel(i_sub_clicks, i_map_clicks, i_close_clicks, i_value):
     o_airport_name = ""
     o_in_airport = ""
 
-    print(map_n_clicks, " ", i_map_clicks)
     if (
         ((map_n_clicks == i_map_clicks) or i_map_clicks is None)
         and (i_sub_clicks != submit_clicks)
@@ -839,7 +841,8 @@ def display_airport_panel(i_sub_clicks, i_map_clicks, i_close_clicks, i_value):
 
         try:
             o_airport_name = utils.get_airport_infos(i_value)[0]
-        except IndexError:
+        except IndexError as e:
+            logging.error(f"Error while getting airport infos.\n{e}")
             o_airport_name = ""
 
         o_airport_name = i_value.upper() + " (" + o_airport_name + ")"
@@ -925,7 +928,6 @@ def display_route_panel(
 
         try:
             df_flight = utils.get_routes(s_dep_value, s_arr_value).iloc[:1, :]
-            print(df_flight)
 
             if not df_flight.empty:
                 o_airline = df_flight["airline_name"]
@@ -942,8 +944,7 @@ def display_route_panel(
             else:
                 o_airline = "NOT FOUND"
         except Exception as e:
-            print("NOTHING FOUND")
-            print(e)
+            logging.error(f"No routes found.\n{e}")
 
     else:
         map_n_clicks = i_map_clicks
@@ -971,11 +972,4 @@ def display_route_panel(
 
 # main
 if __name__ == "__main__":
-    # Parse commandline arguments
-    args = utils.init_args()
-
-    # Logging config
-    utils.init_log_conf(args.loglevel, c.DASH_LOG)
-
-    # Start app
     app.run(host=os.getenv("HOST", "0.0.0.0"), port="8050", debug=DEBUG)

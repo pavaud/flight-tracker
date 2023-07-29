@@ -1,19 +1,27 @@
-from datetime import datetime as dt
+import logging
 
-from utils import update_flight_status
+import utils
+import constants as c
 
 
 def main():
     """
     Loop over the airports to get arrival and departure flights
-    and insert them in the MongoDB flights collection
+    and insert them in the MongoDB `flights` collection
     """
-    with open("/home/src/log/cron.log", "a") as f:
-        try:
-            update_flight_status()
-            f.write(f"UPDATE: {dt.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        except Exception as e:
-            f.write(f"ERROR: {dt.now().strftime('%Y-%m-%d %H:%M:%S')}\n{e}\n")
+
+    # Parse commandline arguments
+    args = utils.init_args()
+
+    # Logging config
+    utils.init_log_conf(args.loglevel, c.CRON_LOG_PATH)
+
+    # Update flight status
+    try:
+        utils.update_flight_status()
+        logging.info("Update flight status")
+    except Exception as e:
+        logging.error(f"Error Update flight status. {e}")
 
 
 if __name__ == "__main__":

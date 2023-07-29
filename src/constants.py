@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
-LOG_DIR = os.environ["LOG_PATH"]
+LOG_DIR = os.environ["LOG_DIR"]
 DASH_LOG = os.environ["DASH_LOG"]
 DASH_LOG_PATH = os.path.join(LOG_DIR, DASH_LOG)
 CRON_LOG = os.environ["CRON_LOG"]

@@ -32,9 +32,10 @@ ci: lint format type secu
 # Application run
 
 run:
-	mongod --dbpath .\data\mongodb
 	python ./src/app.py
 
+mongod:
+	mongod --dbpath .\data\mongodb
 ################################################################################
 # Containers setup
 
