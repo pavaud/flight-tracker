@@ -6,7 +6,7 @@ The Flight Tracker App provides the user a way of following currently flying air
 
 - A Lufthansa [API key](https://developer.lufthansa.com/) must be registered
 - A Mapbox [access token](https://account.mapbox.com/) must be registered
-- Make a  `.env` file at the root of the project with the following environment variables
+- Make a  `.env.prod`  file at the root of the project with the following environment variables.
     ```bash
     LUFTHANSA_API_KEY=<your_api_key>
     OPENSKY_BASE_URL=https://opensky-network.org/api/states/all
@@ -14,11 +14,15 @@ The Flight Tracker App provides the user a way of following currently flying air
     DATA_PATH=.\data
     BASE_URL_CFI=https://api.lufthansa.com/v1/operations/customerflightinformation/
     BASE_URL_SCHEDULES=https://api.lufthansa.com/v1/flight-schedules/flightschedules/passenger?
+    DATA_DIR=/home/data
+    LOG_DIR=/home/log
+    DASH_LOG=dash.log
+    CRON_LOG=cron.log
     ```
 
 # Setup
 
-**Docker** must be installed and running on your platform
+**Docker** must be installed and running on your platform.
 
 Run the [Docker Compose file](docker-compose.yml) with:
 
