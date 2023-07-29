@@ -32,6 +32,7 @@ ci: lint format type secu
 # Application run
 
 run:
+	mongod --dbpath .\data\mongodb
 	python ./src/app.py
 
 ################################################################################
@@ -45,7 +46,7 @@ run:
 
 # up: perms docker-spin-up warehouse-migration
 run-mongo:
-	docker run --name mongo -p 27017:27017 -v %cd%\data\mongodb:/data/db mongo:6.0.2
+	docker run --name mongo -p 27017:27017 -v .\data\mongodb:/data/db mongo:6.0.2
 
 run-cron:
 	docker run -v ./src:/home/src --name cron cron:1.0.1
@@ -82,7 +83,7 @@ container-kill:
 	docker kill dash
 
 container-killall:
-	docker kill $(docker ps -q)
+	docker kill $(docker ps -aq)
 
 container-rmall:
 	docker rm -f $(docker ps -aq)

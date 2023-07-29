@@ -8,17 +8,15 @@ Usage: $ python app.py
 """
 
 
-# standard
 import os
 from datetime import datetime
 
-# third-party
 import pandas as pd
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
 import plotly.express as px
 
-# project
+import constants as c
 import utils
 
 
@@ -973,4 +971,11 @@ def display_route_panel(
 
 # main
 if __name__ == "__main__":
+    # Parse commandline arguments
+    args = utils.init_args()
+
+    # Logging config
+    utils.init_log_conf(args.loglevel, c.DASH_LOG)
+
+    # Start app
     app.run(host=os.getenv("HOST", "0.0.0.0"), port="8050", debug=DEBUG)

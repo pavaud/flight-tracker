@@ -1,5 +1,10 @@
+import argparse
+import logging
+import os
 import time
 from datetime import datetime, timedelta
+from logging.handlers import RotatingFileHandler
+from typing import Any
 
 import requests
 import pandas as pd
@@ -10,7 +15,42 @@ import constants as c
 from sqldb_requests import get_airline_from_iata, get_airport_infos
 
 
-def get_headers(api):
+def init_args() -> argparse.Namespace:
+    """Parse the command line arguments and returns them"""
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--loglevel",
+        default="INFO",
+        help="Provide logging level. Example --loglevel debug, default=INFO",
+    )
+    return parser.parse_args()
+
+
+def init_log_conf(level: str, filename: str) -> None:
+    """Initialize the logging configuration"""
+
+    dir_path = os.path.dirname(filename)
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
+    logging.basicConfig(
+        encoding="utf-8",
+        level=level.upper(),
+        format="[%(asctime)s] %(levelname)-7s %(module)-15s %(lineno)-5d : %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=[
+            RotatingFileHandler(
+                filename,
+                maxBytes=2 * 1024 * 1024,
+                backupCount=5,
+            ),
+            logging.StreamHandler(),
+        ],
+    )
+
+
+def get_headers(api: str) -> dict:
     """returns headers with API token"""
     api_key = ""
     if api == "lufthansa":
@@ -19,7 +59,7 @@ def get_headers(api):
 
 
 # UPDATE FUNCTIONS
-def update_arrival(airport, date_time):
+def update_arrival(airport: str, date_time: str) -> None:
     """
     Insert all arrivals from API in the database
 
@@ -100,7 +140,7 @@ def update_arrival(airport, date_time):
     client.close()
 
 
-def update_arrivals():
+def update_arrivals() -> None:
     """Update arrivals on all airports"""
 
     airports = ["FRA", "BER", "CDG"]
@@ -113,7 +153,7 @@ def update_arrivals():
         time.sleep(1)
 
 
-def update_departure(airport, date_time):
+def update_departure(airport: str, date_time: str) -> None:
     """
     Insert all departures from API in the database
 
@@ -193,7 +233,7 @@ def update_departure(airport, date_time):
     client.close()
 
 
-def update_departures():
+def update_departures() -> None:
     """Update departures on all airports"""
 
     airports = ["FRA", "BER", "CDG"]
@@ -206,7 +246,7 @@ def update_departures():
         time.sleep(1)
 
 
-def remove_old_schedules(days=1):
+def remove_old_schedules(days: int = 1) -> None:
     """Remove schedules older than (today - days) days from col"""
 
     # connecting collection
@@ -219,7 +259,7 @@ def remove_old_schedules(days=1):
     client.close()
 
 
-def update_schedule(airline, start, end):
+def update_schedule(airline: str, start: str, end: str) -> None:
     """
     Update schedule from a given airline in col
 
@@ -273,7 +313,7 @@ def update_schedule(airline, start, end):
     client.close()
 
 
-def update_schedules():
+def update_schedules() -> None:
     """Update schedules from all compagnies"""
 
     # start (today)
@@ -297,7 +337,7 @@ def update_schedules():
         time.sleep(5)
 
 
-def update_flight(flightnumber):
+def update_flight(flightnumber: str) -> None:
     """
     Insert a flight from a given flightnumber in col
 
@@ -349,7 +389,7 @@ def update_flight(flightnumber):
     client.close()
 
 
-def update_flights():
+def update_flights() -> None:
     """Insert all flights from CSV in col"""
 
     # import flightnumbers to update from CSV
@@ -361,7 +401,7 @@ def update_flights():
         time.sleep(1)
 
 
-def update_route(dep, arr):
+def update_route(dep: str, arr: str) -> None:
     """
     Update route given by dep and arr from the API in DB
 
@@ -416,7 +456,7 @@ def update_route(dep, arr):
     client.close()
 
 
-def update_routes():
+def update_routes() -> None:
     """Updates all routes from API in the database"""
 
     # import routes to update from CSV
@@ -428,7 +468,7 @@ def update_routes():
         time.sleep(1)
 
 
-def update_flight_status():
+def update_flight_status() -> None:
     """Update flight status on all airports"""
 
     airports = pd.read_csv(c.VALID_AIRPORTS_FILE)
@@ -445,7 +485,7 @@ def update_flight_status():
         time.sleep(1)
 
 
-def update_position(response):
+def update_position(response: Any) -> None:
     """update airplane GPS position and altitude from opensky API"""
 
     # connecting collection
@@ -482,7 +522,7 @@ def update_position(response):
 
 
 # DB REQUESTS
-def get_arrivals(airport):
+def get_arrivals(airport: str) -> pd.DataFrame:
     """Get list of arrivals at given Airport"""
 
     # connecting collection
@@ -521,7 +561,7 @@ def get_arrivals(airport):
     return df
 
 
-def get_departures(airport):
+def get_departures(airport: str) -> pd.DataFrame:
     """Get list of departures at given Airport"""
 
     # connecting collection
@@ -566,7 +606,7 @@ def get_departures(airport):
     return df
 
 
-def get_routes(dep, arr):
+def get_routes(dep: str, arr: str) -> pd.DataFrame:
     """Get list of routes between given departure and arrival airport"""
 
     # connecting collection
@@ -650,7 +690,7 @@ def get_routes(dep, arr):
     return df
 
 
-def get_all_flights():
+def get_all_flights() -> pd.DataFrame:
     """get all flights in flights collection"""
 
     client = MongoClient(c.MONGO_CONNECTION_STR)
@@ -739,7 +779,7 @@ def get_all_flights():
     return df
 
 
-def list_available_airports():
+def list_available_airports() -> pd.DataFrame:
     """get all airports available in the flights collection"""
 
     df = pd.read_csv(c.FLIGHTS_IN_DB_FILE)
@@ -755,7 +795,7 @@ def list_available_airports():
     return airports
 
 
-def get_opensky_flights():
+def get_opensky_flights() -> Any:
     """get currently flying airplanes from opensky API"""
 
     # defining the spatial field
@@ -771,7 +811,7 @@ def get_opensky_flights():
     return response
 
 
-def get_opensky_df(response):
+def get_opensky_df(response: Any) -> pd.DataFrame:
     """creates and returns dataframe from opensky response"""
 
     # load the data as a pandas dataframe
@@ -803,7 +843,7 @@ def get_opensky_df(response):
     return df
 
 
-def flight_tracker():
+def flight_tracker() -> tuple[pd.DataFrame, go.Figure]:
     """returns a map with all airplanes from opensky"""
 
     TOKEN = c.MAPBOX_API_TOKEN
@@ -838,7 +878,7 @@ def flight_tracker():
     return df, fig
 
 
-def get_altitudes(callsign):
+def get_altitudes(callsign: str) -> pd.DataFrame:
     """Get the list of altitudes for given airplane callsign"""
 
     # db connection
