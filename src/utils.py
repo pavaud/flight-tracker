@@ -871,7 +871,7 @@ def flight_tracker() -> tuple[pd.DataFrame, go.Figure]:
     fig.update_layout(
         height=900,
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
-        mapbox={"accesstoken": TOKEN, "style": "light", "zoom": 1.9},
+        mapbox={"accesstoken": TOKEN, "style": "outdoors", "zoom": 1.9},
         showlegend=False,
         uirevision=True,
     )
