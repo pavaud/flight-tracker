@@ -498,7 +498,7 @@ callsign = ""
 
 @app.callback(
     Output("live-update-text", "children"),
-    [Input("graph-update", "n_intervals")],
+    Input("graph-update", "n_intervals"),
 )
 def last_update(n):
     """displays the last update time on the titel layout"""
@@ -511,7 +511,8 @@ def last_update(n):
 
 
 @app.callback(
-    Output("map", "figure"), [Input("graph-update", "n_intervals")]
+    Output("map", "figure"),
+    Input("graph-update", "n_intervals"),
 )
 def flight_tracker_update(n):
     """displays the map on the background layout"""
@@ -532,7 +533,7 @@ def flight_tracker_update(n):
     Output("hover_origin", "children"),
     Output("hover_alt", "children"),
     Output("hover_speed", "children"),
-    [Input("map", "hoverData")],
+    Input("map", "hoverData"),
 )
 def update_hovered_airplane(hoverData):
     """
@@ -596,7 +597,7 @@ def update_hovered_airplane(hoverData):
     Output("click_vertical", "children"),
     Output("click_pos_source", "children"),
     Output("alt_graph", "figure"),
-    [Input("map", "clickData")],
+    Input("map", "clickData"),
     Input("graph-update", "n_intervals"),
     Input("x_close_selection", "n_clicks"),
 )
@@ -690,7 +691,8 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
 
 
 @app.callback(
-    Output("map", "clickData"), [Input("map_container", "n_clicks")]
+    Output("map", "clickData"),
+    Input("map_container", "n_clicks"),
 )
 def reset_clickData(n_clicks):
     """
