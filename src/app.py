@@ -450,7 +450,7 @@ app.layout = html.Div(
             [
                 title_layout,
                 html.Div(
-                    [dcc.Graph(id="live-graph", clear_on_unhover=True)],
+                    [dcc.Graph(id="map", clear_on_unhover=True)],
                     className="background-map-container",
                 ),
                 dcc.Interval(
@@ -511,7 +511,7 @@ def last_update(n):
 
 
 @app.callback(
-    Output("live-graph", "figure"), [Input("graph-update", "n_intervals")]
+    Output("map", "figure"), [Input("graph-update", "n_intervals")]
 )
 def flight_tracker_update(n):
     """displays the map on the background layout"""
@@ -532,7 +532,7 @@ def flight_tracker_update(n):
     Output("hover_origin", "children"),
     Output("hover_alt", "children"),
     Output("hover_speed", "children"),
-    [Input("live-graph", "hoverData")],
+    [Input("map", "hoverData")],
 )
 def update_hovered_airplane(hoverData):
     """
@@ -596,7 +596,7 @@ def update_hovered_airplane(hoverData):
     Output("click_vertical", "children"),
     Output("click_pos_source", "children"),
     Output("alt_graph", "figure"),
-    [Input("live-graph", "clickData")],
+    [Input("map", "clickData")],
     Input("graph-update", "n_intervals"),
     Input("x_close_selection", "n_clicks"),
 )
@@ -690,7 +690,7 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
 
 
 @app.callback(
-    Output("live-graph", "clickData"), [Input("map_container", "n_clicks")]
+    Output("map", "clickData"), [Input("map_container", "n_clicks")]
 )
 def reset_clickData(n_clicks):
     """
