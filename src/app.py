@@ -36,6 +36,26 @@ args = utils.init_args()
 # Logging config
 utils.init_log_conf(args.loglevel, c.DASH_LOG_PATH)
 
+# GLOBAL VARIABLES
+
+# global dataframe of flying airplane
+df, fig = utils.flight_tracker()
+# submit button of the airplane selection panel
+submit_clicks = 0
+# clicks on the map
+map_n_clicks = 0
+# close button of the airplane selection panel
+x_close_selection_clicks = 0
+# close button of the airport panel
+x_close_airport_clicks = 0
+# close button of the route panel
+x_close_route_clicks = 0
+# previous clickData
+clickData_previous = None
+# memorized callsign when click on airplane
+callsign = ""
+
+
 # LAYOUT
 
 # filters
@@ -450,7 +470,7 @@ app.layout = html.Div(
             [
                 title_layout,
                 html.Div(
-                    [dcc.Graph(id="map", clear_on_unhover=True)],
+                    [dcc.Graph(figure=fig, id="map", clear_on_unhover=True)],
                     className="background-map-container",
                 ),
                 dcc.Interval(
@@ -471,26 +491,6 @@ app.layout = html.Div(
     id="page-content",
     style={"position": "relative"},
 )
-
-
-# GLOBAL VARIABLES
-
-# global dataframe of flying airplane
-df = utils.flight_tracker()[0]
-# submit button of the airplane selection panel
-submit_clicks = 0
-# clicks on the map
-map_n_clicks = 0
-# close button of the airplane selection panel
-x_close_selection_clicks = 0
-# close button of the airport panel
-x_close_airport_clicks = 0
-# close button of the route panel
-x_close_route_clicks = 0
-# previous clickData
-clickData_previous = None
-# memorized callsign when click on airplane
-callsign = ""
 
 
 # CALLBACKS
