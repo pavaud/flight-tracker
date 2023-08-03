@@ -454,7 +454,9 @@ app.layout = html.Div(
                     className="background-map-container",
                 ),
                 dcc.Interval(
-                    id="graph-update", interval=10 * 1000, n_intervals=0
+                    id="graph-update",
+                    interval=c.MAP_UPDATE_INTERVAL,
+                    n_intervals=0,
                 ),
             ],
             id="map_container",

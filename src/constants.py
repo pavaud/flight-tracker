@@ -2,14 +2,19 @@ import os
 
 from dotenv import load_dotenv
 
+# fmt: off
 
-load_dotenv(override=True)
+# Load environment variables
+dotenv_path = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+load_dotenv(dotenv_path, override=True)
 
 LOG_DIR = os.environ["LOG_DIR"]
 DASH_LOG = os.environ["DASH_LOG"]
 DASH_LOG_PATH = os.path.join(LOG_DIR, DASH_LOG)
 CRON_LOG = os.environ["CRON_LOG"]
 CRON_LOG_PATH = os.path.join(LOG_DIR, CRON_LOG)
+
+MAP_UPDATE_INTERVAL = int(os.environ["MAP_UPDATE_INTERVAL"])
 
 BASE_URL_CFI = os.environ["BASE_URL_CFI"]
 BASE_URL_SCHEDULES = os.environ["BASE_URL_SCHEDULES"]

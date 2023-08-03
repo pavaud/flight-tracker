@@ -56,7 +56,7 @@ run-dash:
 	docker run -v ./src:/home/src --name dash dash:1.0.1
 
 up:
-	docker compose up -d
+	docker compose up
 
 down:
 	docker compose down
