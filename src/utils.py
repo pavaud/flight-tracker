@@ -856,7 +856,6 @@ def flight_tracker() -> tuple[pd.DataFrame, go.Figure]:
         go.Scattermapbox(
             lon=df.long,
             lat=df.lat,
-            # text = df.text,
             mode="markers",
             hoverinfo="none",
             marker={

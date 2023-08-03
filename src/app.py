@@ -454,7 +454,7 @@ app.layout = html.Div(
                     className="background-map-container",
                 ),
                 dcc.Interval(
-                    id="graph-update",
+                    id="map-interval",
                     interval=c.MAP_UPDATE_INTERVAL,
                     n_intervals=0,
                 ),
@@ -498,7 +498,7 @@ callsign = ""
 
 @app.callback(
     Output("live-update-text", "children"),
-    Input("graph-update", "n_intervals"),
+    Input("map-interval", "n_intervals"),
 )
 def last_update(n):
     """displays the last update time on the titel layout"""
@@ -512,9 +512,9 @@ def last_update(n):
 
 @app.callback(
     Output("map", "figure"),
-    Input("graph-update", "n_intervals"),
+    Input("map-interval", "n_intervals"),
 )
-def flight_tracker_update(n):
+def map_update(n):
     """displays the map on the background layout"""
 
     global df
@@ -598,7 +598,7 @@ def update_hovered_airplane(hoverData):
     Output("click_pos_source", "children"),
     Output("alt_graph", "figure"),
     Input("map", "clickData"),
-    Input("graph-update", "n_intervals"),
+    Input("map-interval", "n_intervals"),
     Input("x_close_selection", "n_clicks"),
 )
 def update_clicked_airplane(clickData, n_interval, n_clicks):
