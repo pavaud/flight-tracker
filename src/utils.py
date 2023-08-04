@@ -503,7 +503,8 @@ def update_position(response: Any) -> None:
         filter = {"callsign": flight[1]}
         update = {
             "$push": {
-                "position": {"lat": flight[6], "lon": flight[5]},
+                "lat": flight[6],
+                "lon": flight[5],
                 "altitude": flight[13],
                 "date_time": datetime.now().strftime("%H:%M:%S"),
             }
@@ -895,6 +896,29 @@ def get_altitudes(callsign: str) -> pd.DataFrame:
     df = pd.DataFrame(
         data=list(zip(date_time, altitude)),
         columns=["time", "altitude"],
+    )
+
+    return df
+
+
+def get_trace(callsign: str) -> pd.DataFrame:
+    """Get the trace of GPS coordinates for given airplane callsign"""
+
+    # db connection
+    client = MongoClient(c.MONGO_CONNECTION_STR)
+    col = client.flightTracker.position
+
+    # get the right callsign in collection
+    filter = {"callsign": callsign}
+    projection = {"_id": 0, "lat": 1, "lon": 1, "date_time": 1}
+    result = col.find_one(filter=filter, projection=projection)
+    lat = result["lat"] if result is not None else ""
+    lon = result["lon"] if result is not None else ""
+    date_time = result["date_time"] if result is not None else ""
+
+    df = pd.DataFrame(
+        data=list(zip(date_time, lat, lon)),
+        columns=["time", "lat", "lon"],
     )
 
     return df
