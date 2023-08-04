@@ -520,7 +520,7 @@ def map_update(n):
     global df
 
     df, fig = utils.flight_tracker()
-    logging.debug("## SIZE DF : ", len(df))
+    logging.info(f"## SIZE DF : {len(df)}")
 
     return fig
 
@@ -631,8 +631,8 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
         alt = row.baro_altitude
         speed = row.velocity
         icao = row.icao24
-        time = datetime.utcfromtimestamp(int(row.time_position))
-        last_contact = datetime.utcfromtimestamp(int(row.last_contact))
+        time = datetime.utcfromtimestamp(int(row.iloc[0, 3]))
+        last_contact = datetime.utcfromtimestamp(int(row.iloc[0, 4]))
         true_track = row.true_track
         vertical = row.vertical_rate
         pos = row.position_source
