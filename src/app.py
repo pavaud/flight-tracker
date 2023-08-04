@@ -15,6 +15,7 @@ import pandas as pd
 from dash import Dash, dcc, html, dash_table
 from dash.dependencies import Input, Output, State
 import plotly.express as px
+import plotly.graph_objects as go
 
 import constants as c
 import utils
@@ -38,8 +39,15 @@ utils.init_log_conf(args.loglevel, c.DASH_LOG_PATH)
 
 # GLOBAL VARIABLES
 
-# global dataframe of flying airplane
-df, fig = utils.flight_tracker()
+# global dataframe of flying airplanes
+response = utils.get_opensky_flights()
+df = utils.get_opensky_df(response)
+# global map figure
+map_fig = go.Figure()
+map_fig = utils.add_flights_on_map(map_fig, df)
+# number of interval triggered
+n_intervals = 0
+
 # submit button of the airplane selection panel
 submit_clicks = 0
 # clicks on the map
@@ -470,7 +478,13 @@ app.layout = html.Div(
             [
                 title_layout,
                 html.Div(
-                    [dcc.Graph(figure=fig, id="map", clear_on_unhover=True)],
+                    [
+                        dcc.Graph(
+                            figure=map_fig,
+                            id="map",
+                            clear_on_unhover=True,
+                        )
+                    ],
                     className="background-map-container",
                 ),
                 dcc.Interval(
@@ -518,9 +532,18 @@ def map_update(n):
     """displays the map on the background layout"""
 
     global df
+    global n_intervals
 
-    df, fig = utils.flight_tracker()
-    logging.info(f"## SIZE DF : {len(df)}")
+    # update flight position
+    if n_intervals != n:
+        response = utils.get_opensky_flights()
+        df = utils.get_opensky_df(response)
+        n_intervals = n
+        logging.info(f"Updated positions. Number of flights : {len(df)}")
+
+    # add flights on the map
+    fig = go.Figure()
+    fig = utils.add_flights_on_map(fig, df)
 
     return fig
 

@@ -845,12 +845,12 @@ def get_opensky_df(response: Any) -> pd.DataFrame:
     return df
 
 
-def flight_tracker() -> tuple[pd.DataFrame, go.Figure]:
+def add_flights_on_map(fig, df) -> go.Figure:
     """returns a map with all airplanes from opensky"""
 
     TOKEN = c.MAPBOX_API_TOKEN
-    response = get_opensky_flights()
-    df = get_opensky_df(response)
+    # response = get_opensky_flights()
+    # df = get_opensky_df(response)
 
     # Define figure and its characteristics
     fig = go.Figure(
@@ -876,7 +876,7 @@ def flight_tracker() -> tuple[pd.DataFrame, go.Figure]:
         uirevision=True,
     )
 
-    return df, fig
+    return fig
 
 
 def get_altitudes(callsign: str) -> pd.DataFrame:
