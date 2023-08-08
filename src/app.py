@@ -679,11 +679,10 @@ def update_clicked_airplane(clickData, n, n_clicks):
             if callsign:
                 df_position = utils.get_trace(callsign)
                 map_fig = utils.add_flight_trace_on_map(map_fig, df_position)
-                logging.info(f"trace {callsign}: {df_position}")
+                logging.debug(f"trace {callsign}: {df_position}")
                 logging.debug(f"Added trace to map for flight: {callsign}")
         except IndexError as e:
             logging.error(f"{e}")
-    logging.info(f"{clickData = }")
 
     return (
         style,
