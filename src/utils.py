@@ -879,6 +879,36 @@ def add_flights_on_map(fig, df) -> go.Figure:
     return fig
 
 
+def add_flight_trace_on_map(fig, trace_df) -> go.Figure:
+    """
+    Add the given trace to the map and center the map on the flight position.
+    """
+    fig.add_trace(
+        go.Scattermapbox(
+            lon=trace_df.lon,
+            lat=trace_df.lat,
+            mode="lines",
+            hoverinfo="none",
+            marker={
+                "size": 10,
+                "symbol": "circle",
+                "allowoverlap": True,
+            },
+        )
+    )
+
+    # TOKEN = c.MAPBOX_API_TOKEN
+    # fig.update_layout(
+    #     height=900,
+    #     margin={"r": 0, "t": 0, "l": 0, "b": 0},
+    #     mapbox={"accesstoken": TOKEN, "style": "outdoors", "zoom": 1.9, "center"},
+    #     showlegend=False,
+    #     uirevision=True,
+    # )
+
+    return fig
+
+
 def get_altitudes(callsign: str) -> pd.DataFrame:
     """Get the list of altitudes for given airplane callsign"""
 

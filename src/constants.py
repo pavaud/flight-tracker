@@ -42,7 +42,8 @@ OPENSKY_BASE_URL = os.environ["OPENSKY_BASE_URL"]
 
 MAPBOX_API_TOKEN = os.environ["MAPBOX_API_TOKEN"]
 
-LUFTHANSA_API_KEY = os.environ["LUFTHANSA_API_KEY"]
+# LUFTHANSA_API_KEY = os.environ["LUFTHANSA_API_KEY"]
+LUFTHANSA_API_KEY = "5w2j5x6tmas6rube8cv6tupn"
 
 # choose a connection string depending on manual or docker start up
 try:

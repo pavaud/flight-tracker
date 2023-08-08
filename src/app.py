@@ -527,12 +527,15 @@ def last_update(n):
 @app.callback(
     Output("map", "figure"),
     Input("map-interval", "n_intervals"),
+    Input("map", "clickData"),
 )
-def map_update(n):
+def map_update(n, clickData):
     """displays the map on the background layout"""
 
     global df
     global n_intervals
+    global clickData_previous
+    global callsign
 
     # update flight position
     if n_intervals != n:
@@ -544,6 +547,36 @@ def map_update(n):
     # add flights on the map
     fig = go.Figure()
     fig = utils.add_flights_on_map(fig, df)
+
+    # add trace of the selected airplane on the map
+    # logging.info(clickData_previous)
+    if clickData is not None:
+        #     # logging.info(clickData_previous)
+        #     row_nb = clickData["points"][0]["pointIndex"]
+        #     row_nb_previous = None
+        #     if clickData_previous:
+        #         row_nb_previous = clickData_previous["points"][0]["pointIndex"]
+        #     logging.info(f"{row_nb = }")
+        #     logging.info(f"{row_nb_previous = }")
+
+        #     if row_nb != row_nb_previous:
+        #         logging.info(f"{clickData == clickData_previous}")
+        #         logging.info(f"{clickData = }")
+        #         logging.info(f"{clickData_previous = }")
+        #         # clickData_previous = clickData
+
+        try:
+            # row_nb = clickData["points"][0]["pointIndex"]
+            # row = df.iloc[row_nb]
+            # logging.info(f"Row {row_nb}: {row}")
+            # callsign = row["callsign"]
+            if callsign:
+                df_position = utils.get_trace(callsign)
+                logging.info(f"trace {callsign}: {df_position}")
+                fig = utils.add_flight_trace_on_map(fig, df_position)
+                logging.info(f"Added trace to map for flight: {callsign}")
+        except IndexError as e:
+            logging.error(f"{e}")
 
     return fig
 
@@ -586,6 +619,8 @@ def update_hovered_airplane(hoverData):
             origin = ""
             alt = ""
             speed = ""
+
+        logging.info(f"{callsign = } - HOVER {row_nb = }\n{hoverData}")
 
         # display panel shifted from the airplane
         style = {
@@ -635,6 +670,7 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
 
     # values to display when clicked
     if clickData is not None:
+        # if data has changed
         if clickData != clickData_previous:
             clickData_previous = clickData
 
