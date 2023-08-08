@@ -525,44 +525,6 @@ def last_update(n):
 
 
 @app.callback(
-    Output("map", "figure"),
-    Input("map-interval", "n_intervals"),
-    Input("map", "clickData"),
-)
-def map_update(n, clickData):
-    """displays the map on the background layout"""
-
-    global df
-    global n_intervals
-    global clickData_previous
-    global callsign
-
-    # update flight position
-    if n_intervals != n:
-        response = utils.get_opensky_flights()
-        df = utils.get_opensky_df(response)
-        n_intervals = n
-        logging.info(f"Updated positions. Number of flights : {len(df)}")
-
-    # add flights on the map
-    fig = go.Figure()
-    fig = utils.add_flights_on_map(fig, df)
-
-    # add trace of the selected airplane on the map
-    if clickData is not None:
-        try:
-            if callsign:
-                df_position = utils.get_trace(callsign)
-                fig = utils.add_flight_trace_on_map(fig, df_position)
-                logging.debug(f"trace {callsign}: {df_position}")
-                logging.debug(f"Added trace to map for flight: {callsign}")
-        except IndexError as e:
-            logging.error(f"{e}")
-
-    return fig
-
-
-@app.callback(
     Output("hovered_airplane", "style"),
     Output("hover_callsign", "children"),
     Output("hover_lat", "children"),
@@ -628,11 +590,12 @@ def update_hovered_airplane(hoverData):
     Output("click_vertical", "children"),
     Output("click_pos_source", "children"),
     Output("alt_graph", "figure"),
+    Output("map", "figure"),
     Input("map", "clickData"),
     Input("map-interval", "n_intervals"),
     Input("x_close_selection", "n_clicks"),
 )
-def update_clicked_airplane(clickData, n_interval, n_clicks):
+def update_clicked_airplane(clickData, n, n_clicks):
     """
     Open right side panel with full airplane info
     when airplane is clicked and close with the top-right X
@@ -640,6 +603,8 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
     global x_close_selection_clicks
     global clickData_previous
     global callsign
+    global df
+    global n_intervals
 
     callsign = ""
     lat = ""
@@ -658,14 +623,6 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
 
     # values to display when clicked
     if clickData is not None:
-        # if data has changed
-        # if clickData != clickData_previous:
-        #     clickData_previous = clickData
-
-        # get airplane callsign to search data by callsign, not by row_nb
-        # if we use row_nb to get data when interval updates the row_nb
-        # is not with the same callsign as before
-        # row_nb = clickData["points"][0]["pointIndex"]
         callsign = clickData["points"][0]["text"]
         try:
             row = df.loc[(df.callsign == callsign), :]
@@ -691,7 +648,7 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
         style = {"display": "block"}
 
     # create altitude graph
-    fig = px.line(
+    alt_fig = px.line(
         data_frame=df_altitude,
         x="time",
         y="altitude",
@@ -704,6 +661,29 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
     if n_clicks != x_close_selection_clicks:
         style = {"display": "none"}
         x_close_selection_clicks = n_clicks
+
+    # update flight position
+    if n_intervals != n:
+        response = utils.get_opensky_flights()
+        df = utils.get_opensky_df(response)
+        n_intervals = n
+        logging.info(f"Updated positions. Number of flights : {len(df)}")
+
+    # add flights on the map
+    map_fig = go.Figure()
+    map_fig = utils.add_flights_on_map(map_fig, df)
+
+    # add trace of the selected airplane on the map
+    if clickData is not None:
+        try:
+            if callsign:
+                df_position = utils.get_trace(callsign)
+                map_fig = utils.add_flight_trace_on_map(map_fig, df_position)
+                logging.info(f"trace {callsign}: {df_position}")
+                logging.debug(f"Added trace to map for flight: {callsign}")
+        except IndexError as e:
+            logging.error(f"{e}")
+    logging.info(f"{clickData = }")
 
     return (
         style,
@@ -719,7 +699,8 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
         true_track,
         vertical,
         pos,
-        fig,
+        alt_fig,
+        map_fig,
     )
 
 
