@@ -857,6 +857,7 @@ def add_flights_on_map(fig, df) -> go.Figure:
         go.Scattermapbox(
             lon=df.long,
             lat=df.lat,
+            text=df.callsign,
             mode="markers",
             hoverinfo="none",
             marker={

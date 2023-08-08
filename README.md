@@ -41,8 +41,7 @@ In the **Search** bar, the airport fields must be IATA codes
 
 # TODOs
 
-- Get item suggested when typing in a field of the search panel
-- Display the track of the airplane when clicking on it
+- Suggest flights when typing in the search panel
 
 # Web Interface
 
@@ -65,6 +64,10 @@ In the **Search** bar, the airport fields must be IATA codes
 **Departures and Arrivals**
 
 ![Departures and Arrivals](img/get_arr_dep.jpg)
+
+**Trace of a Flight**
+
+![Departures and Arrivals](img/flight_trace.jpg)
 
 
 

@@ -549,32 +549,13 @@ def map_update(n, clickData):
     fig = utils.add_flights_on_map(fig, df)
 
     # add trace of the selected airplane on the map
-    # logging.info(clickData_previous)
     if clickData is not None:
-        #     # logging.info(clickData_previous)
-        #     row_nb = clickData["points"][0]["pointIndex"]
-        #     row_nb_previous = None
-        #     if clickData_previous:
-        #         row_nb_previous = clickData_previous["points"][0]["pointIndex"]
-        #     logging.info(f"{row_nb = }")
-        #     logging.info(f"{row_nb_previous = }")
-
-        #     if row_nb != row_nb_previous:
-        #         logging.info(f"{clickData == clickData_previous}")
-        #         logging.info(f"{clickData = }")
-        #         logging.info(f"{clickData_previous = }")
-        #         # clickData_previous = clickData
-
         try:
-            # row_nb = clickData["points"][0]["pointIndex"]
-            # row = df.iloc[row_nb]
-            # logging.info(f"Row {row_nb}: {row}")
-            # callsign = row["callsign"]
             if callsign:
                 df_position = utils.get_trace(callsign)
-                logging.info(f"trace {callsign}: {df_position}")
                 fig = utils.add_flight_trace_on_map(fig, df_position)
-                logging.info(f"Added trace to map for flight: {callsign}")
+                logging.debug(f"trace {callsign}: {df_position}")
+                logging.debug(f"Added trace to map for flight: {callsign}")
         except IndexError as e:
             logging.error(f"{e}")
 
@@ -597,30 +578,30 @@ def update_hovered_airplane(hoverData):
     next to mouse pointer when hovering airplane
     """
 
+    callsign = ""
+    lat = ""
+    lon = ""
+    origin = ""
+    alt = ""
+    speed = ""
+    style = {"display": "none"}
+
     if hoverData is not None:
         top = hoverData["points"][0]["bbox"]["y0"]
         left = hoverData["points"][0]["bbox"]["x0"]
-        row_nb = hoverData["points"][0]["pointIndex"]
+        callsign = hoverData["points"][0]["text"]
 
         try:
             # get the row in df of hovered airplane
-            row = df.iloc[row_nb]
-            callsign = row.callsign
+            row = df.loc[(df.callsign == callsign), :]
             lat = row.lat
             lon = row.long
             origin = row.origin_country
             alt = row.baro_altitude
             speed = row.velocity
+            logging.info(f"HOVER {callsign = }\n{row}\n{hoverData}\n")
         except IndexError as e:
-            logging.error(f"{e}\n## ROW NB : {row_nb}\n")
-            callsign = ""
-            lat = ""
-            lon = ""
-            origin = ""
-            alt = ""
-            speed = ""
-
-        logging.info(f"{callsign = } - HOVER {row_nb = }\n{hoverData}")
+            logging.error(f"{e}\n")
 
         # display panel shifted from the airplane
         style = {
@@ -628,14 +609,6 @@ def update_hovered_airplane(hoverData):
             "top": str(top + 10) + "px",
             "left": str(left + 10) + "px",
         }
-    else:
-        callsign = ""
-        lat = ""
-        lon = ""
-        origin = ""
-        alt = ""
-        speed = ""
-        style = {"display": "none"}
 
     return style, callsign, lat, lon, origin, alt, speed
 
@@ -668,53 +641,54 @@ def update_clicked_airplane(clickData, n_interval, n_clicks):
     global clickData_previous
     global callsign
 
+    callsign = ""
+    lat = ""
+    lon = ""
+    origin = ""
+    alt = ""
+    speed = ""
+    icao = ""
+    time = ""
+    last_contact = ""
+    true_track = ""
+    vertical = ""
+    pos = ""
+    style = {"display": "none"}
+    df_altitude = pd.DataFrame(columns=["time", "altitude"])
+
     # values to display when clicked
     if clickData is not None:
         # if data has changed
-        if clickData != clickData_previous:
-            clickData_previous = clickData
+        # if clickData != clickData_previous:
+        #     clickData_previous = clickData
 
-            # get airplane callsign to search data by callsign, not by row_nb
-            # if we use row_nb to get data when interval updates the row_nb
-            # is not with the same callsign as before
-            row_nb = clickData["points"][0]["pointIndex"]
-            try:
-                callsign = df.iloc[row_nb]["callsign"]
-            except IndexError as e:
-                logging.error(f"{e}\n## ROW NB : {row_nb}\n## DF :\n{df}")
+        # get airplane callsign to search data by callsign, not by row_nb
+        # if we use row_nb to get data when interval updates the row_nb
+        # is not with the same callsign as before
+        # row_nb = clickData["points"][0]["pointIndex"]
+        callsign = clickData["points"][0]["text"]
+        try:
+            row = df.loc[(df.callsign == callsign), :]
+            lat = row.lat
+            lon = row.long
+            origin = row.origin_country
+            alt = row.baro_altitude
+            speed = row.velocity
+            icao = row.icao24
+            time = datetime.utcfromtimestamp(int(row.iloc[0, 3]))
+            last_contact = datetime.utcfromtimestamp(int(row.iloc[0, 4]))
+            true_track = row.true_track
+            vertical = row.vertical_rate
+            pos = row.position_source
 
-        row = df.loc[(df["callsign"] == callsign), :]
-        lat = row.lat
-        lon = row.long
-        origin = row.origin_country
-        alt = row.baro_altitude
-        speed = row.velocity
-        icao = row.icao24
-        time = datetime.utcfromtimestamp(int(row.iloc[0, 3]))
-        last_contact = datetime.utcfromtimestamp(int(row.iloc[0, 4]))
-        true_track = row.true_track
-        vertical = row.vertical_rate
-        pos = row.position_source
+            logging.info(f"CLICKED {callsign = }\n{row}\n{clickData}\n")
+        except IndexError as e:
+            logging.error(f"{callsign = }\n{e}\n")
 
         # get altitude data
         df_altitude = utils.get_altitudes(callsign)
 
         style = {"display": "block"}
-    else:
-        callsign = ""
-        lat = ""
-        lon = ""
-        origin = ""
-        alt = ""
-        speed = ""
-        icao = ""
-        time = ""
-        last_contact = ""
-        true_track = ""
-        vertical = ""
-        pos = ""
-        style = {"display": "none"}
-        df_altitude = pd.DataFrame(columns=["time", "altitude"])
 
     # create altitude graph
     fig = px.line(
